@@ -2,46 +2,16 @@
 
 
 [[projects]]
-  name = "github.com/fsnotify/fsnotify"
-  packages = ["."]
-  revision = "629574ca2a5df945712d3079857300b5e4da0236"
-  version = "v1.4.2"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/golang/snappy"
-  packages = ["."]
-  revision = "553a641470496b2327abcac10b36396bd98e45c9"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/hashicorp/hcl"
-  packages = [".","hcl/ast","hcl/parser","hcl/scanner","hcl/strconv","hcl/token","json/parser","json/scanner","json/token"]
-  revision = "23c074d0eceb2b8a5bfdbb271ab780cde70f05a8"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/joaosoft/go-manager"
-  packages = ["services","services/config","services/elastic","services/exceptions","services/gateway","services/nsq","services/process","services/sqlcon","services/web","services/workqueue"]
-  revision = "3a89d1f5cd3dacb4a21c800abf7d12424ce19e02"
-
-[[projects]]
   name = "github.com/labstack/echo"
   packages = ["."]
-  revision = "cec7629194fe4bf83b0c72d9a02d340c7a1468ac"
-  version = "3.2.3"
+  revision = "b28538b2e3f5446fe6e0e47ee34cd74b662ca2ab"
+  version = "3.2.4"
 
 [[projects]]
   name = "github.com/labstack/gommon"
   packages = ["color","log"]
   revision = "57409ada9da0f2afad6664c49502f8c50fbd8476"
   version = "0.2.3"
-
-[[projects]]
-  name = "github.com/magiconair/properties"
-  packages = ["."]
-  revision = "be5ece7dd465ab0765a9682137865547526d1dfb"
-  version = "v1.7.3"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -54,72 +24,6 @@
   packages = ["."]
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/mitchellh/mapstructure"
-  packages = ["."]
-  revision = "06020f85339e21b2478f756a78e295255ffa4d6a"
-
-[[projects]]
-  name = "github.com/nsqio/go-nsq"
-  packages = ["."]
-  revision = "eee57a3ac4174c55924125bb15eeeda8cffb6e6f"
-  version = "v1.0.7"
-
-[[projects]]
-  name = "github.com/onsi/ginkgo"
-  packages = [".","config","internal/codelocation","internal/containernode","internal/failer","internal/leafnodes","internal/remote","internal/spec","internal/spec_iterator","internal/specrunner","internal/suite","internal/testingtproxy","internal/writer","reporters","reporters/stenographer","reporters/stenographer/support/go-colorable","reporters/stenographer/support/go-isatty","types"]
-  revision = "9eda700730cba42af70d53180f9dcce9266bc2bc"
-  version = "v1.4.0"
-
-[[projects]]
-  name = "github.com/onsi/gomega"
-  packages = [".","format","internal/assertion","internal/asyncassertion","internal/oraclematcher","internal/testingtsupport","matchers","matchers/support/goraph/bipartitegraph","matchers/support/goraph/edge","matchers/support/goraph/node","matchers/support/goraph/util","types"]
-  revision = "c893efa28eb45626cdaa76c9f653b62488858837"
-  version = "v1.2.0"
-
-[[projects]]
-  name = "github.com/pelletier/go-toml"
-  packages = ["."]
-  revision = "16398bac157da96aa88f98a2df640c7f32af1da2"
-  version = "v1.0.1"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/shopspring/decimal"
-  packages = ["."]
-  revision = "ad668bb36961e1e1ac005e514b610e41573603bf"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/spf13/afero"
-  packages = [".","mem"]
-  revision = "e67d870304c4bca21331b02f414f970df13aa694"
-
-[[projects]]
-  name = "github.com/spf13/cast"
-  packages = ["."]
-  revision = "acbeb36b902d72a7a4c18e8f3241075e7ab763e4"
-  version = "v1.1.0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/spf13/jwalterweatherman"
-  packages = ["."]
-  revision = "12bd96e66386c1960ab0f74ced1362f66f552f7b"
-
-[[projects]]
-  name = "github.com/spf13/pflag"
-  packages = ["."]
-  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
-  version = "v1.0.0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/spf13/viper"
-  packages = ["."]
-  revision = "d9cca5ef33035202efb1586825bdbb15ff9ec3ba"
 
 [[projects]]
   branch = "master"
@@ -137,35 +41,17 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["acme","acme/autocert"]
-  revision = "541b9d50ad47e36efd8fb423e938e59ff1691f68"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/net"
-  packages = ["html","html/atom","html/charset"]
-  revision = "aabf50738bcdd9b207582cbe796b59ed65d56680"
+  revision = "6a293f2d4b14b8e6d3f0539e383f6d0d30fce3fd"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "8dbc5d05d6edcc104950cc299a1ce6641235bc86"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/text"
-  packages = ["encoding","encoding/charmap","encoding/htmlindex","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/tag","internal/triegen","internal/ucd","internal/utf8internal","language","runes","transform","unicode/cldr","unicode/norm"]
-  revision = "c01e4764d870b77f8abe5096ee19ad20d80e8075"
-
-[[projects]]
-  branch = "v2"
-  name = "gopkg.in/yaml.v2"
-  packages = ["."]
-  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
+  revision = "1e2299c37cc91a509f1b12369872d27be0ce98a6"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a7bed07e4ac73556f38b324b0c3f5e8efd2d5d813f4f56e859c4b1f14747bb17"
+  inputs-digest = "9694fbcb4c3ced1e52c3fbc8b36a8183044f170070b40edad2430dc29a9dd6d1"
   solver-name = "gps-cdcl"
   solver-version = 1

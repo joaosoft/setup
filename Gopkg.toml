@@ -22,37 +22,5 @@
 
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/joaosoft/go-Manager"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/joaosoft/go-manager"
-
-[[constraint]]
   name = "github.com/labstack/echo"
-  version = "3.2.3"
-
-[[constraint]]
-  name = "github.com/labstack/gommon"
-  version = "0.2.3"
-
-[[constraint]]
-  name = "github.com/nsqio/go-nsq"
-  version = "1.0.7"
-
-[[constraint]]
-  name = "github.com/onsi/ginkgo"
-  version = "1.4.0"
-
-[[constraint]]
-  name = "github.com/onsi/gomega"
-  version = "1.2.0"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/shopspring/decimal"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/spf13/viper"
+  version = "3.2.4"

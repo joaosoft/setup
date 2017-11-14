@@ -22,10 +22,61 @@ go get github.com/joaosoft/go-mock
 ## Usage 
 This examples are available in the project at [go-mock/getting_started](https://github.com/joaosoft/go-mock/tree/master/getting_started)
 
+### Configuration xpto.json
+```json
+{
+  "webservices": [
+    {
+      "name": "hello",
+      "host": "localhost:8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Hello friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "goodbye",
+      "host": "localhost:8002",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/goodbye",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+
 ```go
 import "github.com/joaosoft/go-mock"
-mock, _ := mock.NewGoMock()
-mock.Run("./config/")
+
+func main() {
+    gomock := gomock.NewGoMock()
+    gomock.Run("./getting_started/config")
+
+    quit := make(chan os.Signal, 1)
+    signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+    <-quit
+
+    gomock.Stop()
+}
 ```
 
 ## Follow me at

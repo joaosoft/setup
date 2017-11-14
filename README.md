@@ -64,7 +64,7 @@ This examples are available in the project at [go-mock/getting_started](https://
 import "github.com/joaosoft/go-mock"
 
 func main() {
-	gomock := gomock.NewGoMock(gomock.WithPath("./getting_started/config"), gomock.WithRunInBackground(false))
+	gomock := NewGoMock(WithPath("./getting_started/config"), WithRunInBackground(false))
 	gomock.Run()
 }
 ```

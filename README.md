@@ -2,11 +2,6 @@
 [![Build Status](https://travis-ci.org/joaosoft/go-mock.svg?branch=master)](https://travis-ci.org/joaosoft/go-mock) | [![Code Climate](https://codeclimate.com/github/joaosoft/go-mock/badges/coverage.svg)](https://codeclimate.com/github/joaosoft/go-mock)
 
 A package framework to create mock web services. 
-###### If i miss something or you have something interesting, please be part of this project. Let me know! My contact is at the end.
-
-## with support to
-* mock web services
-
 ## Dependecy Management 
 >### Dep
 

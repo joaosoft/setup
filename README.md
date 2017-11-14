@@ -80,6 +80,11 @@ func main() {
 }
 ```
 
+## Run example
+```
+make getting-started
+```
+
 ## Follow me at
 Facebook: https://www.facebook.com/joaosoft
 

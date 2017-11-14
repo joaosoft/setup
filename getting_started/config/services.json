@@ -1,0 +1,38 @@
+{
+  "webservices": [
+    {
+      "name": "hello",
+      "host": "localhost:8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Hello friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "goodbye",
+      "host": "localhost:8002",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/goodbye",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

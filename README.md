@@ -64,14 +64,8 @@ This examples are available in the project at [go-mock/getting_started](https://
 import "github.com/joaosoft/go-mock"
 
 func main() {
-    gomock := gomock.NewGoMock()
-    gomock.Run("./getting_started/config")
-
-    quit := make(chan os.Signal, 1)
-    signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-    <-quit
-
-    gomock.Stop()
+	gomock := gomock.NewGoMock(gomock.WithPath("./getting_started/config"), gomock.WithRunInBackground(false))
+	gomock.Run()
 }
 ```
 
@@ -79,6 +73,10 @@ func main() {
 ```
 make getting-started
 ```
+
+You can see that you have created two web services:
+* http://localhost:8001/hello
+* http://localhost:8002/goodbye
 
 ## Follow me at
 Facebook: https://www.facebook.com/joaosoft

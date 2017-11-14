@@ -6,22 +6,63 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/labstack/echo"
 )
 
+const (
+	path       = "."
+	background = true
+)
+
+// GoMockOption ...
+type GoMockOption func(gomock *GoMock)
+
+// WithPath ...
+func WithPath(path string) GoMockOption {
+	return func(gomock *GoMock) {
+		if path != "" {
+			gomock.path = path
+		}
+	}
+}
+
+// WithRunInBackground ...
+func WithRunInBackground(background bool) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.background = background
+	}
+}
+
+// Reconfigure ...
+func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
+	for _, option := range options {
+		option(gomock)
+	}
+}
+
 // GoMock ...
 type GoMock struct {
-	processes map[string]*echo.Echo
+	path       string
+	background bool
+	processes  map[string]*echo.Echo
 }
 
 // NewGoMock ...
-func NewGoMock() *GoMock {
-	return &GoMock{
-		processes: make(map[string]*echo.Echo),
+func NewGoMock(options ...GoMockOption) *GoMock {
+	gomock := &GoMock{
+		path:       path,
+		background: background,
+		processes:  make(map[string]*echo.Echo),
 	}
+
+	gomock.Reconfigure(options...)
+
+	return gomock
 }
 
 // Handle ...
@@ -33,13 +74,21 @@ func (instance Response) Handle(ctx echo.Context) error {
 }
 
 // Run ...
-func (gomock *GoMock) Run(path string) error {
+func (gomock *GoMock) Run() error {
 
 	fmt.Println(":: Initializing Mock Service")
 
-	if err := gomock.setup(path); err != nil {
+	if err := gomock.setup(); err != nil {
 		log.Panic(err)
 		return err
+	}
+
+	if !gomock.background {
+		quit := make(chan os.Signal, 1)
+		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+		<-quit
+
+		gomock.Stop()
 	}
 
 	fmt.Println(":: Mock Services Started")
@@ -62,8 +111,8 @@ func (gomock *GoMock) Stop() error {
 	return nil
 }
 
-func (gomock *GoMock) setup(path string) error {
-	err := filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
+func (gomock *GoMock) setup() error {
+	err := filepath.Walk(gomock.path, func(path string, f os.FileInfo, err error) error {
 		if !f.IsDir() && strings.HasSuffix(f.Name(), ".json") {
 			if err := gomock.loadFile(path); err != nil {
 				return err

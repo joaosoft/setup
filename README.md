@@ -22,7 +22,7 @@ go get github.com/joaosoft/go-mock
 ## Usage 
 This examples are available in the project at [go-mock/getting_started](https://github.com/joaosoft/go-mock/tree/master/getting_started)
 
-### Configuration xpto.json
+>### Configuration xpto.json
 ```json
 {
   "webservices": [
@@ -62,8 +62,9 @@ This examples are available in the project at [go-mock/getting_started](https://
     }
   ]
 }
+```
 
-
+>### Run mocks
 ```go
 import "github.com/joaosoft/go-mock"
 

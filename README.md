@@ -15,9 +15,9 @@ go get github.com/joaosoft/go-mock
 ```
 
 ## Usage 
-This examples are available in the project at [go-mock/getting_started](https://github.com/joaosoft/go-mock/tree/master/getting_started)
+This example is available in the project at [go-mock/getting_started](https://github.com/joaosoft/go-mock/tree/master/getting_started)
 
->### Configuration xpto.json
+>### Configuration services.json
 ```javascript
 {
   "webservices": [

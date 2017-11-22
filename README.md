@@ -82,12 +82,12 @@ This example is available in the project at [go-mock/getting_started](https://gi
           "arguments": ["teste"]
         },
         {
-          "command": "ADD", 
-          "arguments": ["teste", "id", "1"]
+          "command": "APPEND", 
+          "arguments": ["id", "1"]
         },
         {
-          "command": "ADD", 
-          "arguments": ["teste", "name", "JOAO RIBEIRO"]
+          "command": "APPEND", 
+          "arguments": ["name", "JOAO RIBEIRO"]
         }
       ]
     }

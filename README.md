@@ -27,7 +27,7 @@ make start
 ```
 
 ## Usage 
-This example is available in the project at [go-mock/getting_started](https://github.com/joaosoft/go-mock/tree/master/getting_started)
+This example is available in the project at [go-mock/bin](https://github.com/joaosoft/go-mock/tree/master/bin)
 
 >### Configuration services.json
 ```javascript
@@ -79,7 +79,11 @@ This example is available in the project at [go-mock/getting_started](https://gi
       "commands": [
         {
           "command": "DEL",
-          "arguments": ["teste"]
+          "arguments": ["id"]
+        },
+        {
+          "command": "DEL",
+          "arguments": ["name"]
         },
         {
           "command": "APPEND", 
@@ -100,7 +104,7 @@ This example is available in the project at [go-mock/getting_started](https://gi
 import "github.com/joaosoft/go-mock"
 
 func main() {
-	gomock := NewGoMock(WithPath("./getting_started/config"), WithRunInBackground(false))
+	gomock := NewGoMock(WithPath("./bin/config"), WithRunInBackground(false))
 	gomock.Run()
 }
 ```

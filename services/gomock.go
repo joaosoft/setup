@@ -12,6 +12,7 @@ import (
 	"syscall"
 
 	"github.com/labstack/echo"
+	redis "github.com/mediocregopher/radix.v3"
 )
 
 const (
@@ -38,6 +39,13 @@ func WithRunInBackground(background bool) GoMockOption {
 	}
 }
 
+// WithMaxRetries ...
+func WithMaxRetries(maxRetries int) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.maxRetries = maxRetries
+	}
+}
+
 // Reconfigure ...
 func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
 	for _, option := range options {
@@ -49,6 +57,7 @@ func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
 type GoMock struct {
 	path       string
 	background bool
+	maxRetries int
 	processes  map[string]*echo.Echo
 }
 
@@ -129,7 +138,7 @@ func (gomock *GoMock) loadFile(fileName string) error {
 	var err error
 	config := &ServicesLoader{}
 
-	fmt.Println(fmt.Sprintf("Loading file %s", fileName))
+	fmt.Println(fmt.Sprintf(":: Loading file %s", fileName))
 
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -145,13 +154,14 @@ func (gomock *GoMock) loadFile(fileName string) error {
 		return err
 	}
 
+	// Web Services
 	for _, service := range config.WebServices {
-		fmt.Println(fmt.Sprintf("Creating service %s", service.Name))
+		fmt.Println(fmt.Sprintf(":: Creating service %s", service.Name))
 
 		e := echo.New()
 		e.HideBanner = true
 		for _, route := range service.Routes {
-			fmt.Println(fmt.Sprintf("Creating route %s", route.Route))
+			fmt.Println(fmt.Sprintf(":: Creating route %s", route.Route))
 
 			e.Add(route.Method, route.Route, route.Response.Handle)
 		}
@@ -162,6 +172,22 @@ func (gomock *GoMock) loadFile(fileName string) error {
 		fmt.Println(fmt.Sprintf(":: Started service: %s at %s", key, service.Host))
 
 		gomock.processes[key] = e
+	}
+
+	// Redis
+	for _, service := range config.Redis {
+		fmt.Println(fmt.Sprintf(":: Creating service %s", service.Name))
+
+		pool, err := redis.NewPool(service.Configuration.Protocol, service.Configuration.Addr, service.Configuration.Size, nil)
+		if err != nil {
+			return fmt.Errorf("Failed to create redis pool")
+		}
+		for _, command := range service.Commands {
+			fmt.Println(fmt.Sprintf(":: Executing redis command: %s arguments:%s", command.Command, command.Arguments))
+			if err := pool.Do(redis.Cmd(nil, command.Command, command.Arguments...)); err != nil {
+				return fmt.Errorf(err.Error())
+			}
+		}
 	}
 
 	return nil

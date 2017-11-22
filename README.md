@@ -9,6 +9,18 @@ Project dependencies are managed using Dep. Read more about [Dep](https://github
 * Install dependencies: `dep ensure`
 * Update dependencies: `dep ensure -update`
 
+>### Docker
+>#### Start Environment 
+* Redis
+```
+make env
+```
+
+>#### Start Application
+```
+make start
+```
+
 >### Go
 ```
 go get github.com/joaosoft/go-mock

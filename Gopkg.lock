@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/go-redis/redis"
+  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto"]
+  revision = "e5e021257bfc6d5fbf0beac33e30194311fb189f"
+  version = "v6.7.4"
+
+[[projects]]
   name = "github.com/labstack/echo"
   packages = ["."]
   revision = "b28538b2e3f5446fe6e0e47ee34cd74b662ca2ab"
@@ -27,6 +33,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/mediocregopher/radix.v3"
+  packages = [".","resp"]
+  revision = "d285b9d40ad446202117b4bf102c0b00e116660a"
+
+[[projects]]
+  branch = "master"
   name = "github.com/valyala/bytebufferpool"
   packages = ["."]
   revision = "e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7"
@@ -41,17 +53,17 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["acme","acme/autocert"]
-  revision = "6a293f2d4b14b8e6d3f0539e383f6d0d30fce3fd"
+  revision = "9f005a07e0d31d45e6656d241bb5c0f2efd4bc94"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "1e2299c37cc91a509f1b12369872d27be0ce98a6"
+  revision = "82aafbf43bf885069dc71b7e7c2f9d7a614d47da"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9694fbcb4c3ced1e52c3fbc8b36a8183044f170070b40edad2430dc29a9dd6d1"
+  inputs-digest = "5d6edeff2f00414f4c6ee1d2463e54105167ecca9354b50d5ad25977394e7481"
   solver-name = "gps-cdcl"
   solver-version = 1

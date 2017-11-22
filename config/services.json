@@ -46,7 +46,11 @@
       "commands": [
         {
           "command": "DEL",
-          "arguments": ["teste"]
+          "arguments": ["id"]
+        },
+        {
+          "command": "DEL",
+          "arguments": ["name"]
         },
         {
           "command": "APPEND", 

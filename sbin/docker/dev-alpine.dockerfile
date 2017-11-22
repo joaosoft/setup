@@ -16,7 +16,7 @@ ADD Gopkg.toml Gopkg.lock /go/src/$PROJECT_NAME/
 RUN cd /go/src/$PROJECT_NAME && dep ensure -vendor-only
 
 # copy configuration
-ADD ./getting_started/config /etc/$PROJECT_NAME
+ADD ./config /etc/$PROJECT_NAME
 
 # add source code
 ADD . /go/src/$PROJECT_NAME/

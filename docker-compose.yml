@@ -4,8 +4,8 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./docker/dev-alpine.dockerfile
-    command: run ./getting_started/main.go
+      dockerfile: ./sbin/docker/dev-alpine.dockerfile
+    command: run ./bin/main.go
     volumes:
       - esdata1:/go-mock
     environment:

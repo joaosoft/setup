@@ -46,15 +46,15 @@
       "commands": [
         {
           "command": "DEL",
-          "arguments": ["P:10000000-0000-0000-0000-000000000001"]
+          "arguments": ["teste"]
         },
         {
-          "command": "HMSET", 
-          "arguments": ["P:10000000-0000-0000-0000-000000000001", "id", "10000000-0000-0000-0000-000000000001"]
+          "command": "ADD", 
+          "arguments": ["teste", "id", "1"]
         },
         {
-          "command": "HMSET", 
-          "arguments": ["P:10000000-0000-0000-0000-000000000001", "name", "JOAO RIBEIRO"]
+          "command": "ADD", 
+          "arguments": ["teste", "name", "JOAO RIBEIRO"]
         }
       ]
     }

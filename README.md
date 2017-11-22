@@ -35,7 +35,7 @@ This example is available in the project at [go-mock/getting_started](https://gi
   "webservices": [
     {
       "name": "hello",
-      "host": "localhost:8001",
+      "host": ":8001",
       "routes": [
         {
           "description": "creating web mock service",
@@ -52,7 +52,7 @@ This example is available in the project at [go-mock/getting_started](https://gi
     },
     {
       "name": "goodbye",
-      "host": "localhost:8002",
+      "host": ":8002",
       "routes": [
         {
           "description": "creating web mock service",
@@ -64,6 +64,30 @@ This example is available in the project at [go-mock/getting_started](https://gi
               "message": "Goodbye friend!"
             }
           }
+        }
+      ]
+    }
+  ],
+  "redis": [
+    {
+      "name": "redis",
+      "configuration": {
+        "protocol": "tcp",
+        "addr": "redis:6379",
+        "size": 10
+      },
+      "commands": [
+        {
+          "command": "DEL",
+          "arguments": ["teste"]
+        },
+        {
+          "command": "ADD", 
+          "arguments": ["teste", "id", "1"]
+        },
+        {
+          "command": "ADD", 
+          "arguments": ["teste", "name", "JOAO RIBEIRO"]
         }
       ]
     }

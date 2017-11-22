@@ -107,7 +107,7 @@ func main() {
 
 ## Run example
 ```
-make getting-started
+make run
 ```
 
 You can see that you have created two web services:

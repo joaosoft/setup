@@ -284,10 +284,10 @@ Created table CLIENTS with two inserted clients
 :: Loading file config/service_001.json
  Creating service hello
  Creating route /hello
- Started service: webservicehello at :8001
+ Started service: hello at :8001
  Creating service goodbye
  Creating route /goodbye
- Started service: webservicegoodbye at :8002
+ Started service: goodbye at :8002
  Creating service redis
  Executing redis command: APPEND arguments:[id 1]
  Executing redis command: APPEND arguments:[name JOAO RIBEIRO]
@@ -298,10 +298,10 @@ Created table CLIENTS with two inserted clients
 :: Loading file config/service_002.json
  Creating service hello
  Creating route /hello
- Started service: webservicehello at :9001
+ Started service: hello at :9001
  Creating service goodbye
  Creating route /goodbye
- Started service: webservicegoodbye at :9002
+ Started service: goodbye at :9002
  Creating service redis
  Executing redis command: APPEND arguments:[id 2]
  Executing redis command: APPEND arguments:[name LUIS RIBEIRO]

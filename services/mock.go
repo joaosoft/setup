@@ -81,12 +81,12 @@ func (mock *Mock) Run() error {
 // Stop ...
 func (mock *Mock) Stop() error {
 
-	fmt.Println(":: Stopping down Mock Service")
+	fmt.Println(":: Stopping Mock Service")
 	if err := mock.teardown(); err != nil {
 		log.Panic(err)
 		return err
 	}
-	fmt.Println(":: Stoped down Mock Service")
+	fmt.Println(":: Stoped Mock Service")
 
 	return nil
 }

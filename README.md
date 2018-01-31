@@ -27,7 +27,7 @@ make start
 ```
 
 ## Usage 
-This example is available in the project at [go-mock/bin/launcher/](https://github.com/joaosoft/go-mock/tree/master/bin)
+This example is available in the project at [go-mock/bin/launcher](https://github.com/joaosoft/go-mock/tree/master/bin/launcher)
 
 >### Configuration [services_001.json]
 ```javascript

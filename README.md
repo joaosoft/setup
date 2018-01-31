@@ -1,7 +1,7 @@
 # go-mock
 [![Build Status](https://travis-ci.org/joaosoft/go-mock.svg?branch=master)](https://travis-ci.org/joaosoft/go-mock) | [![Code Climate](https://codeclimate.com/github/joaosoft/go-mock/badges/coverage.svg)](https://codeclimate.com/github/joaosoft/go-mock)
 
-A package framework to create mock services. At the moment have support to web services, redis, postgres and mysql. 
+A package framework to create mock services. At the moment it have support to web services, redis, postgres and mysql. 
 ## Dependecy Management 
 >### Dep
 

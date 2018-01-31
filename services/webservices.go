@@ -25,7 +25,7 @@ func (services *Services) setupWebServices() error {
 		go e.Start(service.Host)
 
 		key := "webservice" + service.Name
-		fmt.Println(fmt.Sprintf(" Started service: %s at %s", key, service.Host))
+		fmt.Println(fmt.Sprintf(" Started service: %s at %s", service.Name, service.Host))
 
 		processes[key] = e
 

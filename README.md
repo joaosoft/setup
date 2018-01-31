@@ -29,7 +29,7 @@ make start
 ## Usage 
 This example is available in the project at [go-mock/bin](https://github.com/joaosoft/go-mock/tree/master/bin)
 
->### Configuration services_001.json
+>### Configuration [services_001.json]
 ```javascript
 {
   "webservices": [
@@ -130,7 +130,7 @@ This example is available in the project at [go-mock/bin](https://github.com/joa
 }
 ```
 
->### Configuration services_002.json
+>### Configuration [services_002.json]
 ```javascript
 {
   "webservices": [

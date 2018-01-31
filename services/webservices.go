@@ -36,10 +36,8 @@ func (services *Services) setupWebServices() error {
 func (services *Services) teardownWebServices() error {
 	for _, service := range services.WebServices {
 		fmt.Println(fmt.Sprintf(" Teardown service %s", service.Name))
-
 		key := "webservice" + service.Name
 		processes[key].Close()
-		fmt.Println(fmt.Sprintf(" TearDown %s", key))
 
 	}
 	return nil

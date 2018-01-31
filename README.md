@@ -314,18 +314,14 @@ Created table CLIENTS with two inserted clients
 ---------- SHUTTING DOWN ----------
 :: Stopping down Mock Service
  Teardown service hello
- TearDown webservicehello
  Teardown service goodbye
- TearDown webservicegoodbye
  Teardown service redis
  Executing redis command: DEL arguments:[id]
  Executing redis command: DEL arguments:[name]
  Teardown service postgres
  Executing SQL command: DROP TABLE USERS
  Teardown service hello
- TearDown webservicehello
  Teardown service goodbye
- TearDown webservicegoodbye
  Teardown service redis
  Executing redis command: DEL arguments:[id]
  Executing redis command: DEL arguments:[name]

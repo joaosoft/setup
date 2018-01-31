@@ -252,29 +252,29 @@ make run
 You can see that you have created the following...
 
 ##### Web services on 
-> [service_001]
+> [service_001.json]
 * http://localhost:8001/hello
 * http://localhost:8002/goodbye
 
-> [service_002]
+> [service_002.json]
 * http://localhost:9001/hello
 * http://localhost:9002/goodbye
 
 ##### Redis information on
-> [service_001]
+> [service_001.json]
 id: 1
 name: JOAO RIBEIRO
 
-> [service_002]
+> [service_002.json]
 id: 2
 name: LUIS RIBEIRO
 
 ##### Postgres on
-> [service_001]
+> [service_001.json]
 Created table USERS with two inserted users
 
 ##### MySQL on
-> [service_002]
+> [service_002.json]
 Created table CLIENTS with two inserted clients
 
 ## Logging

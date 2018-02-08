@@ -33,6 +33,27 @@
           }
         }
       ]
+    },
+    {
+      "name": "something",
+      "host": ":8003",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "POST",
+          "route": "/something",
+          "payload": {
+            "name": "joao",
+            "age": 29
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
     }
   ],
   "sql": [

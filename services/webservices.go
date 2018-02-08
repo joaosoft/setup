@@ -3,8 +3,10 @@ package gomock
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/onsi/gomega"
 )
 
 var processes = make(map[string]*echo.Echo)
@@ -17,9 +19,9 @@ func (services *Services) setupWebServices() error {
 		e := echo.New()
 		e.HideBanner = true
 		for _, route := range service.Routes {
-			fmt.Println(fmt.Sprintf(" Creating route %s", route.Route))
+			fmt.Println(fmt.Sprintf(" Creating route %s method %s", route.Route, route.Method))
 
-			e.Add(route.Method, route.Route, route.Response.handle)
+			e.Add(route.Method, route.Route, route.handle)
 		}
 
 		go e.Start(service.Host)
@@ -44,9 +46,17 @@ func (services *Services) teardownWebServices() error {
 }
 
 // Handle ...
-func (instance Response) handle(ctx echo.Context) error {
-	data, _ := json.Marshal(instance.Body)
+func (instance Route) handle(ctx echo.Context) error {
+	fmt.Print(fmt.Sprintf("Calling POST URL: %s", ctx.Request().URL))
+	if instance.Payload != nil && gomega.Expect(ctx.Request().Body).ToNot(gomega.Equal(instance.Payload)) {
+		fmt.Println(" with invalid payload")
+
+		return ctx.NoContent(http.StatusNotFound)
+	}
+	fmt.Println(" with valid payload")
+
+	data, _ := json.Marshal(instance.Response.Body)
 	fmt.Println("RESPONSE: " + string(data))
 
-	return ctx.JSON(instance.Status, instance.Body)
+	return ctx.JSON(instance.Response.Status, instance.Response.Body)
 }

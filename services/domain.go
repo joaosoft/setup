@@ -16,10 +16,11 @@ type WebService struct {
 
 // Route
 type Route struct {
-	Description string   `json:"description"`
-	Route       string   `json"route"`
-	Method      string   `json:"method"`
-	Response    Response `json:"response"`
+	Description string      `json:"description"`
+	Route       string      `json"route"`
+	Method      string      `json:"method"`
+	Payload     interface{} `json:"payload"`
+	Response    Response    `json:"response"`
 }
 
 // Response

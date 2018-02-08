@@ -1,0 +1,119 @@
+{
+  "webservices": [
+    {
+      "name": "hello",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Hello friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "goodbye",
+      "host": ":8002",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/goodbye",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "something",
+      "host": ":8003",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "POST",
+          "route": "/something",
+          "payload": {
+            "name": "joao",
+            "age": 29
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sql": [
+    {
+      "name": "postgres",
+      "description": "add users information",
+      "driver": "postgres",
+      "datasource": "postgres://user:password@localhost:7001?sslmode=disable",
+      "commands": {
+        "setup": [
+          "CREATE TABLE USERS(name varchar(255), description varchar(255))",
+          "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
+          "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
+        ],
+        "teardown": [
+            "DROP TABLE USERS"
+        ]
+      }
+    }
+  ],
+  "redis": [
+    {
+      "name": "redis",
+      "configuration": {
+        "protocol": "tcp",
+        "addr": "localhost:6379",
+        "size": 10
+      },
+      "commands": {
+        "setup": [
+          {
+            "command": "APPEND",
+            "arguments": [
+              "id",
+              "1"
+            ]
+          },
+          {
+            "command": "APPEND",
+            "arguments": [
+              "name",
+              "JOAO RIBEIRO"
+            ]
+          }
+        ],
+        "teardown": [
+          {
+            "command": "DEL",
+            "arguments": [
+              "id"
+            ]
+          },
+          {
+            "command": "DEL",
+            "arguments": [
+              "name"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

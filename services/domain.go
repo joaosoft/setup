@@ -1,5 +1,7 @@
 package gomock
 
+import "encoding/json"
+
 // Services
 type Services struct {
 	WebServices []WebService `json:"webservices,omitempty"`
@@ -16,11 +18,11 @@ type WebService struct {
 
 // Route
 type Route struct {
-	Description string      `json:"description"`
-	Route       string      `json"route"`
-	Method      string      `json:"method"`
-	Payload     interface{} `json:"payload"`
-	Response    Response    `json:"response"`
+	Description string          `json:"description"`
+	Route       string          `json"route"`
+	Method      string          `json:"method"`
+	Payload     json.RawMessage `json:"payload"`
+	Response    Response        `json:"response"`
 }
 
 // Response

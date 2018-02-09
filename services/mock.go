@@ -99,7 +99,9 @@ func (gomock *Mock) setup() error {
 				return err
 			}
 
-			config.setup()
+			if err := config.setup(); err != nil {
+				return err
+			}
 			gomock.services = append(gomock.services, config)
 		}
 

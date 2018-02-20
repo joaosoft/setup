@@ -12,11 +12,11 @@ import (
 
 func (services *Services) setupNSQ() error {
 	for _, service := range services.NSQ {
-		fmt.Println(fmt.Sprintf(" Creating service %s", service.Name))
+		fmt.Println(fmt.Sprintf(" creating service %s", service.Name))
 
 		producer, err := services.createProducer(&service.Configuration)
 		if err != nil {
-			return fmt.Errorf("Failed to create nsq connection")
+			return fmt.Errorf("failed to create nsq connection")
 		}
 
 		for _, command := range service.Messages.Setup {
@@ -38,7 +38,7 @@ func (services *Services) setupNSQ() error {
 				message = data
 			}
 
-			fmt.Println(fmt.Sprintf(" Executing nsq [ %s ] message: %s", command.Description, message))
+			fmt.Println(fmt.Sprintf(" executing nsq [ %s ] message: %s", command.Description, message))
 			if err := producer.Publish(command.Topic, message); err != nil {
 				return fmt.Errorf(err.Error())
 			}
@@ -49,11 +49,11 @@ func (services *Services) setupNSQ() error {
 
 func (services *Services) teardownNSQ() error {
 	for _, service := range services.NSQ {
-		fmt.Println(fmt.Sprintf(" Creating service %s", service.Name))
+		fmt.Println(fmt.Sprintf(" creating service %s", service.Name))
 
 		producer, err := services.createProducer(&service.Configuration)
 		if err != nil {
-			return fmt.Errorf("Failed to create nsq connection")
+			return fmt.Errorf("failed to create nsq connection")
 		}
 
 		for _, command := range service.Messages.Teardown {
@@ -75,7 +75,7 @@ func (services *Services) teardownNSQ() error {
 				message = data
 			}
 
-			fmt.Println(fmt.Sprintf(" Executing nsq [ %s ] message: %s", command.Description, message))
+			fmt.Println(fmt.Sprintf(" executing nsq [ %s ] message: %s", command.Description, message))
 			if err := producer.Publish(command.Topic, message); err != nil {
 				return fmt.Errorf(err.Error())
 			}

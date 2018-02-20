@@ -10,18 +10,18 @@ import (
 
 func (services *Services) setupSQL() error {
 	for _, service := range services.SQL {
-		fmt.Println(fmt.Sprintf(" Creating service %s", service.Name))
+		fmt.Println(fmt.Sprintf(" creating service %s", service.Name))
 
 		for _, command := range service.Commands.Setup {
-			fmt.Println(fmt.Sprintf(" Executing SQL command: %s", command))
+			fmt.Println(fmt.Sprintf(" executing SQL command: %s", command))
 			conn, err := service.getConnection()
 			if err != nil {
 				fmt.Println(err)
-				return fmt.Errorf("Failed to create connection %s", service.DataSource)
+				return fmt.Errorf("failed to create connection %s", service.DataSource)
 			}
 			if _, err := conn.Exec(command); err != nil {
 				fmt.Println(err)
-				return fmt.Errorf("Failed to execute SQL comand %s", err)
+				return fmt.Errorf("failed to execute SQL comand %s", err)
 			}
 		}
 	}
@@ -30,17 +30,17 @@ func (services *Services) setupSQL() error {
 
 func (services *Services) teardownSQL() error {
 	for _, service := range services.SQL {
-		fmt.Println(fmt.Sprintf(" Teardown service %s", service.Name))
+		fmt.Println(fmt.Sprintf(" teardown service %s", service.Name))
 
 		for _, command := range service.Commands.Teardown {
-			fmt.Println(fmt.Sprintf(" Executing SQL command: %s", command))
+			fmt.Println(fmt.Sprintf(" executing SQL command: %s", command))
 			conn, err := service.getConnection()
 			if err != nil {
 				fmt.Println(err)
-				return fmt.Errorf("Failed to create connection %s", service.DataSource)
+				return fmt.Errorf("failed to create connection %s", service.DataSource)
 			}
 			if _, err := conn.Exec(command); err != nil {
-				return fmt.Errorf("Failed to execute SQL comand %s", err)
+				return fmt.Errorf("failed to execute SQL comand %s", err)
 			}
 		}
 	}

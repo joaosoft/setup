@@ -15,24 +15,27 @@ type MockOption func(mock *Mock)
 
 // WithPath ...
 func WithPath(path string) MockOption {
-	return func(gomock *Mock) {
+	return func(mock *Mock) {
 		if path != "" {
-			gomock.path = path
+			if !strings.HasSuffix(path, "/") {
+				path += "/"
+			}
+			mock.path = path
 		}
 	}
 }
 
 // WithRunInBackground ...
 func WithRunInBackground(background bool) MockOption {
-	return func(gomock *Mock) {
-		gomock.background = background
+	return func(mock *Mock) {
+		mock.background = background
 	}
 }
 
 // Reconfigure ...
-func (gomock *Mock) Reconfigure(options ...MockOption) {
+func (mock *Mock) Reconfigure(options ...MockOption) {
 	for _, option := range options {
-		option(gomock)
+		option(mock)
 	}
 }
 
@@ -46,7 +49,7 @@ type Mock struct {
 // NewGoMock ...
 func NewGoMock(options ...MockOption) *Mock {
 	mock := &Mock{
-		path:       path,
+		path:       "",
 		background: background,
 	}
 
@@ -55,12 +58,14 @@ func NewGoMock(options ...MockOption) *Mock {
 	return mock
 }
 
-// Run ...
-func (mock *Mock) Run() error {
-	fmt.Println("---------- STARTING ----------")
+// RunSingle ...
+func (mock *Mock) RunSingle(file string) error {
 	fmt.Println(":: Initializing Mock Service")
 
-	if err := mock.setup(); err != nil {
+	if mock.path != "" {
+		file = mock.path + file
+	}
+	if err := mock.setup(file); err != nil {
 		log.Panic(err)
 		return err
 	}
@@ -71,11 +76,40 @@ func (mock *Mock) Run() error {
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		<-quit
 
-		fmt.Println("\n---------- SHUTTING DOWN ----------")
 		mock.Stop()
 	}
 
 	return nil
+}
+
+// Run ...
+func (mock *Mock) Run() error {
+	fmt.Println(":: Initializing Mock Service")
+
+	files, err := filepath.Glob(mock.path + "*.json")
+	if err != nil {
+		return err
+	}
+	if err := mock.setup(files...); err != nil {
+		log.Panic(err)
+		return err
+	}
+	fmt.Println(":: Mock Services Started")
+
+	mock.wait()
+
+	return nil
+}
+
+// wait ...
+func (mock *Mock) wait() {
+	if !mock.background {
+		quit := make(chan os.Signal, 1)
+		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+		<-quit
+
+		mock.Stop()
+	}
 }
 
 // Stop ...
@@ -91,28 +125,24 @@ func (mock *Mock) Stop() error {
 	return nil
 }
 
-func (gomock *Mock) setup() error {
-	err := filepath.Walk(gomock.path, func(path string, f os.FileInfo, err error) error {
-		if !f.IsDir() && strings.HasSuffix(f.Name(), ".json") {
-			config := &Services{}
-			if err := config.fromFile(path); err != nil {
-				return err
-			}
-
-			if err := config.setup(); err != nil {
-				return err
-			}
-			gomock.services = append(gomock.services, config)
+func (mock *Mock) setup(files ...string) error {
+	for _, file := range files {
+		config := &Services{}
+		if err := config.fromFile(file); err != nil {
+			return err
 		}
 
-		return nil
-	})
+		if err := config.setup(); err != nil {
+			return err
+		}
+		mock.services = append(mock.services, config)
+	}
 
-	return err
+	return nil
 }
 
-func (gomock *Mock) teardown() error {
-	for _, service := range gomock.services {
+func (mock *Mock) teardown() error {
+	for _, service := range mock.services {
 		service.teardown()
 	}
 	return nil

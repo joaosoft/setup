@@ -6,6 +6,13 @@ import (
 	redis "github.com/mediocregopher/radix.v3"
 )
 
+// RedisConfig
+type RedisConfig struct {
+	Protocol string `json:"protocol"`
+	Addr     string `json:"addr"`
+	Size     int    `json:"size"`
+}
+
 func (services *Services) setupRedis() error {
 	for _, service := range services.Redis {
 		fmt.Println(fmt.Sprintf(" Creating service %s", service.Name))

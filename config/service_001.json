@@ -115,5 +115,34 @@
         ]
       }
     }
+  ],
+  "nsq": [
+    {
+      "name": "nsq",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "messages": {
+        "setup": [
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.lo",
+            "message": {
+              "name": "joao",
+              "age": 29
+            }
+          },
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.hi",
+            "file": "./config/xml_file.txt"
+          }
+        ],
+        "teardown": []
+      }
+    }
   ]
 }

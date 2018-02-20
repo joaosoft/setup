@@ -6,6 +6,7 @@ import "encoding/json"
 type Services struct {
 	WebServices []WebService `json:"webservices,omitempty"`
 	Redis       []Redis      `json:"redis,omitempty"`
+	NSQ         []NSQ        `json:"nsq,omitempty"`
 	SQL         []SQL        `json:"sql,omitempty"`
 }
 
@@ -33,25 +34,36 @@ type Response struct {
 
 // Redis
 type Redis struct {
-	Name          string        `json:"name"`
-	Configuration Configuration `json:"configuration"`
+	Name          string      `json:"name"`
+	Configuration RedisConfig `json:"configuration"`
 	Commands      struct {
-		Setup    []Command `json:"setup"`
-		Teardown []Command `json:"teardown"`
+		Setup    []RedisCommand `json:"setup"`
+		Teardown []RedisCommand `json:"teardown"`
 	} `json:"commands"`
 }
 
-// Configuration
-type Configuration struct {
-	Protocol string `json:"protocol"`
-	Addr     string `json:"addr"`
-	Size     int    `json:"size"`
+// NSQ
+type NSQ struct {
+	Name          string    `json:"name"`
+	Configuration NSQConfig `json:"configuration"`
+	Messages      struct {
+		Setup    []NSQMessage `json:"setup"`
+		Teardown []NSQMessage `json:"teardown"`
+	} `json:"messages"`
 }
 
-// Command
-type Command struct {
+// RedisCommand
+type RedisCommand struct {
 	Command   string   `json:"command"`
 	Arguments []string `json:"arguments"`
+}
+
+// NSQMessage
+type NSQMessage struct {
+	Description string          `json:"description"`
+	Topic       string          `json:"topic"`
+	Message     json.RawMessage `json:"message"`
+	File        string          `json:"file"`
 }
 
 // SQL

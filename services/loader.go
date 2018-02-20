@@ -40,6 +40,11 @@ func (config *Services) setup() error {
 		return err
 	}
 
+	// nsq
+	if err := config.setupNSQ(); err != nil {
+		return err
+	}
+
 	// sql
 	if err := config.setupSQL(); err != nil {
 		return err
@@ -56,6 +61,11 @@ func (config *Services) teardown() error {
 
 	// redis
 	if err := config.teardownRedis(); err != nil {
+		return err
+	}
+
+	// nsq
+	if err := config.teardownNSQ(); err != nil {
 		return err
 	}
 

@@ -5,13 +5,12 @@ services:
     build:
       context: .
       dockerfile: ./sbin/docker/dev-alpine.dockerfile
-    command: run ./bin/main.go
+    command: run ./bin/launcher/main.go
     volumes:
       - esdata1:/go-mock
     environment:
       - ENV=dev
     ports:
-      - 8080:8080
       - 8001:8001
       - 8002:8002
       
@@ -27,7 +26,8 @@ services:
         POSTGRES_USER: user
         POSTGRES_PASSWORD: password
       ports:
-        - 7001:5432
+        #- 7001:5432
+        - 7001:7001
 
   mysql:
       image: mysql
@@ -36,13 +36,14 @@ services:
         MYSQL_USER: root
         MYSQL_ROOT_PASSWORD: password
       ports:
-          - 7002:3306
+          #- 7002:3306
+          - 7002:7002
 
   manager:
       image: adminer
       restart: always
       ports:
-        - 8001:8080
+        - 9999:9999
 
 volumes:
   esdata1:

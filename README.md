@@ -77,7 +77,7 @@ func main() {
 }
 ```
 
->## Configuration
+>## Configurations
 
 >### WebServices [ see 001_webservices.json ]
 
@@ -144,7 +144,6 @@ func main() {
 }
 
 ```
->## Configuration
 
 >### SQL [ see 002_sql.json ]
 ```javascript

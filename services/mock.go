@@ -120,14 +120,7 @@ func (mock *Mock) RunSingleNoWait(file string) error {
 // RunSingle ...
 func (mock *Mock) RunSingleWait(file string) error {
 	mock.RunSingleNoWait(file)
-
-	if !mock.background {
-		quit := make(chan os.Signal, 1)
-		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-		<-quit
-
-		mock.Stop()
-	}
+	mock.wait(true)
 
 	return nil
 }
@@ -143,14 +136,12 @@ func (mock *Mock) Run() error {
 		return err
 	}
 
-	mock.wait()
-
 	return nil
 }
 
 // wait ...
-func (mock *Mock) wait() {
-	if !mock.background {
+func (mock *Mock) wait(force bool) {
+	if !mock.background || force {
 		quit := make(chan os.Signal, 1)
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		<-quit

@@ -61,12 +61,12 @@
     {
       "name": "loading",
       "description": "loading the payload from a file",
-      "host": ":8001",
+      "host": ":8004",
       "routes": [
         {
           "description": "creating web mock service",
           "method": "GET",
-          "route": "/hello",
+          "route": "/something",
           "response": {
             "status": 200,
             "file": "data/webservice_body.json"

@@ -682,6 +682,8 @@ Created table USERS with two inserted users
 Created table CLIENTS with two inserted clients
 
 ## Logging
+
+### Starting
 ```
 :: Starting Mock Service
 
@@ -726,7 +728,6 @@ STARTING: setup [ 002_sql.json ]
  executing SQL query [ CREATE TABLE CLIENTS(name varchar(255), description varchar(255)) ]
  executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator') ]
  executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user') ]
-2018/02/23 00:36:21 INF    1 (localhost:4150) connecting to nsqd
 FINISHED: setup [ 002_sql.json ]
 
 STARTING: setup [ 003_nsq.json ]
@@ -738,7 +739,7 @@ STARTING: setup [ 003_nsq.json ]
               "name": "joao",
               "age": 29
             }
-2018/02/23 00:36:21 INF    2 (localhost:4150) connecting to nsqd
+2018/02/23 00:48:52 INF    1 (localhost:4150) connecting to nsqd
 :: Loading file [ ./config/data/xml_file.txt ]
  executing nsq [ ADD PERSON ONE ] message: <TEST>
     <TITLE>HELLO, THIS IS A TEST</TITLE>
@@ -750,6 +751,7 @@ STARTING: setup [ 003_nsq.json ]
               "name": "pedro",
               "age": 30
             }
+2018/02/23 00:48:52 INF    2 (localhost:4150) connecting to nsqd
 :: Loading file [ ./config/data/xml_file.txt ]
  executing nsq [ ADD PERSON TWO ] message: <TEST>
     <TITLE>HELLO, THIS IS A TEST</TITLE>
@@ -825,7 +827,7 @@ STARTING: setup [ config/003_nsq.json ]
               "name": "joao",
               "age": 29
             }
-2018/02/23 00:36:22 INF    3 (localhost:4150) connecting to nsqd
+2018/02/23 00:48:53 INF    3 (localhost:4150) connecting to nsqd
 :: Loading file [ ./config/data/xml_file.txt ]
  executing nsq [ ADD PERSON ONE ] message: <TEST>
     <TITLE>HELLO, THIS IS A TEST</TITLE>
@@ -837,7 +839,7 @@ STARTING: setup [ config/003_nsq.json ]
               "name": "pedro",
               "age": 30
             }
-2018/02/23 00:36:22 INF    4 (localhost:4150) connecting to nsqd
+2018/02/23 00:48:53 INF    4 (localhost:4150) connecting to nsqd
 :: Loading file [ ./config/data/xml_file.txt ]
  executing nsq [ ADD PERSON TWO ] message: <TEST>
     <TITLE>HELLO, THIS IS A TEST</TITLE>
@@ -857,6 +859,225 @@ STARTING: setup [ config/004_redis.json ]
  executing redis command [ APPEND ] arguments [ [id 1] ]
  executing redis command [ APPEND ] arguments [ [name JOAO RIBEIRO] ]
 FINISHED: setup [ config/004_redis.json ]
+
+STARTING: setup [ config/005_all.json ]
+:: Loading file [ config/005_all.json ]
+
+ creating service [ hello ] with description [ test hello ]
+ creating route [ /hello ] method [ GET ]
+ started service [ hello ] at [ :8001 ]
+
+ creating service [ goodbye ] with description [ test goodbye ]
+ creating route [ /goodbye ] method [ GET ]
+ started service [ goodbye ] at [ :8002 ]
+
+ creating service [ something ] with description [ testing payload of a post ]
+ creating route [ /something ] method [ POST ]
+ started service [ something ] at [ :8003 ]
+
+ creating service [ loading ] with description [ loading the payload from a file ]
+ creating route [ /hello ] method [ GET ]
+ started service [ loading ] at [ :8001 ]
+
+ creating service [ redis ] with description [ loading redis commands from file] 
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis commands...
+:: Loading file [ ./config/data/redis_setup_file.txt ]
+
+ creating service [ redis ] with description [ adding by commands] 
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ APPEND ] arguments [ [id 1] ]
+ executing redis command [ APPEND ] arguments [ [name JOAO RIBEIRO] ]
+
+ creating service [ nsq ] with description [ loading a script from file and from body] 
+ connecting with max attempts [ 5 ]
+ executing nsq [ ADD PERSON ONE ] message: {
+              "name": "joao",
+              "age": 29
+            }
+2018/02/23 00:48:53 INF    5 (localhost:4150) connecting to nsqd
+:: Loading file [ ./config/data/xml_file.txt ]
+ executing nsq [ ADD PERSON ONE ] message: <TEST>
+    <TITLE>HELLO, THIS IS A TEST</TITLE>
+</TEST>
+
+ creating service [ nsq ] with description [ ] 
+ connecting with max attempts [ 5 ]
+ executing nsq [ ADD PERSON TWO ] message: {
+              "name": "pedro",
+              "age": 30
+            }
+2018/02/23 00:48:53 INF    6 (localhost:4150) connecting to nsqd
+:: Loading file [ ./config/data/xml_file.txt ]
+ executing nsq [ ADD PERSON TWO ] message: <TEST>
+    <TITLE>HELLO, THIS IS A TEST</TITLE>
+</TEST>
+
+ creating service [ postgres ] with description [ add users information ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL query [ DROP TABLE IF EXISTS USERS ]
+ executing SQL query [ CREATE TABLE USERS(name varchar(255), description varchar(255)) ]
+ executing SQL query [ INSERT INTO USERS(name, description) VALUES('joao', 'administrator') ]
+ executing SQL query [ INSERT INTO USERS(name, description) VALUES('tiago', 'user') ]
+
+ creating service [ postgres ] with description [ add users information from files ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL file [ data/sql_setup_file.sql ]
+:: Loading file [ ./config/data/sql_setup_file.sql ]
+
+ creating service [ mysql ] with description [ add clients information ]
+ connecting with driver [ mysql ] and data source [ root:password@tcp(127.0.0.1:7002)/mysql ]
+ executing SQL query [ DROP TABLE IF EXISTS CLIENTS ]
+ executing SQL query [ CREATE TABLE CLIENTS(name varchar(255), description varchar(255)) ]
+ executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator') ]
+ executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user') ]
+FINISHED: setup [ config/005_all.json ]
+```
+
+### Stopping
+``
+:: Stopping Mock Service
+
+STARTING: teardown [ 001_we`bservices.json ]
+
+ teardown service [ hello ]
+
+ teardown service [ goodbye ]
+
+ teardown service [ something ]
+
+ teardown service [ loading ]
+FINISHED: teardown [ 001_webservices.json ]
+
+STARTING: teardown [ 002_sql.json ]
+
+ teardown service [ postgres ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL query [ DROP TABLE IF EXISTS USERS ]
+
+ teardown service [ postgres ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL file [ data/sql_teardown_file.sql ]
+:: Loading file [ ./config/data/sql_teardown_file.sql ]
+
+ teardown service [ mysql ]
+ connecting with driver [ mysql ] and data source [ root:password@tcp(127.0.0.1:7002)/mysql ]
+ executing SQL query [ DROP TABLE IF EXISTS CLIENTS ]
+FINISHED: teardown [ 002_sql.json ]
+
+STARTING: teardown [ 003_nsq.json ]
+
+ teardown service nsq
+ connecting with max attempts [ 5 ]
+
+ teardown service nsq
+ connecting with max attempts [ 5 ]
+FINISHED: teardown [ 003_nsq.json ]
+
+STARTING: teardown [ 004_redis.json ]
+
+ teardown service [ redis ]
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ DEL ] arguments [ [id] ]
+ executing redis command [ DEL ] arguments [ [name] ]
+
+ teardown service [ redis ]
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ APPEND ] arguments [ [id 2] ]
+ executing redis command [ APPEND ] arguments [ [name PEDRO RIBEIRO] ]
+FINISHED: teardown [ 004_redis.json ]
+
+STARTING: teardown [ config/001_webservices.json ]
+
+ teardown service [ hello ]
+
+ teardown service [ goodbye ]
+
+ teardown service [ something ]
+
+ teardown service [ loading ]
+FINISHED: teardown [ config/001_webservices.json ]
+
+STARTING: teardown [ config/002_sql.json ]
+
+ teardown service [ postgres ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL query [ DROP TABLE IF EXISTS USERS ]
+
+ teardown service [ postgres ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL file [ data/sql_teardown_file.sql ]
+:: Loading file [ ./config/data/sql_teardown_file.sql ]
+
+ teardown service [ mysql ]
+ connecting with driver [ mysql ] and data source [ root:password@tcp(127.0.0.1:7002)/mysql ]
+ executing SQL query [ DROP TABLE IF EXISTS CLIENTS ]
+FINISHED: teardown [ config/002_sql.json ]
+
+STARTING: teardown [ config/003_nsq.json ]
+
+ teardown service nsq
+ connecting with max attempts [ 5 ]
+
+ teardown service nsq
+ connecting with max attempts [ 5 ]
+FINISHED: teardown [ config/003_nsq.json ]
+
+STARTING: teardown [ config/004_redis.json ]
+
+ teardown service [ redis ]
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ DEL ] arguments [ [id] ]
+ executing redis command [ DEL ] arguments [ [name] ]
+
+ teardown service [ redis ]
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ APPEND ] arguments [ [id 2] ]
+ executing redis command [ APPEND ] arguments [ [name PEDRO RIBEIRO] ]
+FINISHED: teardown [ config/004_redis.json ]
+
+STARTING: teardown [ config/005_all.json ]
+
+ teardown service [ hello ]
+
+ teardown service [ goodbye ]
+
+ teardown service [ something ]
+
+ teardown service [ loading ]
+
+ teardown service [ redis ]
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ DEL ] arguments [ [id] ]
+ executing redis command [ DEL ] arguments [ [name] ]
+
+ teardown service [ redis ]
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ APPEND ] arguments [ [id 2] ]
+ executing redis command [ APPEND ] arguments [ [name PEDRO RIBEIRO] ]
+
+ teardown service nsq
+ connecting with max attempts [ 5 ]
+
+ teardown service nsq
+ connecting with max attempts [ 5 ]
+
+ teardown service [ postgres ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL query [ DROP TABLE IF EXISTS USERS ]
+
+ teardown service [ postgres ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL file [ data/sql_teardown_file.sql ]
+:: Loading file [ ./config/data/sql_teardown_file.sql ]
+
+ teardown service [ mysql ]
+ connecting with driver [ mysql ] and data source [ root:password@tcp(127.0.0.1:7002)/mysql ]
+ executing SQL query [ DROP TABLE IF EXISTS CLIENTS ]
+FINISHED: teardown [ config/005_all.json ]
+:: Stoped Mock Service
+
+Process finished with exit code 0
 ```
 
 ## Follow me at

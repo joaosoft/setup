@@ -1,5 +1,5 @@
 env:
-	docker-compose up redis postgres mysql manager nsqd nsqadmin
+	docker-compose up -d redis postgres mysql manager nsqd nsqadmin
 
 run:
 	go run ./bin/launcher/main.go

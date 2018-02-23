@@ -45,7 +45,7 @@
           "description": "creating web mock service",
           "method": "POST",
           "route": "/something",
-          "payload": {
+          "body": {
             "name": "joao",
             "age": 29
           },
@@ -65,8 +65,9 @@
       "routes": [
         {
           "description": "creating web mock service",
-          "method": "GET",
+          "method": "POST",
           "route": "/loading",
+          "file": "data/webservice_body.json",
           "response": {
             "status": 200,
             "file": "data/webservice_body.json"

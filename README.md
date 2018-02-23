@@ -359,7 +359,7 @@ func main() {
 ```
 
 >### ALL [ see 005_all.json ]
-This example have all previous mocks, just to show you that you can config them all together at [go-mock/config/data/005_all.json](https://github.com/joaosoft/go-mock/tree/master/config/data/005_all.json)
+This example have all previous mocks, just to show you that you can config them all together at [go-mock/config/005_all.json](https://github.com/joaosoft/go-mock/tree/master/config/005_all.json)
 
 ## Follow me at
 Facebook: https://www.facebook.com/joaosoft

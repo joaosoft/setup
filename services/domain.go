@@ -31,9 +31,9 @@ type Route struct {
 
 // Response
 type Response struct {
-	Status int         `json:"status"`
-	Body   interface{} `json:"body"`
-	File   *string     `json:"file"`
+	Status int             `json:"status"`
+	Body   json.RawMessage `json:"body"`
+	File   *string         `json:"file"`
 }
 
 // Redis

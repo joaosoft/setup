@@ -76,7 +76,7 @@ func (instance Route) handle(ctx echo.Context) error {
 			fmt.Println(" with valid payload")
 		} else {
 			fmt.Println(" with invalid payload")
-			fmt.Println(fmt.Sprint(" expect [ %s ] to be equal to [ %s ]", string(requestBody), expectedBody))
+			fmt.Println(fmt.Sprintf(" expect [ %s ] to be equal to [ %s ]", string(requestBody), expectedBody))
 			return ctx.NoContent(http.StatusNotFound)
 		}
 	}

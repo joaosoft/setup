@@ -21,11 +21,6 @@ go get github.com/joaosoft/go-mock
 make env
 ```
 
->### Start Application
-```
-make start
-```
-
 ## Usage 
 This example is available in the project at [go-mock/bin/launcher](https://github.com/joaosoft/go-mock/tree/master/bin/launcher)
 

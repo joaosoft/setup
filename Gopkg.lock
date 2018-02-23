@@ -20,6 +20,12 @@
   revision = "553a641470496b2327abcac10b36396bd98e45c9"
 
 [[projects]]
+  name = "github.com/joaosoft/go-mock"
+  packages = ["services"]
+  revision = "2f80362dcb237bf4518f34a955d0d7686396d90c"
+  version = "v0.0.2"
+
+[[projects]]
   name = "github.com/labstack/echo"
   packages = ["."]
   revision = "b338075a0fc6e1a0683dbf03d09b4957a289e26f"
@@ -112,6 +118,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "bc413906150d3529cc18cdd634ddf66d47679c7db81a2d90b76380a91594d3cd"
+  inputs-digest = "ddca65d16ef1bb879e75d0bbba175fc68ede56d731900f2341c0de83fbba84e7"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -135,6 +135,7 @@ func (mock *Mock) Run() error {
 		log.Panic(err)
 		return err
 	}
+	mock.wait(false)
 
 	return nil
 }

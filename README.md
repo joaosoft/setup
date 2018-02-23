@@ -29,12 +29,16 @@ make start
 ## Usage 
 This example is available in the project at [go-mock/bin/launcher](https://github.com/joaosoft/go-mock/tree/master/bin/launcher)
 
->### Configuration [services_001.json]
+>## Configuration
+
+>### WebServices [001_webservices.json]
+
 ```javascript
 {
   "webservices": [
     {
       "name": "hello",
+      "description": "test hello",
       "host": ":8001",
       "routes": [
         {
@@ -52,6 +56,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
     },
     {
       "name": "goodbye",
+      "description": "test goodbye",
       "host": ":8002",
       "routes": [
         {
@@ -69,6 +74,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
     },
     {
       "name": "something",
+      "description": "testing payload of a post",
       "host": ":8003",
       "routes": [
         {
@@ -87,91 +93,150 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
           }
         }
       ]
+    },
+    {
+      "name": "loading",
+      "description": "loading the payload from a file",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "file": "data/webservice_body.json"
+          }
+        }
+      ]
     }
-  ],
+  ]
+}
+
+```
+>## Configuration
+
+>### SQL [002_sql.json]
+```javascript
+{
   "sql": [
     {
       "name": "postgres",
       "description": "add users information",
-      "driver": "postgres",
-      "datasource": "postgres://user:password@localhost:7001?sslmode=disable",
-      "commands": {
-        "setup": [
-          "CREATE TABLE USERS(name varchar(255), description varchar(255))",
-          "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
-          "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
-        ],
-        "teardown": [
-            "DROP TABLE USERS"
-        ]
-      }
-    }
-  ],
-  "redis": [
-    {
-      "name": "redis",
       "configuration": {
-        "protocol": "tcp",
-        "addr": "localhost:6379",
-        "size": 10
+        "driver": "postgres",
+        "datasource": "postgres://user:password@localhost:7001?sslmode=disable"
       },
-      "commands": {
-        "setup": [
-          {
-            "command": "APPEND",
-            "arguments": [
-              "id",
-              "1"
-            ]
-          },
-          {
-            "command": "APPEND",
-            "arguments": [
-              "name",
-              "JOAO RIBEIRO"
-            ]
-          }
-        ],
-        "teardown": [
-          {
-            "command": "DEL",
-            "arguments": [
-              "id"
-            ]
-          },
-          {
-            "command": "DEL",
-            "arguments": [
-              "name"
-            ]
-          }
-        ]
+      "run": {
+        "setup": {
+          "queries": [
+            "DROP TABLE IF EXISTS USERS",
+            "CREATE TABLE USERS(name varchar(255), description varchar(255))",
+            "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
+            "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
+          ]
+        },
+        "teardown": {
+          "queries": [
+            "DROP TABLE IF EXISTS USERS"
+          ]
+        }
+      }
+    },
+    {
+      "name": "postgres",
+      "description": "add users information from files",
+      "run": {
+        "setup": {
+          "files": ["data/sql_setup_file.sql"]
+        },
+        "teardown": {
+          "files": ["data/sql_teardown_file.sql"]
+        }
+      }
+    },
+    {
+      "name": "mysql",
+      "description": "add clients information",
+      "configuration": {
+        "driver": "mysql",
+        "datasource": "root:password@tcp(127.0.0.1:7002)/mysql"
+      },
+      "run": {
+        "setup": {
+          "queries": [
+            "DROP TABLE IF EXISTS CLIENTS",
+            "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
+            "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
+            "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
+          ]
+        },
+        "teardown": {
+          "queries": [
+            "DROP TABLE IF EXISTS CLIENTS"
+          ]
+        }
       }
     }
-  ],
+  ]
+}
+```
+
+>### NSQ [003_nsq.json]
+```javascript
+{
   "nsq": [
     {
       "name": "nsq",
+      "description": "loading a script from file and from body",
       "configuration": {
         "lookupd": "localhost:4150",
         "requeue_delay": 30,
         "max_in_flight": 5,
         "max_attempts": 5
       },
-      "messages": {
+      "run": {
         "setup": [
           {
             "description": "ADD PERSON ONE",
             "topic": "topic.example.lo",
-            "message": {
+            "body": {
               "name": "joao",
               "age": 29
             }
           },
           {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
+        ],
+        "teardown": []
+      }
+    },
+    {
+      "name": "nsq",
+      "description": "",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
+        "setup": [
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "pedro",
+              "age": 30
+            }
+          },
+          {
             "description": "ADD PERSON TWO",
             "topic": "topic.example.hi",
-            "file": "./config/xml_file.txt"
+            "file": "data/xml_file.txt"
           }
         ],
         "teardown": []
@@ -181,13 +246,103 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 }
 ```
 
->### Configuration [services_002.json]
+>### REDIS [004_redis.json]
+```javascript
+{
+  "redis": [
+    {
+      "name": "redis",
+      "description": "loading redis commands from file",
+      "configuration": {
+        "protocol": "tcp",
+        "address": "localhost:6379",
+        "size": 10
+      },
+      "run": {
+        "setup": [
+          {
+            "files": ["data/redis_setup_file.txt"]
+          }
+        ],
+        "teardown": [
+          {
+            "commands": [
+              {
+                "command": "DEL",
+                "arguments": [
+                  "id"
+                ]
+              },
+              {
+                "command": "DEL",
+                "arguments": [
+                  "name"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "redis",
+      "description": "adding by commands",
+      "run": {
+        "setup": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "1"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "JOAO RIBEIRO"
+                ]
+              }
+            ]
+          }
+        ],
+        "teardown": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "2"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "PEDRO RIBEIRO"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+>### ALL [005_all.json]
+This example have all previous mocks, just to show you that you can config them all together
 ```javascript
 {
   "webservices": [
     {
       "name": "hello",
-      "host": ":9001",
+      "description": "test hello",
+      "host": ":8001",
       "routes": [
         {
           "description": "creating web mock service",
@@ -204,7 +359,8 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
     },
     {
       "name": "goodbye",
-      "host": ":9002",
+      "description": "test goodbye",
+      "host": ":8002",
       "routes": [
         {
           "description": "creating web mock service",
@@ -218,62 +374,240 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
           }
         }
       ]
+    },
+    {
+      "name": "something",
+      "description": "testing payload of a post",
+      "host": ":8003",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "POST",
+          "route": "/something",
+          "payload": {
+            "name": "joao",
+            "age": 29
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "description": "loading the payload from a file",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "file": "data/webservice_body.json"
+          }
+        }
+      ]
     }
   ],
   "sql": [
     {
+      "name": "postgres",
+      "description": "add users information",
+      "configuration": {
+        "driver": "postgres",
+        "datasource": "postgres://user:password@localhost:7001?sslmode=disable"
+      },
+      "run": {
+        "setup": {
+          "queries": [
+            "DROP TABLE IF EXISTS USERS",
+            "CREATE TABLE USERS(name varchar(255), description varchar(255))",
+            "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
+            "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
+          ]
+        },
+        "teardown": {
+          "queries": [
+            "DROP TABLE IF EXISTS USERS"
+          ]
+        }
+      }
+    },
+    {
+      "name": "postgres",
+      "description": "add users information from files",
+      "run": {
+        "setup": {
+          "files": ["data/sql_setup_file.sql"]
+        },
+        "teardown": {
+          "files": ["data/sql_teardown_file.sql"]
+        }
+      }
+    },
+    {
       "name": "mysql",
       "description": "add clients information",
-      "driver": "mysql",
-      "datasource": "root:password@tcp(127.0.0.1:7002)/mysql",
-      "commands": {
+      "configuration": {
+        "driver": "mysql",
+        "datasource": "root:password@tcp(127.0.0.1:7002)/mysql"
+      },
+      "run": {
+        "setup": {
+          "queries": [
+            "DROP TABLE IF EXISTS CLIENTS",
+            "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
+            "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
+            "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
+          ]
+        },
+        "teardown": {
+          "queries": [
+            "DROP TABLE IF EXISTS CLIENTS"
+          ]
+        }
+      }
+    }
+  ],
+  "nsq": [
+    {
+      "name": "nsq",
+      "description": "loading a script from file and from body",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
         "setup": [
-          "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
-          "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
-          "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "joao",
+              "age": 29
+            }
+          },
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
         ],
-        "teardown": [
-            "DROP TABLE CLIENTS"
-        ]
+        "teardown": []
+      }
+    },
+    {
+      "name": "nsq",
+      "description": "",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
+        "setup": [
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "pedro",
+              "age": 30
+            }
+          },
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
+        ],
+        "teardown": []
       }
     }
   ],
   "redis": [
     {
       "name": "redis",
+      "description": "loading redis commands from file",
       "configuration": {
         "protocol": "tcp",
-        "addr": "localhost:6379",
+        "address": "localhost:6379",
         "size": 10
       },
-      "commands": {
+      "run": {
         "setup": [
           {
-            "command": "APPEND",
-            "arguments": [
-              "id",
-              "2"
-            ]
-          },
+            "files": ["data/redis_setup_file.txt"]
+          }
+        ],
+        "teardown": [
           {
-            "command": "APPEND",
-            "arguments": [
-              "name",
-              "LUIS RIBEIRO"
+            "commands": [
+              {
+                "command": "DEL",
+                "arguments": [
+                  "id"
+                ]
+              },
+              {
+                "command": "DEL",
+                "arguments": [
+                  "name"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "redis",
+      "description": "adding by commands",
+      "run": {
+        "setup": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "1"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "JOAO RIBEIRO"
+                ]
+              }
             ]
           }
         ],
         "teardown": [
           {
-            "command": "DEL",
-            "arguments": [
-              "id"
-            ]
-          },
-          {
-            "command": "DEL",
-            "arguments": [
-              "name"
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "2"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "PEDRO RIBEIRO"
+                ]
+              }
             ]
           }
         ]
@@ -288,10 +622,28 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 import "github.com/joaosoft/go-mock"
 
 func main() {
-	gomock := gomock.NewGoMock(
-        gomock.WithPath("./config"),
-        gomock.WithRunInBackground(false))
-    gomock.Run()
+func main() {
+	// Run all tests at once and blocks waiting for a term command
+	test1 := gomock.NewGoMock(
+		gomock.WithPath("./config/all"),
+		gomock.WithRunInBackground(false))
+	test1.Run()
+
+	// Run with with SQL default configuration without blocking
+	configSQL := &gomock.ConfigSQL{
+		DataSource: "postgres",
+		Driver:     "postgres",
+	}
+	test2 := gomock.NewGoMock(
+		gomock.WithPath("./config/once"),
+		gomock.WithConfigurationSQL(configSQL))
+	test2.RunSingle("service_001.json")
+
+	// Loads setup configurations from file and run the single mock without blocking
+	test3 := gomock.NewGoMock(
+		gomock.WithPath("./config/once"),
+		gomock.WithConfigurationFile("app.json"))
+	test3.RunSingle("service_001.json")
 }
 ```
 
@@ -331,52 +683,180 @@ Created table CLIENTS with two inserted clients
 
 ## Logging
 ```
-GOROOT=/usr/local/Cellar/go/1.9/libexec #gosetup
-GOPATH=/Users/joaoribeiro/workspace/go/personal:/Users/joaoribeiro/workspace/go/sonae:/Users/joaoribeiro/workspace/go/others #gosetup
-/usr/local/Cellar/go/1.9/libexec/bin/go build -i -o /private/var/folders/m9/qq7btgzx76l2qsqt1w64kld00000gn/T/___Run_Mock /Users/joaoribeiro/workspace/go/personal/src/go-mock/bin/launcher/main.go #gosetup
-/private/var/folders/m9/qq7btgzx76l2qsqt1w64kld00000gn/T/___Run_Mock #gosetup
-:: Initializing Mock Service
-:: Loading file config/service_001.json
- creating service hello
- creating route /hello method GET
- started service: hello at :8001
- creating service goodbye
- creating route /goodbye method GET
- started service: goodbye at :8002
- creating service something
- creating route /something method POST
- started service: something at :8003
- creating service redis
- executing redis command: APPEND arguments:[id 1]
- executing redis command: APPEND arguments:[name JOAO RIBEIRO]
-2018/02/20 16:52:47 INF    1 (localhost:4150) connecting to nsqd
- creating service nsq
+:: Starting Mock Service
+
+STARTING: setup [ 001_webservices.json ]
+:: Loading file [ ./config/001_webservices.json ]
+
+ creating service [ hello ] with description [ test hello ]
+ creating route [ /hello ] method [ GET ]
+ started service [ hello ] at [ :8001 ]
+
+ creating service [ goodbye ] with description [ test goodbye ]
+ creating route [ /goodbye ] method [ GET ]
+ started service [ goodbye ] at [ :8002 ]
+
+ creating service [ something ] with description [ testing payload of a post ]
+ creating route [ /something ] method [ POST ]
+ started service [ something ] at [ :8003 ]
+
+ creating service [ loading ] with description [ loading the payload from a file ]
+ creating route [ /hello ] method [ GET ]
+ started service [ loading ] at [ :8001 ]
+FINISHED: setup [ 001_webservices.json ]
+
+STARTING: setup [ 002_sql.json ]
+:: Loading file [ ./config/002_sql.json ]
+
+ creating service [ postgres ] with description [ add users information ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL query [ DROP TABLE IF EXISTS USERS ]
+ executing SQL query [ CREATE TABLE USERS(name varchar(255), description varchar(255)) ]
+ executing SQL query [ INSERT INTO USERS(name, description) VALUES('joao', 'administrator') ]
+ executing SQL query [ INSERT INTO USERS(name, description) VALUES('tiago', 'user') ]
+
+ creating service [ postgres ] with description [ add users information from files ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL file [ data/sql_setup_file.sql ]
+:: Loading file [ ./config/data/sql_setup_file.sql ]
+
+ creating service [ mysql ] with description [ add clients information ]
+ connecting with driver [ mysql ] and data source [ root:password@tcp(127.0.0.1:7002)/mysql ]
+ executing SQL query [ DROP TABLE IF EXISTS CLIENTS ]
+ executing SQL query [ CREATE TABLE CLIENTS(name varchar(255), description varchar(255)) ]
+ executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator') ]
+ executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user') ]
+2018/02/23 00:36:21 INF    1 (localhost:4150) connecting to nsqd
+FINISHED: setup [ 002_sql.json ]
+
+STARTING: setup [ 003_nsq.json ]
+:: Loading file [ ./config/003_nsq.json ]
+
+ creating service [ nsq ] with description [ loading a script from file and from body] 
+ connecting with max attempts [ 5 ]
  executing nsq [ ADD PERSON ONE ] message: {
               "name": "joao",
               "age": 29
             }
+2018/02/23 00:36:21 INF    2 (localhost:4150) connecting to nsqd
+:: Loading file [ ./config/data/xml_file.txt ]
+ executing nsq [ ADD PERSON ONE ] message: <TEST>
+    <TITLE>HELLO, THIS IS A TEST</TITLE>
+</TEST>
+
+ creating service [ nsq ] with description [ ] 
+ connecting with max attempts [ 5 ]
+ executing nsq [ ADD PERSON TWO ] message: {
+              "name": "pedro",
+              "age": 30
+            }
+:: Loading file [ ./config/data/xml_file.txt ]
  executing nsq [ ADD PERSON TWO ] message: <TEST>
     <TITLE>HELLO, THIS IS A TEST</TITLE>
 </TEST>
- creating service postgres
- executing SQL command: CREATE TABLE USERS(name varchar(255), description varchar(255))
- executing SQL command: INSERT INTO USERS(name, description) VALUES('joao', 'administrator')
- executing SQL command: INSERT INTO USERS(name, description) VALUES('tiago', 'user')
-:: Loading file config/service_002.json
- creating service hello
- creating route /hello method GET
- started service: hello at :9001
- creating service goodbye
- creating route /goodbye method GET
- started service: goodbye at :9002
- creating service redis
- executing redis command: APPEND arguments:[id 2]
- executing redis command: APPEND arguments:[name LUIS RIBEIRO]
- creating service mysql
- executing SQL command: CREATE TABLE CLIENTS(name varchar(255), description varchar(255))
- executing SQL command: INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')
- executing SQL command: INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')
-:: Mock Services Started
+FINISHED: setup [ 003_nsq.json ]
+
+STARTING: setup [ 004_redis.json ]
+:: Loading file [ ./config/004_redis.json ]
+
+ creating service [ redis ] with description [ loading redis commands from file] 
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis commands...
+:: Loading file [ ./config/data/redis_setup_file.txt ]
+
+ creating service [ redis ] with description [ adding by commands] 
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ APPEND ] arguments [ [id 1] ]
+ executing redis command [ APPEND ] arguments [ [name JOAO RIBEIRO] ]
+FINISHED: setup [ 004_redis.json ]
+:: Loading file [ ./config/data/app.json ]
+Unmarshalling file [ ./config/data/app.json ] to struct
+&{{{localhost:4150 30 5 5} {postgres postgres://user:password@localhost:7001?sslmode=disable} {tcp localhost:6379 10}}}
+
+STARTING: setup [ config/001_webservices.json ]
+:: Loading file [ config/001_webservices.json ]
+
+ creating service [ hello ] with description [ test hello ]
+ creating route [ /hello ] method [ GET ]
+ started service [ hello ] at [ :8001 ]
+
+ creating service [ goodbye ] with description [ test goodbye ]
+ creating route [ /goodbye ] method [ GET ]
+ started service [ goodbye ] at [ :8002 ]
+
+ creating service [ something ] with description [ testing payload of a post ]
+ creating route [ /something ] method [ POST ]
+ started service [ something ] at [ :8003 ]
+
+ creating service [ loading ] with description [ loading the payload from a file ]
+ creating route [ /hello ] method [ GET ]
+ started service [ loading ] at [ :8001 ]
+FINISHED: setup [ config/001_webservices.json ]
+
+STARTING: setup [ config/002_sql.json ]
+:: Loading file [ config/002_sql.json ]
+
+ creating service [ postgres ] with description [ add users information ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL query [ DROP TABLE IF EXISTS USERS ]
+ executing SQL query [ CREATE TABLE USERS(name varchar(255), description varchar(255)) ]
+ executing SQL query [ INSERT INTO USERS(name, description) VALUES('joao', 'administrator') ]
+ executing SQL query [ INSERT INTO USERS(name, description) VALUES('tiago', 'user') ]
+
+ creating service [ postgres ] with description [ add users information from files ]
+ connecting with driver [ postgres ] and data source [ postgres://user:password@localhost:7001?sslmode=disable ]
+ executing SQL file [ data/sql_setup_file.sql ]
+:: Loading file [ ./config/data/sql_setup_file.sql ]
+
+ creating service [ mysql ] with description [ add clients information ]
+ connecting with driver [ mysql ] and data source [ root:password@tcp(127.0.0.1:7002)/mysql ]
+ executing SQL query [ DROP TABLE IF EXISTS CLIENTS ]
+ executing SQL query [ CREATE TABLE CLIENTS(name varchar(255), description varchar(255)) ]
+ executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator') ]
+ executing SQL query [ INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user') ]
+FINISHED: setup [ config/002_sql.json ]
+
+STARTING: setup [ config/003_nsq.json ]
+:: Loading file [ config/003_nsq.json ]
+
+ creating service [ nsq ] with description [ loading a script from file and from body] 
+ connecting with max attempts [ 5 ]
+ executing nsq [ ADD PERSON ONE ] message: {
+              "name": "joao",
+              "age": 29
+            }
+2018/02/23 00:36:22 INF    3 (localhost:4150) connecting to nsqd
+:: Loading file [ ./config/data/xml_file.txt ]
+ executing nsq [ ADD PERSON ONE ] message: <TEST>
+    <TITLE>HELLO, THIS IS A TEST</TITLE>
+</TEST>
+
+ creating service [ nsq ] with description [ ] 
+ connecting with max attempts [ 5 ]
+ executing nsq [ ADD PERSON TWO ] message: {
+              "name": "pedro",
+              "age": 30
+            }
+2018/02/23 00:36:22 INF    4 (localhost:4150) connecting to nsqd
+:: Loading file [ ./config/data/xml_file.txt ]
+ executing nsq [ ADD PERSON TWO ] message: <TEST>
+    <TITLE>HELLO, THIS IS A TEST</TITLE>
+</TEST>
+FINISHED: setup [ config/003_nsq.json ]
+
+STARTING: setup [ config/004_redis.json ]
+:: Loading file [ config/004_redis.json ]
+
+ creating service [ redis ] with description [ loading redis commands from file] 
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis commands...
+:: Loading file [ ./config/data/redis_setup_file.txt ]
+
+ creating service [ redis ] with description [ adding by commands] 
+ connecting with protocol [ tcp ], address [ localhost:6379 ] and size [ 10 ]
+ executing redis command [ APPEND ] arguments [ [id 1] ]
+ executing redis command [ APPEND ] arguments [ [name JOAO RIBEIRO] ]
+FINISHED: setup [ config/004_redis.json ]
 ```
 
 ## Follow me at

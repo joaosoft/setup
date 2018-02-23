@@ -1,0 +1,84 @@
+{
+  "redis": [
+    {
+      "name": "redis",
+      "description": "loading redis commands from file",
+      "configuration": {
+        "protocol": "tcp",
+        "address": "localhost:6379",
+        "size": 10
+      },
+      "run": {
+        "setup": [
+          {
+            "files": ["data/redis_setup_file.txt"]
+          }
+        ],
+        "teardown": [
+          {
+            "commands": [
+              {
+                "command": "DEL",
+                "arguments": [
+                  "id"
+                ]
+              },
+              {
+                "command": "DEL",
+                "arguments": [
+                  "name"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "redis",
+      "description": "adding by commands",
+      "run": {
+        "setup": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "1"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "JOAO RIBEIRO"
+                ]
+              }
+            ]
+          }
+        ],
+        "teardown": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "2"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "PEDRO RIBEIRO"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "nsq": [
+    {
+      "name": "nsq",
+      "description": "loading a script from file and from body",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
+        "setup": [
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "joao",
+              "age": 29
+            }
+          },
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
+        ],
+        "teardown": []
+      }
+    },
+    {
+      "name": "nsq",
+      "description": "",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
+        "setup": [
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "pedro",
+              "age": 30
+            }
+          },
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
+        ],
+        "teardown": []
+      }
+    }
+  ]
+}

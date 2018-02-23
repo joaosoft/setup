@@ -1,0 +1,78 @@
+{
+  "webservices": [
+    {
+      "name": "hello",
+      "description": "test hello",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Hello friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "goodbye",
+      "description": "test goodbye",
+      "host": ":8002",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/goodbye",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "something",
+      "description": "testing payload of a post",
+      "host": ":8003",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "POST",
+          "route": "/something",
+          "payload": {
+            "name": "joao",
+            "age": 29
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "description": "loading the payload from a file",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "file": "data/webservice_body.json"
+          }
+        }
+      ]
+    }
+  ]
+}

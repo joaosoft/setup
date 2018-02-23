@@ -1,5 +1,6 @@
 package gomock
 
 const (
-	background = true
+	background  = true
+	defaultPath = "."
 )

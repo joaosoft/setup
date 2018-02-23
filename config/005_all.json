@@ -1,0 +1,278 @@
+{
+  "webservices": [
+    {
+      "name": "hello",
+      "description": "test hello",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Hello friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "goodbye",
+      "description": "test goodbye",
+      "host": ":8002",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/goodbye",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "something",
+      "description": "testing payload of a post",
+      "host": ":8003",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "POST",
+          "route": "/something",
+          "payload": {
+            "name": "joao",
+            "age": 29
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "description": "loading the payload from a file",
+      "host": ":8001",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/hello",
+          "response": {
+            "status": 200,
+            "file": "data/webservice_body.json"
+          }
+        }
+      ]
+    }
+  ],
+  "sql": [
+    {
+      "name": "postgres",
+      "description": "add users information",
+      "configuration": {
+        "driver": "postgres",
+        "datasource": "postgres://user:password@localhost:7001?sslmode=disable"
+      },
+      "run": {
+        "setup": {
+          "queries": [
+            "DROP TABLE IF EXISTS USERS",
+            "CREATE TABLE USERS(name varchar(255), description varchar(255))",
+            "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
+            "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
+          ]
+        },
+        "teardown": {
+          "queries": [
+            "DROP TABLE IF EXISTS USERS"
+          ]
+        }
+      }
+    },
+    {
+      "name": "postgres",
+      "description": "add users information from files",
+      "run": {
+        "setup": {
+          "files": ["data/sql_setup_file.sql"]
+        },
+        "teardown": {
+          "files": ["data/sql_teardown_file.sql"]
+        }
+      }
+    },
+    {
+      "name": "mysql",
+      "description": "add clients information",
+      "configuration": {
+        "driver": "mysql",
+        "datasource": "root:password@tcp(127.0.0.1:7002)/mysql"
+      },
+      "run": {
+        "setup": {
+          "queries": [
+            "DROP TABLE IF EXISTS CLIENTS",
+            "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
+            "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
+            "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
+          ]
+        },
+        "teardown": {
+          "queries": [
+            "DROP TABLE IF EXISTS CLIENTS"
+          ]
+        }
+      }
+    }
+  ],
+  "nsq": [
+    {
+      "name": "nsq",
+      "description": "loading a script from file and from body",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
+        "setup": [
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "joao",
+              "age": 29
+            }
+          },
+          {
+            "description": "ADD PERSON ONE",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
+        ],
+        "teardown": []
+      }
+    },
+    {
+      "name": "nsq",
+      "description": "",
+      "configuration": {
+        "lookupd": "localhost:4150",
+        "requeue_delay": 30,
+        "max_in_flight": 5,
+        "max_attempts": 5
+      },
+      "run": {
+        "setup": [
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.lo",
+            "body": {
+              "name": "pedro",
+              "age": 30
+            }
+          },
+          {
+            "description": "ADD PERSON TWO",
+            "topic": "topic.example.hi",
+            "file": "data/xml_file.txt"
+          }
+        ],
+        "teardown": []
+      }
+    }
+  ],
+  "redis": [
+    {
+      "name": "redis",
+      "description": "loading redis commands from file",
+      "configuration": {
+        "protocol": "tcp",
+        "address": "localhost:6379",
+        "size": 10
+      },
+      "run": {
+        "setup": [
+          {
+            "files": ["data/redis_setup_file.txt"]
+          }
+        ],
+        "teardown": [
+          {
+            "commands": [
+              {
+                "command": "DEL",
+                "arguments": [
+                  "id"
+                ]
+              },
+              {
+                "command": "DEL",
+                "arguments": [
+                  "name"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "redis",
+      "description": "adding by commands",
+      "run": {
+        "setup": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "1"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "JOAO RIBEIRO"
+                ]
+              }
+            ]
+          }
+        ],
+        "teardown": [
+          {
+            "commands": [
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "id",
+                  "2"
+                ]
+              },
+              {
+                "command": "APPEND",
+                "arguments": [
+                  "name",
+                  "PEDRO RIBEIRO"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

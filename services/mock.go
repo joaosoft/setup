@@ -20,7 +20,7 @@ func WithPath(path string) MockOption {
 			if !strings.HasSuffix(path, "/") {
 				path += "/"
 			}
-			mock.path = path
+			global["path"] = path
 		}
 	}
 }
@@ -29,6 +29,52 @@ func WithPath(path string) MockOption {
 func WithRunInBackground(background bool) MockOption {
 	return func(mock *Mock) {
 		mock.background = background
+	}
+}
+
+// WithConfiguration ...
+func WithConfiguration(file string) MockOption {
+	return func(mock *Mock) {
+		app := &App{}
+		if _, err := readFile(file, app); err != nil {
+			panic(err)
+		}
+		fmt.Println(app)
+		mock.Reconfigure(
+			WithConfigurationSQL(&app.Config.SQL),
+			WithConfigurationRedis(&app.Config.Redis),
+			WithConfigurationNSQ(&app.Config.NSQ))
+	}
+}
+
+// WithConfigurationRedis ...
+func WithConfigurationRedis(config *ConfigRedis) MockOption {
+	return func(mock *Mock) {
+		mock.defaults["redis"] = config
+	}
+}
+
+// WithConfigurationSQL ...
+func WithConfigurationSQL(config *ConfigSQL) MockOption {
+	return func(mock *Mock) {
+		mock.defaults["sql"] = config
+	}
+}
+
+// WithConfigurationNSQ ...
+func WithConfigurationNSQ(config *ConfigNSQ) MockOption {
+	return func(mock *Mock) {
+		mock.defaults["nsq"] = config
+	}
+}
+
+// WithConfigurations ...
+func WithConfigurations(config *Configurations) MockOption {
+	return func(mock *Mock) {
+		mock.Reconfigure(
+			WithConfigurationSQL(&config.SQL),
+			WithConfigurationRedis(&config.Redis),
+			WithConfigurationNSQ(&config.NSQ))
 	}
 }
 
@@ -41,35 +87,39 @@ func (mock *Mock) Reconfigure(options ...MockOption) {
 
 // Mock ...
 type Mock struct {
-	services   []*Services
-	path       string
+	services   []*ServicesConfig
 	background bool
+	defaults   map[string]interface{}
 }
 
 // NewGoMock ...
 func NewGoMock(options ...MockOption) *Mock {
+	fmt.Println(":: Starting Mock Service")
 	mock := &Mock{
-		path:       "",
 		background: background,
+		defaults:   make(map[string]interface{}),
 	}
+
+	global["path"] = defaultPath
 
 	mock.Reconfigure(options...)
 
 	return mock
 }
 
-// RunSingle ...
-func (mock *Mock) RunSingle(file string) error {
-	fmt.Println(":: Initializing Mock Service")
-
-	if mock.path != "" {
-		file = mock.path + file
-	}
+// RunSingleNoWait ...
+func (mock *Mock) RunSingleNoWait(file string) error {
 	if err := mock.setup(file); err != nil {
 		log.Panic(err)
 		return err
 	}
-	fmt.Println(":: Mock Services Started")
+
+	return nil
+}
+
+// RunSingle ...
+func (mock *Mock) RunSingleWait(file string) error {
+	mock.RunSingleNoWait(file)
 
 	if !mock.background {
 		quit := make(chan os.Signal, 1)
@@ -84,9 +134,7 @@ func (mock *Mock) RunSingle(file string) error {
 
 // Run ...
 func (mock *Mock) Run() error {
-	fmt.Println(":: Initializing Mock Service")
-
-	files, err := filepath.Glob(mock.path + "*.json")
+	files, err := filepath.Glob(global["path"] + "*.json")
 	if err != nil {
 		return err
 	}
@@ -94,7 +142,6 @@ func (mock *Mock) Run() error {
 		log.Panic(err)
 		return err
 	}
-	fmt.Println(":: Mock Services Started")
 
 	mock.wait()
 
@@ -107,9 +154,9 @@ func (mock *Mock) wait() {
 		quit := make(chan os.Signal, 1)
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		<-quit
-
-		mock.Stop()
 	}
+
+	mock.Stop()
 }
 
 // Stop ...
@@ -127,15 +174,19 @@ func (mock *Mock) Stop() error {
 
 func (mock *Mock) setup(files ...string) error {
 	for _, file := range files {
-		config := &Services{}
+		fmt.Println(fmt.Sprintf("\nSTARTING: setup [ %s ]", file))
+
+		config := &ServicesConfig{File: file}
 		if err := config.fromFile(file); err != nil {
 			return err
 		}
 
-		if err := config.setup(); err != nil {
+		if err := config.setup(mock.defaults); err != nil {
 			return err
 		}
 		mock.services = append(mock.services, config)
+
+		fmt.Println(fmt.Sprintf("FINISHED: setup [ %s ]", file))
 	}
 
 	return nil
@@ -143,7 +194,9 @@ func (mock *Mock) setup(files ...string) error {
 
 func (mock *Mock) teardown() error {
 	for _, service := range mock.services {
-		service.teardown()
+		fmt.Println(fmt.Sprintf("\nSTARTING: teardown [ %s ]", service.File))
+		service.teardown(mock.defaults)
+		fmt.Println(fmt.Sprintf("FINISHED: teardown [ %s ]", service.File))
 	}
 	return nil
 }

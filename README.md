@@ -31,7 +31,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 
 >## Configuration
 
->### WebServices [001_webservices.json]
+>### WebServices [ 001_webservices.json ]
 
 ```javascript
 {
@@ -116,7 +116,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 ```
 >## Configuration
 
->### SQL [002_sql.json]
+>### SQL [ 002_sql.json ]
 ```javascript
 {
   "sql": [
@@ -182,7 +182,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 }
 ```
 
->### NSQ [003_nsq.json]
+>### NSQ [ 003_nsq.json ]
 ```javascript
 {
   "nsq": [
@@ -246,7 +246,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 }
 ```
 
->### REDIS [004_redis.json]
+>### REDIS [ 004_redis.json ]
 ```javascript
 {
   "redis": [
@@ -334,7 +334,7 @@ This example is available in the project at [go-mock/bin/launcher](https://githu
 }
 ```
 
->### ALL [005_all.json]
+>### ALL [ 005_all.json ]
 This example have all previous mocks, just to show you that you can config them all together
 ```javascript
 {

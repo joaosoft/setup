@@ -1,1 +1,4 @@
-DROP TABLE USERS;
+{
+  "name": "joao",
+  "age": 30
+}

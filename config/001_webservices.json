@@ -65,8 +65,9 @@
       "routes": [
         {
           "description": "creating web mock service",
-          "method": "GET",
+          "method": "POST",
           "route": "/something",
+          "file": "data/webservice_body.json",
           "response": {
             "status": 200,
             "file": "data/webservice_body.json"

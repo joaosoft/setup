@@ -66,33 +66,36 @@ func (instance Route) handle(ctx echo.Context) error {
 		expectedBody = string(instance.Body)
 	} else if instance.File != nil {
 		if bytes, err := readFile(*instance.File, nil); err != nil {
+			return err
+		} else {
 			expectedBody = string(bytes)
 		}
 	}
-	if (instance.Body != nil || instance.File != nil) &&
-		gomega.Expect(string(requestBody)).ToNot(expandedMatchers.MatchUnorderedJSON(string(expectedBody))) {
-		fmt.Println(" with invalid payload")
-		fmt.Println(fmt.Sprint(" expect [ %s ] to be equal to [ %s ]", string(requestBody), expectedBody))
-		return ctx.NoContent(http.StatusNotFound)
+	if instance.Body != nil || instance.File != nil {
+		if gomega.Expect(string(requestBody)).To(expandedMatchers.MatchUnorderedJSON(string(expectedBody))) {
+			fmt.Println(" with valid payload")
+		} else {
+			fmt.Println(" with invalid payload")
+			fmt.Println(fmt.Sprint(" expect [ %s ] to be equal to [ %s ]", string(requestBody), expectedBody))
+			return ctx.NoContent(http.StatusNotFound)
+		}
 	}
-	fmt.Println(" with valid payload")
 
 	// what to return
-	var response string
+	var response json.RawMessage
 	if instance.Response.Body != nil {
-		response = string(instance.Body)
+		response = instance.Body
 	} else if instance.Response.File != nil {
 		if bytes, err := readFile(*instance.Response.File, nil); err != nil {
 			return err
 		} else {
-			response = string(bytes)
+			response = bytes
 		}
 	} else {
 		fmt.Println(" there is no body to process")
 	}
 
-	data, _ := json.Marshal(response)
-	fmt.Println(fmt.Sprintf(" response [ %s ]", string(data)))
+	fmt.Println(fmt.Sprintf(" response [ %s ]", string(response)))
 
-	return ctx.JSON(instance.Response.Status, instance.Response.Body)
+	return ctx.JSON(instance.Response.Status, string(response))
 }

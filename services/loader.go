@@ -9,6 +9,7 @@ import (
 )
 
 func (service *ServicesConfig) fromFile(fileName string) error {
+	service.File = fileName
 	var err error
 
 	if !exists(fileName) {

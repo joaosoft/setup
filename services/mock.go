@@ -99,7 +99,7 @@ func (mock *Mock) setup(files ...string) error {
 	for _, file := range files {
 		fmt.Println(fmt.Sprintf("\nSTARTING: setup [ %s ]", file))
 
-		config := &ServicesConfig{File: file}
+		config := &ServicesConfig{}
 		if err := config.fromFile(file); err != nil {
 			return err
 		}

@@ -84,7 +84,7 @@ func (instance Route) handle(ctx echo.Context) error {
 	// what to return
 	var response json.RawMessage
 	if instance.Response.Body != nil {
-		response = instance.Body
+		response = instance.Response.Body
 	} else if instance.Response.File != nil {
 		if bytes, err := readFile(*instance.Response.File, nil); err != nil {
 			return err
@@ -97,5 +97,5 @@ func (instance Route) handle(ctx echo.Context) error {
 
 	fmt.Println(fmt.Sprintf(" response [ %s ]", string(response)))
 
-	return ctx.JSON(instance.Response.Status, string(response))
+	return ctx.JSON(instance.Response.Status, response)
 }

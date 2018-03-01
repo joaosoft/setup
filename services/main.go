@@ -14,6 +14,7 @@ type GoMock struct {
 	services   []*ServicesConfig
 	background bool
 	defaults   map[string]interface{}
+	started    bool
 }
 
 // Reconfigure ...
@@ -38,24 +39,6 @@ func NewGoMock(options ...GoMockOption) *GoMock {
 	return mock
 }
 
-// RunSingleNoWait ...
-func (gomock *GoMock) RunSingleNoWait(file string) error {
-	if err := gomock.setup(file); err != nil {
-		log.Panic(err)
-		return err
-	}
-
-	return nil
-}
-
-// RunSingle ...
-func (gomock *GoMock) RunSingleWait(file string) error {
-	gomock.RunSingleNoWait(file)
-	gomock.wait(true)
-
-	return nil
-}
-
 // Run ...
 func (gomock *GoMock) Run() error {
 	files, err := filepath.Glob(global["path"] + "*.json")
@@ -71,9 +54,21 @@ func (gomock *GoMock) Run() error {
 	return nil
 }
 
+// RunSingle ...
+func (gomock *GoMock) RunSingle(file string) error {
+	if err := gomock.setup(file); err != nil {
+		log.Panic(err)
+		return err
+	}
+	gomock.wait(false)
+
+	return nil
+}
+
 // wait ...
 func (gomock *GoMock) wait(force bool) {
-	if !gomock.background || force {
+	if !gomock.started && (gomock.background || (!gomock.background && force)) {
+		gomock.started = true
 		quit := make(chan os.Signal, 1)
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		<-quit

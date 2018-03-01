@@ -17,14 +17,14 @@ type GoMock struct {
 }
 
 // Reconfigure ...
-func (gomock *GoMock) Reconfigure(options ...MockOption) {
+func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
 	for _, option := range options {
 		option(gomock)
 	}
 }
 
 // NewGoMock ...
-func NewGoMock(options ...MockOption) *GoMock {
+func NewGoMock(options ...GoMockOption) *GoMock {
 	fmt.Println(":: Starting GoMock Service")
 	mock := &GoMock{
 		background: background,

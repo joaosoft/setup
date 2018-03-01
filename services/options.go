@@ -5,12 +5,12 @@ import (
 	"strings"
 )
 
-// MockOption ...
-type MockOption func(mock *GoMock)
+// GoMockOption ...
+type GoMockOption func(gomock *GoMock)
 
 // WithPath ...
-func WithPath(path string) MockOption {
-	return func(mock *GoMock) {
+func WithPath(path string) GoMockOption {
+	return func(gomock *GoMock) {
 		if path != "" {
 			if !strings.HasSuffix(path, "/") {
 				path += "/"
@@ -21,21 +21,21 @@ func WithPath(path string) MockOption {
 }
 
 // WithRunInBackground ...
-func WithRunInBackground(background bool) MockOption {
-	return func(mock *GoMock) {
-		mock.background = background
+func WithRunInBackground(background bool) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.background = background
 	}
 }
 
 // WithConfiguration ...
-func WithConfiguration(file string) MockOption {
-	return func(mock *GoMock) {
+func WithConfiguration(file string) GoMockOption {
+	return func(gomock *GoMock) {
 		app := &App{}
 		if _, err := readFile(file, app); err != nil {
 			panic(err)
 		}
 		fmt.Println(app)
-		mock.Reconfigure(
+		gomock.Reconfigure(
 			WithConfigurationSQL(&app.Config.SQL),
 			WithConfigurationRedis(&app.Config.Redis),
 			WithConfigurationNSQ(&app.Config.NSQ))
@@ -43,30 +43,30 @@ func WithConfiguration(file string) MockOption {
 }
 
 // WithConfigurationRedis ...
-func WithConfigurationRedis(config *ConfigRedis) MockOption {
-	return func(mock *GoMock) {
-		mock.defaults["redis"] = config
+func WithConfigurationRedis(config *ConfigRedis) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.defaults["redis"] = config
 	}
 }
 
 // WithConfigurationSQL ...
-func WithConfigurationSQL(config *ConfigSQL) MockOption {
-	return func(mock *GoMock) {
-		mock.defaults["sql"] = config
+func WithConfigurationSQL(config *ConfigSQL) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.defaults["sql"] = config
 	}
 }
 
 // WithConfigurationNSQ ...
-func WithConfigurationNSQ(config *ConfigNSQ) MockOption {
-	return func(mock *GoMock) {
-		mock.defaults["nsq"] = config
+func WithConfigurationNSQ(config *ConfigNSQ) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.defaults["nsq"] = config
 	}
 }
 
 // WithConfigurations ...
-func WithConfigurations(config *Configurations) MockOption {
-	return func(mock *GoMock) {
-		mock.Reconfigure(
+func WithConfigurations(config *Configurations) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.Reconfigure(
 			WithConfigurationSQL(&config.SQL),
 			WithConfigurationRedis(&config.Redis),
 			WithConfigurationNSQ(&config.NSQ))

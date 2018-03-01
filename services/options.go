@@ -6,11 +6,11 @@ import (
 )
 
 // MockOption ...
-type MockOption func(mock *Mock)
+type MockOption func(mock *GoMock)
 
 // WithPath ...
 func WithPath(path string) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		if path != "" {
 			if !strings.HasSuffix(path, "/") {
 				path += "/"
@@ -22,14 +22,14 @@ func WithPath(path string) MockOption {
 
 // WithRunInBackground ...
 func WithRunInBackground(background bool) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		mock.background = background
 	}
 }
 
 // WithConfiguration ...
 func WithConfiguration(file string) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		app := &App{}
 		if _, err := readFile(file, app); err != nil {
 			panic(err)
@@ -44,28 +44,28 @@ func WithConfiguration(file string) MockOption {
 
 // WithConfigurationRedis ...
 func WithConfigurationRedis(config *ConfigRedis) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		mock.defaults["redis"] = config
 	}
 }
 
 // WithConfigurationSQL ...
 func WithConfigurationSQL(config *ConfigSQL) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		mock.defaults["sql"] = config
 	}
 }
 
 // WithConfigurationNSQ ...
 func WithConfigurationNSQ(config *ConfigNSQ) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		mock.defaults["nsq"] = config
 	}
 }
 
 // WithConfigurations ...
 func WithConfigurations(config *Configurations) MockOption {
-	return func(mock *Mock) {
+	return func(mock *GoMock) {
 		mock.Reconfigure(
 			WithConfigurationSQL(&config.SQL),
 			WithConfigurationRedis(&config.Redis),

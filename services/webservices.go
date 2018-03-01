@@ -25,6 +25,11 @@ func (services *ServicesConfig) setupWebServices() error {
 
 			e.Add(route.Method, route.Route, route.handle)
 		}
+		//if listener, err := net.Listen("tcp", service.Host); err != nil {
+		//	fmt.Println(err)
+		//	fmt.Printf("closing connection to %s", service.Host)
+		//	listener.Close()
+		//}
 
 		go e.Start(service.Host)
 

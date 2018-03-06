@@ -32,53 +32,57 @@ import (
 )
 
 func main() {
-	// WEB SERVICES
 	test := gomock.NewGoMock(
-		gomock.WithPath("./config"))
-	test.RunSingleNoWait("001_webservices.json")
+    		gomock.WithPath("./examples"),
+    		gomock.WithRunInBackground(true))
+    
+    //// web
+    //test.RunSingle("001_webservices.json")
+    //
+    //// sql
+    //configSQL := &gomock.SQLConfig{
+    //	Driver:     "postgres",
+    //	DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
+    //}
+    //test.Reconfigure(gomock.WithSQLConfiguration(configSQL))
+    //test.RunSingle("002_sql.json")
+    //
+    //// nsq
+    //configNSQ := &gomock.NSQConfig{
+    //	Lookupd:      "localhost:4150",
+    //	RequeueDelay: 30,
+    //	MaxInFlight:  5,
+    //	MaxAttempts:  5,
+    //}
+    //test.Reconfigure(gomock.WithNSQConfiguration(configNSQ))
+    //test.RunSingle("003_nsq.json")
+    //
+    //// redis
+    //configRedis := &gomock.RedisConfig{
+    //	Protocol: "tcp",
+    //	Address:  "localhost:6379",
+    //	Size:     10,
+    //}
+    //test.Reconfigure(gomock.WithRedisConfiguration(configRedis))
+    //test.RunSingle("004_redis.json")
 
-	// SQL
-	configSQL := &gomock.ConfigSQL{
-		Driver:     "postgres",
-		DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
-	}
-	test.Reconfigure(gomock.WithConfigurationSQL(configSQL))
-	test.RunSingleNoWait("002_sql.json")
+    // all
+    test.Reconfigure(
+        gomock.WithConfigurationFile("data/config.json"))
 
-	// NSQ
-	configNSQ := &gomock.ConfigNSQ{
-		Lookupd:      "localhost:4150",
-		RequeueDelay: 30,
-		MaxInFlight:  5,
-		MaxAttempts:  5,
-	}
-	test.Reconfigure(gomock.WithConfigurationNSQ(configNSQ))
-	test.RunSingleNoWait("003_nsq.json")
-
-	// REDIS
-	configRedis := &gomock.ConfigRedis{
-		Protocol: "tcp",
-		Address:  "localhost:6379",
-		Size:     10,
-	}
-	test.Reconfigure(gomock.WithConfigurationRedis(configRedis))
-	test.RunSingleNoWait("004_redis.json")
-
-	// ALL
-	test.Reconfigure(
-		gomock.WithRunInBackground(false),
-		gomock.WithConfiguration("data/app.json"))
-	test.Run()
+    test.Run()
+    test.Wait()
+    test.Stop()
 }
 ```
 
 >## Configurations
 
->### WebServices [ see 001_webservices.json ]
+>### WebServices [ see 001_http.json ] [go-mock/examples/001_http.json](https://github.com/joaosoft/go-mock/tree/master/examples/001_http.json)
 
 ```javascript
 {
-  "webservices": [
+  "http": [
     {
       "name": "hello",
       "description": "test hello",
@@ -92,6 +96,24 @@ func main() {
             "status": 200,
             "body": {
               "message": "Hello friend!"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "goodbye",
+      "description": "test goodbye",
+      "host": ":8002",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "GET",
+          "route": "/goodbye",
+          "response": {
+            "status": 200,
+            "body": {
+              "message": "Goodbye friend!"
             }
           }
         }
@@ -122,25 +144,25 @@ func main() {
     {
       "name": "loading",
       "description": "loading the payload from a file",
-      "host": ":8001",
+      "host": ":8004",
       "routes": [
         {
           "description": "creating web mock service",
           "method": "POST",
           "route": "/loading",
+          "file": "data/http_body.json",
           "response": {
             "status": 200,
-            "file": "data/webservice_body.json"
+            "file": "data/http_body.json"
           }
         }
       ]
     }
   ]
 }
-
 ```
 
->### SQL [ see 002_sql.json ]
+>### SQL [ see 002_sql.json ] [go-mock/examples/002_sql.json](https://github.com/joaosoft/go-mock/tree/master/examples/002_sql.json)
 ```javascript
 {
   "sql": [
@@ -152,31 +174,38 @@ func main() {
         "datasource": "postgres://user:password@localhost:7001?sslmode=disable"
       },
       "run": {
-        "setup": {
-          "queries": [
-            "DROP TABLE IF EXISTS USERS",
-            "CREATE TABLE USERS(name varchar(255), description varchar(255))",
-            "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
-            "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
-          ]
-        },
-        "teardown": {
-          "queries": [
-            "DROP TABLE IF EXISTS USERS"
-          ]
-        }
+        "setup": [
+          {
+            "queries": [
+              "DROP TABLE IF EXISTS USERS",
+              "CREATE TABLE USERS(name varchar(255), description varchar(255))",
+              "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
+              "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
+            ]
+          }
+        ],
+        "teardown": [ {
+            "queries": [
+              "DROP TABLE IF EXISTS USERS"
+            ]
+          }
+        ]
       }
     },
     {
       "name": "postgres",
       "description": "add users information from files",
       "run": {
-        "setup": {
-          "files": ["data/sql_setup_file.sql"]
-        },
-        "teardown": {
-          "files": ["data/sql_teardown_file.sql"]
-        }
+        "setup": [
+            {
+              "files": ["data/sql_setup_file.sql"]
+            }
+          ],
+        "teardown": [
+          {
+            "files": ["data/sql_teardown_file.sql"]
+          }
+        ]
       }
     },
     {
@@ -187,26 +216,30 @@ func main() {
         "datasource": "root:password@tcp(127.0.0.1:7002)/mysql"
       },
       "run": {
-        "setup": {
-          "queries": [
-            "DROP TABLE IF EXISTS CLIENTS",
-            "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
-            "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
-            "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
-          ]
-        },
-        "teardown": {
-          "queries": [
-            "DROP TABLE IF EXISTS CLIENTS"
-          ]
-        }
+        "setup": [
+          {
+            "queries": [
+              "DROP TABLE IF EXISTS CLIENTS",
+              "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
+              "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
+              "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
+            ]
+          }
+        ],
+        "teardown": [
+          {
+            "queries": [
+              "DROP TABLE IF EXISTS CLIENTS"
+            ]
+          }
+        ]
       }
     }
   ]
 }
 ```
 
->### NSQ [ see 003_nsq.json ]
+>### NSQ [ see 003_nsq.json ] [go-mock/examples/003_nsq.json](https://github.com/joaosoft/go-mock/tree/master/examples/003_nsq.json)
 ```javascript
 {
   "nsq": [
@@ -224,7 +257,7 @@ func main() {
           {
             "description": "ADD PERSON ONE",
             "topic": "topic.example.lo",
-            "body": {
+            "message": {
               "name": "joao",
               "age": 29
             }
@@ -252,7 +285,7 @@ func main() {
           {
             "description": "ADD PERSON TWO",
             "topic": "topic.example.lo",
-            "body": {
+            "message": {
               "name": "pedro",
               "age": 30
             }
@@ -270,7 +303,7 @@ func main() {
 }
 ```
 
->### REDIS [ see 004_redis.json ]
+>### REDIS [ see 004_redis.json ] [go-mock/examples/004_redis.json](https://github.com/joaosoft/go-mock/tree/master/examples/004_redis.json)
 ```javascript
 {
   "redis": [
@@ -358,8 +391,8 @@ func main() {
 }
 ```
 
->### ALL [ see 005_all.json ]
-This example have all previous mocks, just to show you that you can config them all together at [go-mock/config/005_all.json](https://github.com/joaosoft/go-mock/tree/master/config/005_all.json)
+>### ALL [ see 005_all.json ] [go-mock/examples/005_all.json](https://github.com/joaosoft/go-mock/tree/master/examples/005_all.json)
+This example have all previous mocks, just to show you that you can config them all together.
 
 ## Follow me at
 Facebook: https://www.facebook.com/joaosoft

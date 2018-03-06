@@ -1,5 +1,5 @@
 {
-  "webservices": [
+  "http": [
     {
       "name": "hello",
       "description": "test hello",
@@ -67,10 +67,10 @@
           "description": "creating web mock service",
           "method": "POST",
           "route": "/loading",
-          "file": "data/webservice_body.json",
+          "file": "data/http_body.json",
           "response": {
             "status": 200,
-            "file": "data/webservice_body.json"
+            "file": "data/http_body.json"
           }
         }
       ]

@@ -14,7 +14,7 @@
           {
             "description": "ADD PERSON ONE",
             "topic": "topic.example.lo",
-            "body": {
+            "message": {
               "name": "joao",
               "age": 29
             }
@@ -42,7 +42,7 @@
           {
             "description": "ADD PERSON TWO",
             "topic": "topic.example.lo",
-            "body": {
+            "message": {
               "name": "pedro",
               "age": 30
             }

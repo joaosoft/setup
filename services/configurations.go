@@ -2,32 +2,39 @@ package gomock
 
 // App ...
 type App struct {
-	Config Configurations `json:"configurations"`
+	Log struct {
+		Level string `json:"level"`
+	} `json:"log"`
 }
 
 // Configurations ...
 type Configurations struct {
-	NSQ   ConfigNSQ   `json:"nsq"`
-	SQL   ConfigSQL   `json:"sql"`
-	Redis ConfigRedis `json:"redis"`
+	Connections Connections `json:"connections"`
 }
 
-// ConfigNSQ ...
-type ConfigNSQ struct {
+// Connections ...
+type Connections struct {
+	NSQConfig   NSQConfig   `json:"nsq"`
+	SQLConfig   SQLConfig   `json:"sql"`
+	RedisConfig RedisConfig `json:"redis"`
+}
+
+// NSQConfig ...
+type NSQConfig struct {
 	Lookupd      string `json:"lookupd"`
 	RequeueDelay int64  `json:"requeue_delay"`
 	MaxInFlight  int    `json:"max_in_flight"`
 	MaxAttempts  uint16 `json:"max_attempts"`
 }
 
-// ConfigSQL ...
-type ConfigSQL struct {
+// SQLConfig ...
+type SQLConfig struct {
 	Driver     string `json:"driver"`
 	DataSource string `json:"datasource"`
 }
 
-// ConfigRedis ...
-type ConfigRedis struct {
+// RedisConfig ...
+type RedisConfig struct {
 	Protocol string `json:"protocol"`
 	Address  string `json:"address"`
 	Size     int    `json:"size"`

@@ -1,5 +1,5 @@
 {
-  "webservices": [
+  "http": [
     {
       "name": "hello",
       "description": "test hello",
@@ -67,10 +67,10 @@
           "description": "creating web mock service",
           "method": "POST",
           "route": "/loading",
-          "file": "data/webservice_body.json",
+          "file": "data/http_body.json",
           "response": {
             "status": 200,
-            "file": "data/webservice_body.json"
+            "file": "data/http_body.json"
           }
         }
       ]
@@ -85,31 +85,38 @@
         "datasource": "postgres://user:password@localhost:7001?sslmode=disable"
       },
       "run": {
-        "setup": {
-          "queries": [
-            "DROP TABLE IF EXISTS USERS",
-            "CREATE TABLE USERS(name varchar(255), description varchar(255))",
-            "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
-            "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
-          ]
-        },
-        "teardown": {
+        "setup": [
+          {
+            "queries": [
+              "DROP TABLE IF EXISTS USERS",
+              "CREATE TABLE USERS(name varchar(255), description varchar(255))",
+              "INSERT INTO USERS(name, description) VALUES('joao', 'administrator')",
+              "INSERT INTO USERS(name, description) VALUES('tiago', 'user')"
+            ]
+          }
+        ],
+        "teardown": [ {
           "queries": [
             "DROP TABLE IF EXISTS USERS"
           ]
         }
+        ]
       }
     },
     {
       "name": "postgres",
       "description": "add users information from files",
       "run": {
-        "setup": {
-          "files": ["data/sql_setup_file.sql"]
-        },
-        "teardown": {
-          "files": ["data/sql_teardown_file.sql"]
-        }
+        "setup": [
+          {
+            "files": ["data/sql_setup_file.sql"]
+          }
+        ],
+        "teardown": [
+          {
+            "files": ["data/sql_teardown_file.sql"]
+          }
+        ]
       }
     },
     {
@@ -120,19 +127,23 @@
         "datasource": "root:password@tcp(127.0.0.1:7002)/mysql"
       },
       "run": {
-        "setup": {
-          "queries": [
-            "DROP TABLE IF EXISTS CLIENTS",
-            "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
-            "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
-            "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
-          ]
-        },
-        "teardown": {
-          "queries": [
-            "DROP TABLE IF EXISTS CLIENTS"
-          ]
-        }
+        "setup": [
+          {
+            "queries": [
+              "DROP TABLE IF EXISTS CLIENTS",
+              "CREATE TABLE CLIENTS(name varchar(255), description varchar(255))",
+              "INSERT INTO CLIENTS(name, description) VALUES('joao', 'administrator')",
+              "INSERT INTO CLIENTS(name, description) VALUES('tiago', 'user')"
+            ]
+          }
+        ],
+        "teardown": [
+          {
+            "queries": [
+              "DROP TABLE IF EXISTS CLIENTS"
+            ]
+          }
+        ]
       }
     }
   ],

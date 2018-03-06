@@ -13,54 +13,64 @@ import (
 
 var processes = make(map[string]*echo.Echo)
 
-func (services *ServicesConfig) setupWebServices() error {
-	// Web Services
-	for _, service := range services.WebServices {
-		fmt.Println(fmt.Sprintf("\n creating service [ %s ] with description [ %s ]", service.Name, service.Description))
+type HttpRunner struct {
+	services []HttpService
+}
+
+func NewWebRunner(services []HttpService) *HttpRunner {
+	return &HttpRunner{
+		services: services,
+	}
+}
+
+func (runner *HttpRunner) Setup() error {
+	for _, service := range runner.services {
+		log.Infof("creating service [ %s ] with description [ %s ]", service.Name, service.Description)
 
 		e := echo.New()
 		e.HideBanner = true
-		for _, route := range service.Routes {
-			fmt.Println(fmt.Sprintf(" creating route [ %s ] method [ %s ]", route.Route, route.Method))
 
-			e.Add(route.Method, route.Route, route.handle)
+		if err := runner.runRoutes(e, &service); err != nil {
+			return fmt.Errorf("error adding service routes [service: %s]", service.Name)
 		}
+
+		// shutdown service on allocated port
 		//if listener, err := net.Listen("tcp", service.Host); err != nil {
-		//	fmt.Println(err)
-		//	fmt.Printf("closing connection to %s", service.Host)
+		//	log.Info(err)
+		//	log.Infof("closing connection to %s", service.Host)
 		//	listener.Close()
 		//}
 
 		go e.Start(service.Host)
 
-		key := "webservice" + service.Name
-		fmt.Println(fmt.Sprintf(" started service [ %s ] at [ %s ]", service.Name, service.Host))
+		key := "http" + service.Name
+		log.Infof("started service [ %s ] at [ %s ]", service.Name, service.Host)
 
 		processes[key] = e
-
 	}
+
 	return nil
 }
 
-func (services *ServicesConfig) teardownWebServices() error {
-	for _, service := range services.WebServices {
-		fmt.Println(fmt.Sprintf("\n teardown service [ %s ]", service.Name))
-		key := "webservice" + service.Name
+func (runner *HttpRunner) Teardown() error {
+	for _, service := range runner.services {
+		log.Infof("teardown service [ %s ]", service.Name)
+		key := "http" + service.Name
 		processes[key].Close()
-
 	}
+
 	return nil
 }
 
 func failHandler(message string, callerSkip ...int) {
-	fmt.Println(fmt.Sprintf("failed with message [ %s ]", message))
+	log.Infof("failed with message [ %s ]", message)
 }
 
 // Handle ...
 func (instance Route) handle(ctx echo.Context) error {
 	gomega.RegisterFailHandler(failHandler)
 
-	fmt.Print(fmt.Sprintf(" calling [ %s ] URL [ %s ]", ctx.Request().Method, ctx.Request().URL))
+	log.Infof("calling [ %s ] URL [ %s ]", ctx.Request().Method, ctx.Request().URL)
 
 	var requestBody json.RawMessage
 	ctx.Bind(&requestBody)
@@ -78,10 +88,8 @@ func (instance Route) handle(ctx echo.Context) error {
 	}
 	if instance.Body != nil || instance.File != nil {
 		if gomega.Expect(string(requestBody)).To(expandedMatchers.MatchUnorderedJSON(string(expectedBody))) {
-			fmt.Println(" with valid payload")
 		} else {
-			fmt.Println(" with invalid payload")
-			fmt.Println(fmt.Sprintf(" expect [ %s ] to be equal to [ %s ]", string(requestBody), expectedBody))
+			log.Infof("expect [ %s ] to be equal to [ %s ]", string(requestBody), expectedBody)
 			return ctx.NoContent(http.StatusNotFound)
 		}
 	}
@@ -97,10 +105,19 @@ func (instance Route) handle(ctx echo.Context) error {
 			response = bytes
 		}
 	} else {
-		fmt.Println(" there is no body to process")
+		log.Info("there is no body to process")
 	}
 
-	fmt.Println(fmt.Sprintf(" response [ %s ]", string(response)))
+	log.Infof("response [ %s ]", string(response))
 
 	return ctx.JSON(instance.Response.Status, response)
+}
+
+func (runner *HttpRunner) runRoutes(e *echo.Echo, run *HttpService) error {
+	for _, route := range run.Routes {
+		log.Infof("creating route [ %s ] method [ %s ]", route.Route, route.Method)
+
+		e.Add(route.Method, route.Route, route.handle)
+	}
+	return nil
 }

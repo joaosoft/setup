@@ -1,12 +1,20 @@
 package gomock
 
 import (
-	"fmt"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 // GoMockOption ...
 type GoMockOption func(gomock *GoMock)
+
+// Reconfigure ...
+func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
+	for _, option := range options {
+		option(gomock)
+	}
+}
 
 // WithPath ...
 func WithPath(path string) GoMockOption {
@@ -27,39 +35,45 @@ func WithRunInBackground(background bool) GoMockOption {
 	}
 }
 
-// WithConfiguration ...
-func WithConfiguration(file string) GoMockOption {
+// WithConfigurationFile ...
+func WithConfigurationFile(file string) GoMockOption {
 	return func(gomock *GoMock) {
-		app := &App{}
-		if _, err := readFile(file, app); err != nil {
+		config := &Configurations{}
+		if _, err := readFile(file, config); err != nil {
 			panic(err)
 		}
-		fmt.Println(app)
 		gomock.Reconfigure(
-			WithConfigurationSQL(&app.Config.SQL),
-			WithConfigurationRedis(&app.Config.Redis),
-			WithConfigurationNSQ(&app.Config.NSQ))
+			WithSQLConfiguration(&config.Connections.SQLConfig),
+			WithRedisConfiguration(&config.Connections.RedisConfig),
+			WithNSQConfiguration(&config.Connections.NSQConfig))
 	}
 }
 
-// WithConfigurationRedis ...
-func WithConfigurationRedis(config *ConfigRedis) GoMockOption {
+// WithRedisConfiguration ...
+func WithRedisConfiguration(config *RedisConfig) GoMockOption {
 	return func(gomock *GoMock) {
-		gomock.defaults["redis"] = config
+		global["redis"] = config
 	}
 }
 
-// WithConfigurationSQL ...
-func WithConfigurationSQL(config *ConfigSQL) GoMockOption {
+// WithSQLConfiguration ...
+func WithSQLConfiguration(config *SQLConfig) GoMockOption {
 	return func(gomock *GoMock) {
-		gomock.defaults["sql"] = config
+		global["sql"] = config
 	}
 }
 
-// WithConfigurationNSQ ...
-func WithConfigurationNSQ(config *ConfigNSQ) GoMockOption {
+// WithNSQConfiguration ...
+func WithNSQConfiguration(config *NSQConfig) GoMockOption {
 	return func(gomock *GoMock) {
-		gomock.defaults["nsq"] = config
+		global["nsq"] = config
+	}
+}
+
+// WithLogLevel ...
+func WithLogLevel(level logrus.Level) GoMockOption {
+	return func(gomock *GoMock) {
+		logrus.SetLevel(level)
 	}
 }
 
@@ -67,8 +81,8 @@ func WithConfigurationNSQ(config *ConfigNSQ) GoMockOption {
 func WithConfigurations(config *Configurations) GoMockOption {
 	return func(gomock *GoMock) {
 		gomock.Reconfigure(
-			WithConfigurationSQL(&config.SQL),
-			WithConfigurationRedis(&config.Redis),
-			WithConfigurationNSQ(&config.NSQ))
+			WithSQLConfiguration(&config.Connections.SQLConfig),
+			WithRedisConfiguration(&config.Connections.RedisConfig),
+			WithNSQConfiguration(&config.Connections.NSQConfig))
 	}
 }

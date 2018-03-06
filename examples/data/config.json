@@ -1,5 +1,5 @@
 {
-  "configurations":
+  "connections":
   {
     "sql": {
       "driver": "postgres",

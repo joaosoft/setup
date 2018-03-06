@@ -1,18 +1,19 @@
 package gomock
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
-// ServicesConfig
-type ServicesConfig struct {
-	File        string       `json:"file,omitempty"`
-	WebServices []WebService `json:"webservices,omitempty"`
-	Redis       []Redis      `json:"redis,omitempty"`
-	NSQ         []NSQ        `json:"nsq,omitempty"`
-	SQL         []SQL        `json:"sql,omitempty"`
+// Services
+type Services struct {
+	HttpServices  []HttpService  `json:"http,omitempty"`
+	RedisServices []RedisService `json:"redis,omitempty"`
+	NSQServices   []NSQService   `json:"nsq,omitempty"`
+	SQLServices   []SQLService   `json:"sql,omitempty"`
 }
 
-// WebService
-type WebService struct {
+// HttpService
+type HttpService struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Host        string  `json:"host"`
@@ -36,60 +37,62 @@ type Response struct {
 	File   *string         `json:"file"`
 }
 
-// Redis
-type Redis struct {
+// RedisService
+type RedisService struct {
 	Name          string       `json:"name"`
 	Description   string       `json:"description"`
-	Configuration *ConfigRedis `json:"configuration"`
+	Configuration *RedisConfig `json:"configuration"`
 	Connection    *string      `json:"connection"`
 	Run           struct {
-		Setup    []RedisCommand `json:"setup"`
-		Teardown []RedisCommand `json:"teardown"`
+		Setup    []RedisRun `json:"setup"`
+		Teardown []RedisRun `json:"teardown"`
 	} `json:"run"`
 }
 
-// RedisCommand
+// RedisRun
+type RedisRun struct {
+	Commands []RedisCommand `json:"commands"`
+	Files    []string       `json:"files"`
+}
+
 type RedisCommand struct {
-	Commands []struct {
-		Command   string   `json:"command"`
-		Arguments []string `json:"arguments"`
-	} `json:"commands"`
-	Files []string `json:"files"`
+	Command   string   `json:"command"`
+	Arguments []string `json:"arguments"`
 }
 
-// NSQ
-type NSQ struct {
+// NSQService
+type NSQService struct {
 	Name          string     `json:"name"`
 	Description   string     `json:"description"`
-	Configuration *ConfigNSQ `json:"configuration"`
+	Configuration *NSQConfig `json:"configuration"`
 	Connection    *string    `json:"connection"`
 	Run           struct {
-		Setup    []NSQMessage `json:"setup"`
-		Teardown []NSQMessage `json:"teardown"`
+		Setup    []NSQRun `json:"setup"`
+		Teardown []NSQRun `json:"teardown"`
 	} `json:"run"`
 }
 
-// NSQMessage
-type NSQMessage struct {
-	Description string           `json:"description"`
-	Topic       string           `json:"topic"`
-	Body        *json.RawMessage `json:"body"`
-	File        *string          `json:"file"`
+// NSQRun
+type NSQRun struct {
+	Description string          `json:"description"`
+	Topic       string          `json:"topic"`
+	Message     json.RawMessage `json:"message"`
+	File        string          `json:"file"`
 }
 
-// SQL
-type SQL struct {
+// SQLService
+type SQLService struct {
 	Name          string     `json:"name"`
 	Description   string     `json:"description"`
-	Configuration *ConfigSQL `json:"configuration"`
+	Configuration *SQLConfig `json:"configuration"`
 	Connection    *string    `json:"connection"`
 	Run           struct {
-		Setup    *SQLData `json:"setup"`
-		Teardown *SQLData `json:"teardown"`
+		Setup    []SQLRun `json:"setup"`
+		Teardown []SQLRun `json:"teardown"`
 	} `json:"run"`
 }
 
-type SQLData struct {
-	Files   []string `json:"files"`
-	Queries []string `json:"queries"`
+type SQLRun struct {
+	Files   []string `json:"file"`
+	Queries []string `json:"query"`
 }

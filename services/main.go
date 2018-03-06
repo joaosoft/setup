@@ -1,38 +1,40 @@
 package gomock
 
 import (
-	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"syscall"
+
+	"github.com/sirupsen/logrus"
 )
 
 // GoMock ...
 type GoMock struct {
-	services   []*ServicesConfig
+	services   []*Services
+	runner     IRunner
 	background bool
-	defaults   map[string]interface{}
-	started    bool
 }
 
-// Reconfigure ...
-func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
-	for _, option := range options {
-		option(gomock)
-	}
-}
-
-// NewGoMock ...
+// NewGoMock ...make
 func NewGoMock(options ...GoMockOption) *GoMock {
-	fmt.Println(":: Starting GoMock Service")
+	log.Info("starting GoMock Service")
 	mock := &GoMock{
 		background: background,
-		defaults:   make(map[string]interface{}),
+		services:   make([]*Services, 0),
 	}
 
 	global["path"] = defaultPath
+
+	// load configuration file
+	app := &App{}
+	if _, err := readFile("config/app.json", app); err != nil {
+		log.Error(err)
+	} else {
+		level, _ := logrus.ParseLevel(app.Log.Level)
+		log.Debugf("setting log level to %s", level)
+		WithLogLevel(level)
+	}
 
 	mock.Reconfigure(options...)
 
@@ -41,80 +43,66 @@ func NewGoMock(options ...GoMockOption) *GoMock {
 
 // Run ...
 func (gomock *GoMock) Run() error {
-	files, err := filepath.Glob(global["path"] + "*.json")
+	files, err := filepath.Glob(global["path"].(string) + "*.json")
 	if err != nil {
 		return err
 	}
-	if err := gomock.setup(files...); err != nil {
-		log.Panic(err)
+	if err := gomock.execute(files); err != nil {
+		log.Error(err)
 		return err
 	}
-	gomock.wait(false)
 
 	return nil
 }
 
 // RunSingle ...
 func (gomock *GoMock) RunSingle(file string) error {
-	if err := gomock.setup(file); err != nil {
-		log.Panic(err)
+	if err := gomock.execute([]string{file}); err != nil {
+		log.Error(err)
 		return err
 	}
-	gomock.wait(false)
 
 	return nil
-}
-
-// wait ...
-func (gomock *GoMock) wait(force bool) {
-	if !gomock.started && (gomock.background || (!gomock.background && force)) {
-		gomock.started = true
-		quit := make(chan os.Signal, 1)
-		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-		<-quit
-	}
-
-	gomock.Stop()
 }
 
 // Stop ...
 func (gomock *GoMock) Stop() error {
-
-	fmt.Println(":: Stopping GoMock Service")
-	if err := gomock.teardown(); err != nil {
-		log.Panic(err)
+	if err := gomock.runner.Teardown(); err != nil {
+		log.Error(err)
 		return err
 	}
-	fmt.Println(":: Stoped GoMock Service")
+	log.Info("stopped all services")
 
 	return nil
 }
 
-func (gomock *GoMock) setup(files ...string) error {
+func (gomock *GoMock) execute(files []string) error {
 	for _, file := range files {
-		fmt.Println(fmt.Sprintf("\nSTARTING: setup [ %s ]", file))
-
-		config := &ServicesConfig{}
-		if err := config.fromFile(file); err != nil {
+		servicesOnFile := &Services{}
+		if _, err := readFile(file, servicesOnFile); err != nil {
 			return err
 		}
+		gomock.services = append(gomock.services, servicesOnFile)
+	}
 
-		if err := config.setup(gomock.defaults); err != nil {
-			return err
-		}
-		gomock.services = append(gomock.services, config)
+	gomock.runner = NewRunner(gomock.services)
+	if err := gomock.runner.Setup(); err != nil {
+		return err
+	}
 
-		fmt.Println(fmt.Sprintf("FINISHED: setup [ %s ]", file))
+	log.Info("started all services")
+
+	if !gomock.background {
+		gomock.Wait()
 	}
 
 	return nil
 }
 
-func (gomock *GoMock) teardown() error {
-	for _, service := range gomock.services {
-		fmt.Println(fmt.Sprintf("\nSTARTING: teardown [ %s ]", service.File))
-		service.teardown(gomock.defaults)
-		fmt.Println(fmt.Sprintf("FINISHED: teardown [ %s ]", service.File))
-	}
-	return nil
+// Wait ...
+func (gomock *GoMock) Wait() {
+	log.Info("waiting to stop...")
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
 }

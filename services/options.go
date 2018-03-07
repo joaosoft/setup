@@ -43,9 +43,9 @@ func WithConfigurationFile(file string) GoMockOption {
 			panic(err)
 		}
 		gomock.Reconfigure(
-			WithSQLConfiguration(&config.Connections.SQLConfig),
+			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
-			WithNSQConfiguration(&config.Connections.NSQConfig))
+			WithNsqConfiguration(&config.Connections.NsqConfig))
 	}
 }
 
@@ -56,15 +56,15 @@ func WithRedisConfiguration(config *RedisConfig) GoMockOption {
 	}
 }
 
-// WithSQLConfiguration ...
-func WithSQLConfiguration(config *SQLConfig) GoMockOption {
+// WithSqlConfiguration ...
+func WithSqlConfiguration(config *SqlConfig) GoMockOption {
 	return func(gomock *GoMock) {
 		global["sql"] = config
 	}
 }
 
-// WithNSQConfiguration ...
-func WithNSQConfiguration(config *NSQConfig) GoMockOption {
+// WithNsqConfiguration ...
+func WithNsqConfiguration(config *NsqConfig) GoMockOption {
 	return func(gomock *GoMock) {
 		global["nsq"] = config
 	}
@@ -81,8 +81,8 @@ func WithLogLevel(level logrus.Level) GoMockOption {
 func WithConfigurations(config *Configurations) GoMockOption {
 	return func(gomock *GoMock) {
 		gomock.Reconfigure(
-			WithSQLConfiguration(&config.Connections.SQLConfig),
+			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
-			WithNSQConfiguration(&config.Connections.NSQConfig))
+			WithNsqConfiguration(&config.Connections.NsqConfig))
 	}
 }

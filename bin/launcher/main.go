@@ -9,25 +9,25 @@ func main() {
 		gomock.WithPath("./examples"),
 		gomock.WithRunInBackground(true))
 
-	// web
+	//// web
 	//test.RunSingle("001_webservices.json")
 	//
 	//// sql
-	//configSQL := &gomock.SQLConfig{
+	//configSql := &gomock.SqlConfig{
 	//	Driver:     "postgres",
 	//	DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
 	//}
-	//test.Reconfigure(gomock.WithSQLConfiguration(configSQL))
+	//test.Reconfigure(gomock.WithSqlConfiguration(configSql))
 	//test.RunSingle("002_sql.json")
 	//
 	//// nsq
-	//configNSQ := &gomock.NSQConfig{
+	//configNSQ := &gomock.NsqConfig{
 	//	Lookupd:      "localhost:4150",
 	//	RequeueDelay: 30,
 	//	MaxInFlight:  5,
 	//	MaxAttempts:  5,
 	//}
-	//test.Reconfigure(gomock.WithNSQConfiguration(configNSQ))
+	//test.Reconfigure(gomock.WithNsqConfiguration(configNSQ))
 	//test.RunSingle("003_nsq.json")
 	//
 	//// redis

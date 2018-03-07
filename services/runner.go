@@ -40,24 +40,24 @@ func (runner *Runner) Teardown() error {
 
 func (runner *Runner) createRunners(services []*Services) ([]IRunner, error) {
 	var httpServices []HttpService
-	var sqlServices []SQLService
+	var sqlServices []SqlService
 	var redisServices []RedisService
-	var nsqServices []NSQService
+	var nsqServices []NsqService
 	runners := make([]IRunner, 0)
 
 	// load the services for each individual mocking file
 	for _, service := range services {
 		httpServices = append(httpServices, service.HttpServices...)
-		sqlServices = append(sqlServices, service.SQLServices...)
+		sqlServices = append(sqlServices, service.SqlServices...)
 		redisServices = append(redisServices, service.RedisServices...)
-		nsqServices = append(nsqServices, service.NSQServices...)
+		nsqServices = append(nsqServices, service.NsqServices...)
 	}
 
 	// create runners to do the job
-	httpRunner := NewWebRunner(httpServices)
-	sqlRunner := NewSQLRunner(sqlServices, getDefaultSQLConfig())
+	httpRunner := NewHttpRunner(httpServices)
+	sqlRunner := NewSqlRunner(sqlServices, getDefaultSqlConfig())
 	redisRunner := NewRedisRunner(redisServices, getDefaultRedisConfig())
-	nsqRunner := NewNSQRunner(nsqServices, getDefaultNSQConfig())
+	nsqRunner := NewNsqRunner(nsqServices, getDefaultNsqConfig())
 
 	runners = append(runners, []IRunner{httpRunner, sqlRunner, redisRunner, nsqRunner}...)
 

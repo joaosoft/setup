@@ -6,19 +6,19 @@ import (
 	nsqlib "github.com/nsqio/go-nsq"
 )
 
-type NSQRunner struct {
-	services      []NSQService
-	configuration *NSQConfig
+type NsqRunner struct {
+	services      []NsqService
+	configuration *NsqConfig
 }
 
-func NewNSQRunner(services []NSQService, config *NSQConfig) *NSQRunner {
-	return &NSQRunner{
+func NewNsqRunner(services []NsqService, config *NsqConfig) *NsqRunner {
+	return &NsqRunner{
 		services:      services,
 		configuration: config,
 	}
 }
 
-func (runner *NSQRunner) Setup() error {
+func (runner *NsqRunner) Setup() error {
 	for _, service := range runner.services {
 		log.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
 
@@ -46,7 +46,7 @@ func (runner *NSQRunner) Setup() error {
 	return nil
 }
 
-func (runner *NSQRunner) Teardown() error {
+func (runner *NsqRunner) Teardown() error {
 	for _, service := range runner.services {
 		log.Infof("teardown service [ %s ]", service.Name)
 
@@ -74,7 +74,7 @@ func (runner *NSQRunner) Teardown() error {
 	return nil
 }
 
-func (runner *NSQRunner) loadConfiguration(test NSQService) (*NSQConfig, error) {
+func (runner *NsqRunner) loadConfiguration(test NsqService) (*NsqConfig, error) {
 	if test.Configuration != nil {
 		return runner.configuration, nil
 	} else if runner.configuration != nil {
@@ -84,7 +84,7 @@ func (runner *NSQRunner) loadConfiguration(test NSQService) (*NSQConfig, error) 
 	}
 }
 
-func (runner *NSQRunner) runCommands(conn *nsqlib.Producer, run *NSQRun) error {
+func (runner *NsqRunner) runCommands(conn *nsqlib.Producer, run *NsqRun) error {
 	if run.Message != nil && string(run.Message) != "" {
 		log.Infof("executing nsq [ %s ] message: %s", run.Description, string(run.Message))
 		if err := conn.Publish(run.Topic, run.Message); err != nil {
@@ -95,7 +95,7 @@ func (runner *NSQRunner) runCommands(conn *nsqlib.Producer, run *NSQRun) error {
 	return nil
 }
 
-func (runner *NSQRunner) runCommandsFromFile(conn *nsqlib.Producer, run *NSQRun) error {
+func (runner *NsqRunner) runCommandsFromFile(conn *nsqlib.Producer, run *NsqRun) error {
 
 	if run.File != "" {
 		log.Infof("executing nsq commands by file [ %s ]", run.File)

@@ -23,16 +23,16 @@ func init() {
 	logger.SetLevel(logger.DebugLevel)
 }
 
-func getDefaultNSQConfig() *NSQConfig {
+func getDefaultNsqConfig() *NsqConfig {
 	if value, exists := global["nsq"]; exists {
-		return value.(*NSQConfig)
+		return value.(*NsqConfig)
 	}
 	return nil
 }
 
-func getDefaultSQLConfig() *SQLConfig {
+func getDefaultSqlConfig() *SqlConfig {
 	if value, exists := global["sql"]; exists {
-		return value.(*SQLConfig)
+		return value.(*SqlConfig)
 	}
 	return nil
 }

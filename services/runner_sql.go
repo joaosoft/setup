@@ -8,19 +8,19 @@ import (
 	_ "github.com/lib/pq"              // postgres driver
 )
 
-type SQLRunner struct {
-	services      []SQLService
-	configuration *SQLConfig
+type SqlRunner struct {
+	services      []SqlService
+	configuration *SqlConfig
 }
 
-func NewSQLRunner(services []SQLService, config *SQLConfig) *SQLRunner {
-	return &SQLRunner{
+func NewSqlRunner(services []SqlService, config *SqlConfig) *SqlRunner {
+	return &SqlRunner{
 		services:      services,
 		configuration: config,
 	}
 }
 
-func (runner *SQLRunner) Setup() error {
+func (runner *SqlRunner) Setup() error {
 	for _, service := range runner.services {
 		log.Infof("creating service [ %s ] with description [ %s ]", service.Name, service.Description)
 
@@ -48,7 +48,7 @@ func (runner *SQLRunner) Setup() error {
 	return nil
 }
 
-func (runner *SQLRunner) Teardown() error {
+func (runner *SqlRunner) Teardown() error {
 	for _, service := range runner.services {
 		log.Infof("teardown service [ %s ] with description [ %s ]", service.Name, service.Description)
 
@@ -76,7 +76,7 @@ func (runner *SQLRunner) Teardown() error {
 	return nil
 }
 
-func (runner *SQLRunner) loadConfiguration(test SQLService) (*SQLConfig, error) {
+func (runner *SqlRunner) loadConfiguration(test SqlService) (*SqlConfig, error) {
 	if test.Configuration != nil {
 		return runner.configuration, nil
 	} else if runner.configuration != nil {
@@ -86,7 +86,7 @@ func (runner *SQLRunner) loadConfiguration(test SQLService) (*SQLConfig, error) 
 	}
 }
 
-func (runner *SQLRunner) runCommands(conn *sql.DB, run *SQLRun) error {
+func (runner *SqlRunner) runCommands(conn *sql.DB, run *SqlRun) error {
 	for _, command := range run.Queries {
 		log.Infof("executing sql command [ %s ]", command)
 
@@ -97,7 +97,7 @@ func (runner *SQLRunner) runCommands(conn *sql.DB, run *SQLRun) error {
 	return nil
 }
 
-func (runner *SQLRunner) runCommandsFromFile(conn *sql.DB, run *SQLRun) error {
+func (runner *SqlRunner) runCommandsFromFile(conn *sql.DB, run *SqlRun) error {
 	for _, file := range run.Files {
 		log.Info("executing nsq commands by file [ %s ]", file)
 

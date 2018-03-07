@@ -17,7 +17,7 @@ type HttpRunner struct {
 	services []HttpService
 }
 
-func NewWebRunner(services []HttpService) *HttpRunner {
+func NewHttpRunner(services []HttpService) *HttpRunner {
 	return &HttpRunner{
 		services: services,
 	}

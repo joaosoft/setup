@@ -8,8 +8,8 @@ import (
 type Services struct {
 	HttpServices  []HttpService  `json:"http,omitempty"`
 	RedisServices []RedisService `json:"redis,omitempty"`
-	NSQServices   []NSQService   `json:"nsq,omitempty"`
-	SQLServices   []SQLService   `json:"sql,omitempty"`
+	NsqServices   []NsqService   `json:"nsq,omitempty"`
+	SqlServices   []SqlService   `json:"sql,omitempty"`
 }
 
 // HttpService
@@ -60,39 +60,39 @@ type RedisCommand struct {
 	Arguments []string `json:"arguments"`
 }
 
-// NSQService
-type NSQService struct {
+// NsqService
+type NsqService struct {
 	Name          string     `json:"name"`
 	Description   string     `json:"description"`
-	Configuration *NSQConfig `json:"configuration"`
+	Configuration *NsqConfig `json:"configuration"`
 	Connection    *string    `json:"connection"`
 	Run           struct {
-		Setup    []NSQRun `json:"setup"`
-		Teardown []NSQRun `json:"teardown"`
+		Setup    []NsqRun `json:"setup"`
+		Teardown []NsqRun `json:"teardown"`
 	} `json:"run"`
 }
 
-// NSQRun
-type NSQRun struct {
+// NsqRun
+type NsqRun struct {
 	Description string          `json:"description"`
 	Topic       string          `json:"topic"`
 	Message     json.RawMessage `json:"message"`
 	File        string          `json:"file"`
 }
 
-// SQLService
-type SQLService struct {
+// SqlService
+type SqlService struct {
 	Name          string     `json:"name"`
 	Description   string     `json:"description"`
-	Configuration *SQLConfig `json:"configuration"`
+	Configuration *SqlConfig `json:"configuration"`
 	Connection    *string    `json:"connection"`
 	Run           struct {
-		Setup    []SQLRun `json:"setup"`
-		Teardown []SQLRun `json:"teardown"`
+		Setup    []SqlRun `json:"setup"`
+		Teardown []SqlRun `json:"teardown"`
 	} `json:"run"`
 }
 
-type SQLRun struct {
+type SqlRun struct {
 	Files   []string `json:"file"`
 	Queries []string `json:"query"`
 }

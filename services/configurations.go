@@ -14,21 +14,21 @@ type Configurations struct {
 
 // Connections ...
 type Connections struct {
-	NSQConfig   NSQConfig   `json:"nsq"`
-	SQLConfig   SQLConfig   `json:"sql"`
+	NsqConfig   NsqConfig   `json:"nsq"`
+	SqlConfig   SqlConfig   `json:"sql"`
 	RedisConfig RedisConfig `json:"redis"`
 }
 
-// NSQConfig ...
-type NSQConfig struct {
+// NsqConfig ...
+type NsqConfig struct {
 	Lookupd      string `json:"lookupd"`
 	RequeueDelay int64  `json:"requeue_delay"`
 	MaxInFlight  int    `json:"max_in_flight"`
 	MaxAttempts  uint16 `json:"max_attempts"`
 }
 
-// SQLConfig ...
-type SQLConfig struct {
+// SqlConfig ...
+type SqlConfig struct {
 	Driver     string `json:"driver"`
 	DataSource string `json:"datasource"`
 }

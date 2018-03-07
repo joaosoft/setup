@@ -15,13 +15,13 @@ func (config *RedisConfig) connect() (*redis.Pool, error) {
 }
 
 // createConnection ...
-func (config *SQLConfig) connect() (*sql.DB, error) {
+func (config *SqlConfig) connect() (*sql.DB, error) {
 	log.Infof("connecting with driver [ %s ] and data source [ %s ]", config.Driver, config.DataSource)
 	return sql.Open(config.Driver, config.DataSource)
 }
 
 // createConnection ...
-func (config *NSQConfig) connect() (*nsqlib.Producer, error) {
+func (config *NsqConfig) connect() (*nsqlib.Producer, error) {
 	nsqConfig := nsqlib.NewConfig()
 	nsqConfig.MaxAttempts = config.MaxAttempts
 	nsqConfig.DefaultRequeueDelay = time.Duration(config.RequeueDelay) * time.Second

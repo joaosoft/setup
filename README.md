@@ -92,6 +92,8 @@ func main() {
           "description": "creating web mock service",
           "method": "GET",
           "route": "/hello",
+          "headers": {},
+          "cookies": [],
           "response": {
             "status": 200,
             "body": {
@@ -110,6 +112,8 @@ func main() {
           "description": "creating web mock service",
           "method": "GET",
           "route": "/goodbye",
+          "headers": {},
+          "cookies": [],
           "response": {
             "status": 200,
             "body": {
@@ -128,6 +132,8 @@ func main() {
           "description": "creating web mock service",
           "method": "POST",
           "route": "/something",
+          "headers": {},
+          "cookies": [],
           "body": {
             "name": "joao",
             "age": 29
@@ -150,10 +156,47 @@ func main() {
           "description": "creating web mock service",
           "method": "POST",
           "route": "/loading",
-          "file": "data/http_body.json",
+          "headers": {
+            "Cookie": ["Cookie_2=value002; Cookie_1=value001"],
+            "Accept-Encoding": ["gzip, deflate"],
+            "Accept": ["*/*"],
+            "Connection": ["keep-alive"],
+            "User-Agent": ["PostmanRuntime/7.1.1"],
+            "Cache-Control": ["no-cache"],
+            "Content-Length": ["33"],
+            "Content-Type": ["application/json"]
+          },
+          "cookies": [
+            {
+              "name": "Cookie_1",
+              "value": "value001"
+            },
+            {
+              "name": "Cookie_2",
+              "value": "value002"
+            }
+          ],
+          "file": "data/http_body_request.json",
           "response": {
             "status": 200,
-            "file": "data/http_body.json"
+            "file": "data/http_body_response.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "description": "loading the payload from a file",
+      "host": ":8005",
+      "routes": [
+        {
+          "description": "creating web mock service",
+          "method": "POST",
+          "route": "/loading",
+          "file": "data/http_body_request.json",
+          "response": {
+            "status": 200,
+            "file": "data/http_body_response.json"
           }
         }
       ]

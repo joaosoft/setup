@@ -2,6 +2,7 @@ package gomock
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // Services
@@ -25,9 +26,23 @@ type Route struct {
 	Description string          `json:"description"`
 	Route       string          `json"route"`
 	Method      string          `json:"method"`
+	Headers     *Headers        `json:"headers"`
+	Cookies     []*Cookies      `json:"cookies"`
 	Body        json.RawMessage `json:"body"`
 	File        *string         `json:"file"`
 	Response    Response        `json:"response"`
+}
+
+// Headers
+type Headers map[string][]string
+
+// Cookies
+type Cookies struct {
+	Name    *string    `json:"name"`
+	Value   *string    `json:"value"`
+	Path    *string    `json:"path"`    // optional
+	Domain  *string    `json:"domain"`  // optional
+	Expires *time.Time `json:"expires"` // optional
 }
 
 // Response

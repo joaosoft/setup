@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/labstack/echo"
 
@@ -74,6 +75,45 @@ func (instance Route) handle(ctx echo.Context) error {
 
 	var requestBody json.RawMessage
 	ctx.Bind(&requestBody)
+
+	// headers
+	if instance.Headers != nil {
+		for expectedKey, expectedValue := range *instance.Headers {
+			if requestValue, ok := ctx.Request().Header[expectedKey]; !ok {
+				return fmt.Errorf("the header [ %s: %s ] is not defined in the request", expectedKey, expectedValue)
+			} else if !reflect.DeepEqual(expectedValue, requestValue) {
+				return fmt.Errorf("the headers aren't the ones we expected [ key: %s, request: %+v, expected: %+v ]", expectedKey, requestValue, expectedValue)
+			}
+		}
+	}
+
+	// cookies
+	if len(instance.Cookies) > 0 {
+		for _, expectedCookie := range instance.Cookies {
+			found := false
+			for _, requestCookie := range ctx.Cookies() {
+				if expectedCookie != nil && requestCookie != nil {
+					if expectedCookie.Name != nil && *expectedCookie.Name == requestCookie.Name {
+						found = true
+						if expectedCookie.Value != nil && *expectedCookie.Value != requestCookie.Value ||
+							expectedCookie.Domain != nil && *expectedCookie.Domain != requestCookie.Domain ||
+							expectedCookie.Path != nil && *expectedCookie.Path != requestCookie.Path ||
+							expectedCookie.Expires != nil && *expectedCookie.Expires != requestCookie.Expires {
+
+							return fmt.Errorf("the cookie is diferent that we expected!git sa\n"+
+								"actual: [ name: %s, value: %s, domain: %s, path: %s, expires: %s ]\n"+
+								"expected: [ name: %s, value: %s, domain: %s, path: %s, expires: %s ]"+
+								requestCookie.Name, requestCookie.Value, requestCookie.Domain, requestCookie.Path, requestCookie.Expires,
+								*expectedCookie.Name, *expectedCookie.Value, *expectedCookie.Domain, *expectedCookie.Path, *expectedCookie.Expires)
+						}
+					}
+				}
+			}
+			if !found {
+				return fmt.Errorf("the cookie isn't in the request [ name: %s value: %s ]", expectedCookie.Name, expectedCookie.Value)
+			}
+		}
+	}
 
 	// what to expect
 	var expectedBody string

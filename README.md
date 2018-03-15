@@ -94,8 +94,6 @@ func main() {
           "description": "creating web mock service",
           "method": "GET",
           "route": "/hello",
-          "headers": {},
-          "cookies": [],
           "response": {
             "status": 200,
             "body": {
@@ -114,8 +112,6 @@ func main() {
           "description": "creating web mock service",
           "method": "GET",
           "route": "/goodbye",
-          "headers": {},
-          "cookies": [],
           "response": {
             "status": 200,
             "body": {
@@ -134,8 +130,6 @@ func main() {
           "description": "creating web mock service",
           "method": "POST",
           "route": "/something",
-          "headers": {},
-          "cookies": [],
           "body": {
             "name": "joao",
             "age": 29

@@ -110,7 +110,7 @@ func (instance Route) handle(ctx echo.Context) error {
 				}
 			}
 			if !found {
-				return fmt.Errorf("the cookie isn't in the request [ name: %s value: %s ]", expectedCookie.Name, expectedCookie.Value)
+				return fmt.Errorf("the cookie isn't in the request [ name: %s value: %s ]", *expectedCookie.Name, *expectedCookie.Value)
 			}
 		}
 	}

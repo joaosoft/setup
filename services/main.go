@@ -11,17 +11,17 @@ import (
 
 // GoMock ...
 type GoMock struct {
-	services   []*Services
-	runner     IRunner
-	background bool
+	services        []*Services
+	runner          IRunner
+	runInBackground bool
 }
 
 // NewGoMock ...make
 func NewGoMock(options ...GoMockOption) *GoMock {
 	log.Info("starting GoMock Service")
 	mock := &GoMock{
-		background: background,
-		services:   make([]*Services, 0),
+		runInBackground: background,
+		services:        make([]*Services, 0),
 	}
 
 	global["path"] = defaultPath
@@ -92,7 +92,7 @@ func (gomock *GoMock) execute(files []string) error {
 
 	log.Info("started all services")
 
-	if !gomock.background {
+	if !gomock.runInBackground {
 		gomock.Wait()
 	}
 

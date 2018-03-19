@@ -29,9 +29,9 @@ func WithPath(path string) GoMockOption {
 }
 
 // WithRunInBackground ...
-func WithRunInBackground(background bool) GoMockOption {
+func WithRunInBackground(runInBackground bool) GoMockOption {
 	return func(gomock *GoMock) {
-		gomock.background = background
+		gomock.runInBackground = runInBackground
 	}
 }
 

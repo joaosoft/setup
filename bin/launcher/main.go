@@ -1,7 +1,7 @@
 package main
 
 import (
-	gomock "go-mock/services"
+	gomock "go-mock/service"
 )
 
 func main() {

@@ -20,6 +20,12 @@
   revision = "553a641470496b2327abcac10b36396bd98e45c9"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/joaosoft/go-log"
+  packages = ["service"]
+  revision = "3bd5cfe64ea36a2afa5c33280fa8a4c43e8204bf"
+
+[[projects]]
   name = "github.com/labstack/echo"
   packages = ["."]
   revision = "b338075a0fc6e1a0683dbf03d09b4957a289e26f"
@@ -118,6 +124,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "37b4cf7028f4fa0a9d8a342e0e5b0440330cd8dee2ca287da4206043bd93f4a0"
+  inputs-digest = "6fa09f94c5fc0381388876187affe725382f0cba085b764c1a9e1865d6fb4ccd"
   solver-name = "gps-cdcl"
   solver-version = 1

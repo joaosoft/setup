@@ -3,25 +3,17 @@ package gomock
 import (
 	"os"
 
-	logger "github.com/sirupsen/logrus"
+	logger "github.com/joaosoft/go-log/service"
 )
 
 var global = make(map[string]interface{})
-var log = logger.WithFields(logger.Fields{
-	"application": "go-mock",
-})
-
-func init() {
-	// Log as JSON instead of the default ASCII formatter.
-	logger.SetFormatter(&logger.JSONFormatter{})
-
-	// Output to stdout instead of the default stderr
-	// Can be any io.Writer, see below for File example
-	logger.SetOutput(os.Stdout)
-
-	// Only log the warning severity or above.
-	logger.SetLevel(logger.DebugLevel)
-}
+var log = logger.NewLog(
+	logger.WithLevel(logger.InfoLevel),
+	logger.WithFormatHandler(logger.TextFormatHandler),
+	logger.WithWriter(os.Stdout)).WithPrefixes(map[string]interface{}{
+	"level":   logger.LEVEL,
+	"time":    logger.TIME,
+	"service": "go-mock"})
 
 func getDefaultNsqConfig() *NsqConfig {
 	if value, exists := global["nsq"]; exists {

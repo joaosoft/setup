@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/sirupsen/logrus"
+	"github.com/joaosoft/go-log/service"
 )
 
 // GoMock ...
@@ -31,7 +31,7 @@ func NewGoMock(options ...GoMockOption) *GoMock {
 	if _, err := readFile("config/app.json", app); err != nil {
 		log.Error(err)
 	} else {
-		level, _ := logrus.ParseLevel(app.Log.Level)
+		level, _ := golog.ParseLevel(app.Log.Level)
 		log.Debugf("setting log level to %s", level)
 		WithLogLevel(level)
 	}

@@ -3,7 +3,7 @@ package gomock
 import (
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	logger "github.com/joaosoft/go-log/service"
 )
 
 // GoMockOption ...
@@ -70,13 +70,6 @@ func WithNsqConfiguration(config *NsqConfig) GoMockOption {
 	}
 }
 
-// WithLogLevel ...
-func WithLogLevel(level logrus.Level) GoMockOption {
-	return func(gomock *GoMock) {
-		logrus.SetLevel(level)
-	}
-}
-
 // WithConfigurations ...
 func WithConfigurations(config *Configurations) GoMockOption {
 	return func(gomock *GoMock) {
@@ -84,5 +77,19 @@ func WithConfigurations(config *Configurations) GoMockOption {
 			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
 			WithNsqConfiguration(&config.Connections.NsqConfig))
+	}
+}
+
+// WithLogger ...
+func WithLogger(logger logger.Log) GoMockOption {
+	return func(gomock *GoMock) {
+		log = logger
+	}
+}
+
+// WithLogLevel ...
+func WithLogLevel(level logger.Level) GoMockOption {
+	return func(gomock *GoMock) {
+		log.SetLevel(level)
 	}
 }

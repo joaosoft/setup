@@ -99,7 +99,7 @@ func (runner *SqlRunner) runCommands(conn *sql.DB, run *SqlRun) error {
 
 func (runner *SqlRunner) runCommandsFromFile(conn *sql.DB, run *SqlRun) error {
 	for _, file := range run.Files {
-		log.Info("executing nsq commands by file [ %s ]", file)
+		log.Infof("executing nsq commands by file [ %s ]", file)
 
 		var query string
 		if bytes, err := readFile(file, nil); err != nil {

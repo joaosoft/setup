@@ -97,7 +97,7 @@ func (runner *RedisRunner) runCommands(conn *redis.Pool, run *RedisRun) error {
 
 func (runner *RedisRunner) runCommandsFromFile(conn *redis.Pool, run *RedisRun) error {
 	for _, file := range run.Files {
-		log.Info("executing nsq commands by file [ %s ]", file)
+		log.Infof("executing nsq commands by file [ %s ]", file)
 
 		if lines, err := readFileLines(file); err != nil {
 			for _, line := range lines {

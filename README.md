@@ -4,6 +4,14 @@
 A framework that allows you to create mock services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
 This frameworks runs all real services allowing you to validade the integration between services and your own code.
 
+###### If i miss something or you have something interesting, please be part of this project. Let me know! My contact is at the end.
+
+## With support for
+* HTTP
+* SQL
+* NSQ
+* REDIS
+
 ## Dependency Management 
 >### Dep
 
@@ -67,6 +75,9 @@ func main() {
     //}
     //test.Reconfigure(gomock.WithRedisConfiguration(configRedis))
     //test.RunSingle("004_redis.json")
+    
+    //// files
+    //test.RunSingle("005_files.json")
 
     // all
     test.Reconfigure(
@@ -427,6 +438,13 @@ func main() {
       }
     }
   ]
+}
+```
+
+>### FILES [ see 005_files.json ] [go-mock/examples/005_files.json](https://github.com/joaosoft/go-mock/tree/master/examples/005_files.json)
+```javascript
+{
+  "files": ["001_http.json", "002_sql.json"]
 }
 ```
 

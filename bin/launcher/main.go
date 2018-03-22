@@ -39,6 +39,9 @@ func main() {
 	//test.Reconfigure(gomock.WithRedisConfiguration(configRedis))
 	//test.RunSingle("004_redis.json")
 
+	//// files
+	//test.RunSingle("005_files.json")
+
 	// all
 	test.Reconfigure(
 		gomock.WithConfigurationFile("data/config.json"))

@@ -1,4 +1,5 @@
 {
+  "files": ["001_http-json", "002_sql.json"],
   "http": [
     {
       "name": "hello",

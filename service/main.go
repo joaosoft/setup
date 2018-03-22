@@ -82,6 +82,15 @@ func (gomock *GoMock) execute(files []string) error {
 		if _, err := readFile(file, servicesOnFile); err != nil {
 			return err
 		}
+
+		for _, fileName := range servicesOnFile.Files {
+			servicesByFile := &Services{}
+			if _, err := readFile(fileName, servicesByFile); err != nil {
+				return err
+			}
+			gomock.services = append(gomock.services, servicesByFile)
+		}
+
 		gomock.services = append(gomock.services, servicesOnFile)
 	}
 

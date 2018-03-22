@@ -7,6 +7,7 @@ import (
 
 // Services
 type Services struct {
+	Files         []string       `json:"files,omitempty"`
 	HttpServices  []HttpService  `json:"http,omitempty"`
 	RedisServices []RedisService `json:"redis,omitempty"`
 	NsqServices   []NsqService   `json:"nsq,omitempty"`

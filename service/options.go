@@ -28,6 +28,13 @@ func WithPath(path string) GoMockOption {
 	}
 }
 
+// WithServices ...
+func WithServices(services []*Services) GoMockOption {
+	return func(gomock *GoMock) {
+		gomock.services = services
+	}
+}
+
 // WithRunInBackground ...
 func WithRunInBackground(runInBackground bool) GoMockOption {
 	return func(gomock *GoMock) {

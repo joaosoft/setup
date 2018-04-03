@@ -88,7 +88,7 @@ func WithConfigurations(config *Configurations) GoMockOption {
 }
 
 // WithLogger ...
-func WithLogger(logger logger.Log) GoMockOption {
+func WithLogger(logger logger.ILog) GoMockOption {
 	return func(gomock *GoMock) {
 		log = logger
 	}

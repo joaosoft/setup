@@ -23,7 +23,7 @@
   branch = "master"
   name = "github.com/joaosoft/go-log"
   packages = ["service"]
-  revision = "441ef90a02cea1090a085599ed9a00ddd7849dcc"
+  revision = "c2791efb9983ce119abe1d1ffeebab6b91048372"
 
 [[projects]]
   name = "github.com/labstack/echo"
@@ -41,7 +41,7 @@
   branch = "master"
   name = "github.com/lib/pq"
   packages = [".","oid"]
-  revision = "b2004221932bd6b13167ef654c81cffac36f7537"
+  revision = "d34b9ff171c21ad295489235aec8b6626023cd04"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -59,7 +59,7 @@
   branch = "master"
   name = "github.com/mediocregopher/radix.v3"
   packages = [".","resp"]
-  revision = "d285b9d40ad446202117b4bf102c0b00e116660a"
+  revision = "9f9e105e072ae31c7d9fce1683a007dd72a95ebe"
 
 [[projects]]
   name = "github.com/nsqio/go-nsq"
@@ -72,12 +72,6 @@
   packages = [".","format","internal/assertion","internal/asyncassertion","internal/oraclematcher","internal/testingtsupport","matchers","matchers/support/goraph/bipartitegraph","matchers/support/goraph/edge","matchers/support/goraph/node","matchers/support/goraph/util","types"]
   revision = "003f63b7f4cff3fc95357005358af2de0f5fe152"
   version = "v1.3.0"
-
-[[projects]]
-  name = "github.com/sirupsen/logrus"
-  packages = ["."]
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
 
 [[projects]]
   branch = "master"
@@ -94,20 +88,20 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["acme","acme/autocert","ssh/terminal"]
-  revision = "c3a3ad6d03f7a915c0f7e194b7152974bb73d287"
+  packages = ["acme","acme/autocert"]
+  revision = "b2aa35443fbc700ab74c586ae79b81c171851023"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["html","html/atom","html/charset"]
-  revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
+  revision = "b68f30494add4df6bd8ef5e82803f308e7f7c59c"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix","windows"]
-  revision = "d8e400bc7db4870d786864138af681469693d18c"
+  packages = ["unix"]
+  revision = "378d26f46672a356c46195c28f61bdb4c0a781dd"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -118,12 +112,12 @@
 [[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
-  version = "v2.1.1"
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6fa09f94c5fc0381388876187affe725382f0cba085b764c1a9e1865d6fb4ccd"
+  inputs-digest = "d5016220897ae7610e558ecaee65899ec82e4224597cd14de2cfdaede193d231"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -9,17 +9,17 @@ import (
 	"github.com/joaosoft/go-log/service"
 )
 
-// gosetup ...
-type gosetup struct {
+// GoSetup ...
+type GoSetup struct {
 	services        []*Services
 	runner          IRunner
 	runInBackground bool
 }
 
 // NewGoSetup ...make
-func NewGoSetup(options ...GoSetupOption) *gosetup {
-	log.Info("starting gosetup Service")
-	mock := &gosetup{
+func NewGoSetup(options ...GoSetupOption) *GoSetup {
+	log.Info("starting GoSetup Service")
+	mock := &GoSetup{
 		runInBackground: background,
 		services:        make([]*Services, 0),
 	}
@@ -42,7 +42,7 @@ func NewGoSetup(options ...GoSetupOption) *gosetup {
 }
 
 // Run ...
-func (gosetup *gosetup) Run() error {
+func (gosetup *GoSetup) Run() error {
 	files, err := filepath.Glob(global["path"].(string) + "*.json")
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func (gosetup *gosetup) Run() error {
 }
 
 // RunSingle ...
-func (gosetup *gosetup) RunSingle(file string) error {
+func (gosetup *GoSetup) RunSingle(file string) error {
 	if err := gosetup.execute([]string{file}); err != nil {
 		log.Error(err)
 		return err
@@ -66,7 +66,7 @@ func (gosetup *gosetup) RunSingle(file string) error {
 }
 
 // Stop ...
-func (gosetup *gosetup) Stop() error {
+func (gosetup *GoSetup) Stop() error {
 	if err := gosetup.runner.Teardown(); err != nil {
 		log.Error(err)
 		return err
@@ -76,7 +76,7 @@ func (gosetup *gosetup) Stop() error {
 	return nil
 }
 
-func (gosetup *gosetup) execute(files []string) error {
+func (gosetup *GoSetup) execute(files []string) error {
 	for _, file := range files {
 		servicesOnFile := &Services{}
 		if _, err := readFile(file, servicesOnFile); err != nil {
@@ -109,7 +109,7 @@ func (gosetup *gosetup) execute(files []string) error {
 }
 
 // Wait ...
-func (gosetup *gosetup) Wait() {
+func (gosetup *GoSetup) Wait() {
 	log.Info("waiting to stop...")
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

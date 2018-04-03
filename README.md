@@ -449,7 +449,7 @@ func main() {
 ```
 
 >### ALL [ see 005_all.json ] [go-setup/examples/005_all.json](https://github.com/joaosoft/go-setup/tree/master/examples/005_all.json)
-This example have all previous mocks, just to show you that you can config them all together.
+This example have all previous setup's, just to show you that you can config them all together.
 
 ## Follow me at
 Facebook: https://www.facebook.com/joaosoft

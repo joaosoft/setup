@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 type IRunner interface {
 	Setup() error

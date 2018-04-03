@@ -1,5 +1,5 @@
-# go-mock
-[![Build Status](https://travis-ci.org/joaosoft/go-mock.svg?branch=master)](https://travis-ci.org/joaosoft/go-mock) | [![codecov](https://codecov.io/gh/joaosoft/go-mock/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-mock)
+# go-setup
+[![Build Status](https://travis-ci.org/joaosoft/go-setup.svg?branch=master)](https://travis-ci.org/joaosoft/go-setup) | [![codecov](https://codecov.io/gh/joaosoft/go-setup/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-setup)
 
 A framework that allows you to create mock services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
 This frameworks runs all real services allowing you to validade the integration between services and your own code.
@@ -21,7 +21,7 @@ Project dependencies are managed using Dep. Read more about [Dep](https://github
 
 >### Go
 ```
-go get github.com/joaosoft/go-mock/service
+go get github.com/joaosoft/go-setup/service
 ```
 
 ## Docker
@@ -32,48 +32,48 @@ make env
 ```
 
 ## Usage 
-This example is available in the project at [go-mock/bin/launcher](https://github.com/joaosoft/go-mock/tree/master/bin/launcher)
+This example is available in the project at [go-setup/bin/launcher](https://github.com/joaosoft/go-setup/tree/master/bin/launcher)
 
 ```go
 package main
 
 import (
-	gomock "github.com/joaosoft/go-mock/services"
+	gosetup "github.com/joaosoft/go-setup/services"
 )
 
 func main() {
-	test := gomock.NewGoMock(
-    		gomock.WithPath("./examples"),
-    		gomock.WithRunInBackground(true))
+	test := gosetup.NewGoSetup(
+    		gosetup.WithPath("./examples"),
+    		gosetup.WithRunInBackground(true))
     
     //// web
     //test.RunSingle("001_webservices.json")
     //
     //// sql
-    //configSQL := &gomock.SQLConfig{
+    //configSQL := &gosetup.SQLConfig{
     //	Driver:     "postgres",
     //	DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
     //}
-    //test.Reconfigure(gomock.WithSQLConfiguration(configSQL))
+    //test.Reconfigure(gosetup.WithSQLConfiguration(configSQL))
     //test.RunSingle("002_sql.json")
     //
     //// nsq
-    //configNSQ := &gomock.NSQConfig{
+    //configNSQ := &gosetup.NSQConfig{
     //	Lookupd:      "localhost:4150",
     //	RequeueDelay: 30,
     //	MaxInFlight:  5,
     //	MaxAttempts:  5,
     //}
-    //test.Reconfigure(gomock.WithNSQConfiguration(configNSQ))
+    //test.Reconfigure(gosetup.WithNSQConfiguration(configNSQ))
     //test.RunSingle("003_nsq.json")
     //
     //// redis
-    //configRedis := &gomock.RedisConfig{
+    //configRedis := &gosetup.RedisConfig{
     //	Protocol: "tcp",
     //	Address:  "localhost:6379",
     //	Size:     10,
     //}
-    //test.Reconfigure(gomock.WithRedisConfiguration(configRedis))
+    //test.Reconfigure(gosetup.WithRedisConfiguration(configRedis))
     //test.RunSingle("004_redis.json")
     
     //// files
@@ -81,7 +81,7 @@ func main() {
 
     // all
     test.Reconfigure(
-        gomock.WithConfigurationFile("data/config.json"))
+        gosetup.WithConfigurationFile("data/config.json"))
 
     test.Run()
     test.Wait()
@@ -91,7 +91,7 @@ func main() {
 
 >## Configurations
 
->### WebServices [ see 001_http.json ] [go-mock/examples/001_http.json](https://github.com/joaosoft/go-mock/tree/master/examples/001_http.json)
+>### WebServices [ see 001_http.json ] [go-setup/examples/001_http.json](https://github.com/joaosoft/go-setup/tree/master/examples/001_http.json)
 
 ```javascript
 {
@@ -212,7 +212,7 @@ func main() {
 }
 ```
 
->### SQL [ see 002_sql.json ] [go-mock/examples/002_sql.json](https://github.com/joaosoft/go-mock/tree/master/examples/002_sql.json)
+>### SQL [ see 002_sql.json ] [go-setup/examples/002_sql.json](https://github.com/joaosoft/go-setup/tree/master/examples/002_sql.json)
 ```javascript
 {
   "sql": [
@@ -289,7 +289,7 @@ func main() {
 }
 ```
 
->### NSQ [ see 003_nsq.json ] [go-mock/examples/003_nsq.json](https://github.com/joaosoft/go-mock/tree/master/examples/003_nsq.json)
+>### NSQ [ see 003_nsq.json ] [go-setup/examples/003_nsq.json](https://github.com/joaosoft/go-setup/tree/master/examples/003_nsq.json)
 ```javascript
 {
   "nsq": [
@@ -353,7 +353,7 @@ func main() {
 }
 ```
 
->### REDIS [ see 004_redis.json ] [go-mock/examples/004_redis.json](https://github.com/joaosoft/go-mock/tree/master/examples/004_redis.json)
+>### REDIS [ see 004_redis.json ] [go-setup/examples/004_redis.json](https://github.com/joaosoft/go-setup/tree/master/examples/004_redis.json)
 ```javascript
 {
   "redis": [
@@ -441,14 +441,14 @@ func main() {
 }
 ```
 
->### FILES [ see 005_files.json ] [go-mock/examples/005_files.json](https://github.com/joaosoft/go-mock/tree/master/examples/005_files.json)
+>### FILES [ see 005_files.json ] [go-setup/examples/005_files.json](https://github.com/joaosoft/go-setup/tree/master/examples/005_files.json)
 ```javascript
 {
   "files": ["001_http.json", "002_sql.json"]
 }
 ```
 
->### ALL [ see 005_all.json ] [go-mock/examples/005_all.json](https://github.com/joaosoft/go-mock/tree/master/examples/005_all.json)
+>### ALL [ see 005_all.json ] [go-setup/examples/005_all.json](https://github.com/joaosoft/go-setup/tree/master/examples/005_all.json)
 This example have all previous mocks, just to show you that you can config them all together.
 
 ## Follow me at

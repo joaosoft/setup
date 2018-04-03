@@ -1,42 +1,42 @@
 package main
 
 import (
-	gomock "go-mock/service"
+	gosetup "go-setup/service"
 )
 
 func main() {
-	test := gomock.NewGoMock(
-		gomock.WithPath("./examples"),
-		gomock.WithRunInBackground(true))
+	test := gosetup.NewGoSetup(
+		gosetup.WithPath("./examples"),
+		gosetup.WithRunInBackground(true))
 
 	//// web
 	//test.RunSingle("001_webservices.json")
 	//
 	//// sql
-	//configSql := &gomock.SqlConfig{
+	//configSql := &gosetup.SqlConfig{
 	//	Driver:     "postgres",
 	//	DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
 	//}
-	//test.Reconfigure(gomock.WithSqlConfiguration(configSql))
+	//test.Reconfigure(gosetup.WithSqlConfiguration(configSql))
 	//test.RunSingle("002_sql.json")
 	//
 	//// nsq
-	//configNSQ := &gomock.NsqConfig{
+	//configNSQ := &gosetup.NsqConfig{
 	//	Lookupd:      "localhost:4150",
 	//	RequeueDelay: 30,
 	//	MaxInFlight:  5,
 	//	MaxAttempts:  5,
 	//}
-	//test.Reconfigure(gomock.WithNsqConfiguration(configNSQ))
+	//test.Reconfigure(gosetup.WithNsqConfiguration(configNSQ))
 	//test.RunSingle("003_nsq.json")
 	//
 	//// redis
-	//configRedis := &gomock.RedisConfig{
+	//configRedis := &gosetup.RedisConfig{
 	//	Protocol: "tcp",
 	//	Address:  "localhost:6379",
 	//	Size:     10,
 	//}
-	//test.Reconfigure(gomock.WithRedisConfiguration(configRedis))
+	//test.Reconfigure(gosetup.WithRedisConfiguration(configRedis))
 	//test.RunSingle("004_redis.json")
 
 	//// files
@@ -44,7 +44,7 @@ func main() {
 
 	// all
 	test.Reconfigure(
-		gomock.WithConfigurationFile("data/config.json"))
+		gosetup.WithConfigurationFile("data/config.json"))
 
 	test.Run()
 	test.Wait()

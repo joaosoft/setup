@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 const (
 	background  = true

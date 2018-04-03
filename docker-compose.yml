@@ -7,7 +7,7 @@ services:
       dockerfile: ./sbin/docker/dev-alpine.dockerfile
     command: run ./bin/launcher/main.go
     volumes:
-      - esdata1:/go-mock
+      - esdata1:/go-setup
     environment:
       - ENV=dev
     ports:

@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 import (
 	"os"
@@ -13,7 +13,7 @@ var log = logger.NewLog(
 	logger.WithWriter(os.Stdout)).WithPrefixes(map[string]interface{}{
 	"level":   logger.LEVEL,
 	"time":    logger.TIME,
-	"service": "go-mock"})
+	"service": "go-setup"})
 
 func getDefaultNsqConfig() *NsqConfig {
 	if value, exists := global["nsq"]; exists {

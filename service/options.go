@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 import (
 	"strings"
@@ -6,19 +6,19 @@ import (
 	logger "github.com/joaosoft/go-log/service"
 )
 
-// GoMockOption ...
-type GoMockOption func(gomock *GoMock)
+// GoSetupOption ...
+type GoSetupOption func(gosetup *gosetup)
 
 // Reconfigure ...
-func (gomock *GoMock) Reconfigure(options ...GoMockOption) {
+func (gosetup *gosetup) Reconfigure(options ...GoSetupOption) {
 	for _, option := range options {
-		option(gomock)
+		option(gosetup)
 	}
 }
 
 // WithPath ...
-func WithPath(path string) GoMockOption {
-	return func(gomock *GoMock) {
+func WithPath(path string) GoSetupOption {
+	return func(gosetup *gosetup) {
 		if path != "" {
 			if !strings.HasSuffix(path, "/") {
 				path += "/"
@@ -29,27 +29,27 @@ func WithPath(path string) GoMockOption {
 }
 
 // WithServices ...
-func WithServices(services []*Services) GoMockOption {
-	return func(gomock *GoMock) {
-		gomock.services = services
+func WithServices(services []*Services) GoSetupOption {
+	return func(gosetup *gosetup) {
+		gosetup.services = services
 	}
 }
 
 // WithRunInBackground ...
-func WithRunInBackground(runInBackground bool) GoMockOption {
-	return func(gomock *GoMock) {
-		gomock.runInBackground = runInBackground
+func WithRunInBackground(runInBackground bool) GoSetupOption {
+	return func(gosetup *gosetup) {
+		gosetup.runInBackground = runInBackground
 	}
 }
 
 // WithConfigurationFile ...
-func WithConfigurationFile(file string) GoMockOption {
-	return func(gomock *GoMock) {
+func WithConfigurationFile(file string) GoSetupOption {
+	return func(gosetup *gosetup) {
 		config := &Configurations{}
 		if _, err := readFile(file, config); err != nil {
 			panic(err)
 		}
-		gomock.Reconfigure(
+		gosetup.Reconfigure(
 			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
 			WithNsqConfiguration(&config.Connections.NsqConfig))
@@ -57,30 +57,30 @@ func WithConfigurationFile(file string) GoMockOption {
 }
 
 // WithRedisConfiguration ...
-func WithRedisConfiguration(config *RedisConfig) GoMockOption {
-	return func(gomock *GoMock) {
+func WithRedisConfiguration(config *RedisConfig) GoSetupOption {
+	return func(gosetup *gosetup) {
 		global["redis"] = config
 	}
 }
 
 // WithSqlConfiguration ...
-func WithSqlConfiguration(config *SqlConfig) GoMockOption {
-	return func(gomock *GoMock) {
+func WithSqlConfiguration(config *SqlConfig) GoSetupOption {
+	return func(gosetup *gosetup) {
 		global["sql"] = config
 	}
 }
 
 // WithNsqConfiguration ...
-func WithNsqConfiguration(config *NsqConfig) GoMockOption {
-	return func(gomock *GoMock) {
+func WithNsqConfiguration(config *NsqConfig) GoSetupOption {
+	return func(gosetup *gosetup) {
 		global["nsq"] = config
 	}
 }
 
 // WithConfigurations ...
-func WithConfigurations(config *Configurations) GoMockOption {
-	return func(gomock *GoMock) {
-		gomock.Reconfigure(
+func WithConfigurations(config *Configurations) GoSetupOption {
+	return func(gosetup *gosetup) {
+		gosetup.Reconfigure(
 			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
 			WithNsqConfiguration(&config.Connections.NsqConfig))
@@ -88,15 +88,15 @@ func WithConfigurations(config *Configurations) GoMockOption {
 }
 
 // WithLogger ...
-func WithLogger(logger logger.ILog) GoMockOption {
-	return func(gomock *GoMock) {
+func WithLogger(logger logger.ILog) GoSetupOption {
+	return func(gosetup *gosetup) {
 		log = logger
 	}
 }
 
 // WithLogLevel ...
-func WithLogLevel(level logger.Level) GoMockOption {
-	return func(gomock *GoMock) {
+func WithLogLevel(level logger.Level) GoSetupOption {
+	return func(gosetup *gosetup) {
 		log.SetLevel(level)
 	}
 }

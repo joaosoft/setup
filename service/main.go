@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 import (
 	"os"
@@ -9,17 +9,17 @@ import (
 	"github.com/joaosoft/go-log/service"
 )
 
-// GoMock ...
-type GoMock struct {
+// gosetup ...
+type gosetup struct {
 	services        []*Services
 	runner          IRunner
 	runInBackground bool
 }
 
-// NewGoMock ...make
-func NewGoMock(options ...GoMockOption) *GoMock {
-	log.Info("starting GoMock Service")
-	mock := &GoMock{
+// NewGoSetup ...make
+func NewGoSetup(options ...GoSetupOption) *gosetup {
+	log.Info("starting gosetup Service")
+	mock := &gosetup{
 		runInBackground: background,
 		services:        make([]*Services, 0),
 	}
@@ -42,12 +42,12 @@ func NewGoMock(options ...GoMockOption) *GoMock {
 }
 
 // Run ...
-func (gomock *GoMock) Run() error {
+func (gosetup *gosetup) Run() error {
 	files, err := filepath.Glob(global["path"].(string) + "*.json")
 	if err != nil {
 		return err
 	}
-	if err := gomock.execute(files); err != nil {
+	if err := gosetup.execute(files); err != nil {
 		log.Error(err)
 		return err
 	}
@@ -56,8 +56,8 @@ func (gomock *GoMock) Run() error {
 }
 
 // RunSingle ...
-func (gomock *GoMock) RunSingle(file string) error {
-	if err := gomock.execute([]string{file}); err != nil {
+func (gosetup *gosetup) RunSingle(file string) error {
+	if err := gosetup.execute([]string{file}); err != nil {
 		log.Error(err)
 		return err
 	}
@@ -66,8 +66,8 @@ func (gomock *GoMock) RunSingle(file string) error {
 }
 
 // Stop ...
-func (gomock *GoMock) Stop() error {
-	if err := gomock.runner.Teardown(); err != nil {
+func (gosetup *gosetup) Stop() error {
+	if err := gosetup.runner.Teardown(); err != nil {
 		log.Error(err)
 		return err
 	}
@@ -76,7 +76,7 @@ func (gomock *GoMock) Stop() error {
 	return nil
 }
 
-func (gomock *GoMock) execute(files []string) error {
+func (gosetup *gosetup) execute(files []string) error {
 	for _, file := range files {
 		servicesOnFile := &Services{}
 		if _, err := readFile(file, servicesOnFile); err != nil {
@@ -88,28 +88,28 @@ func (gomock *GoMock) execute(files []string) error {
 			if _, err := readFile(fileName, servicesByFile); err != nil {
 				return err
 			}
-			gomock.services = append(gomock.services, servicesByFile)
+			gosetup.services = append(gosetup.services, servicesByFile)
 		}
 
-		gomock.services = append(gomock.services, servicesOnFile)
+		gosetup.services = append(gosetup.services, servicesOnFile)
 	}
 
-	gomock.runner = NewRunner(gomock.services)
-	if err := gomock.runner.Setup(); err != nil {
+	gosetup.runner = NewRunner(gosetup.services)
+	if err := gosetup.runner.Setup(); err != nil {
 		return err
 	}
 
 	log.Info("started all services")
 
-	if !gomock.runInBackground {
-		gomock.Wait()
+	if !gosetup.runInBackground {
+		gosetup.Wait()
 	}
 
 	return nil
 }
 
 // Wait ...
-func (gomock *GoMock) Wait() {
+func (gosetup *gosetup) Wait() {
 	log.Info("waiting to stop...")
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

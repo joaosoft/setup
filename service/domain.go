@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 import (
 	"encoding/json"

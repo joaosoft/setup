@@ -1,4 +1,4 @@
-package gomock
+package gosetup
 
 // App ...
 type App struct {

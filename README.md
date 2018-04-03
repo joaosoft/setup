@@ -1,5 +1,5 @@
 # go-mock
-[![Build Status](https://travis-ci.org/joaosoft/go-mock.svg?branch=master)](https://travis-ci.org/joaosoft/go-mock) | [![Code Climate](https://codeclimate.com/github/joaosoft/go-mock/badges/coverage.svg)](https://codeclimate.com/github/joaosoft/go-mock)
+[![Build Status](https://travis-ci.org/joaosoft/go-mock.svg?branch=master)](https://travis-ci.org/joaosoft/go-mock) | [![codecov](https://codecov.io/gh/joaosoft/go-mock/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-mock)
 
 A framework that allows you to create mock services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
 This frameworks runs all real services allowing you to validade the integration between services and your own code.

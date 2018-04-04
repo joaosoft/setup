@@ -1,7 +1,7 @@
 # go-setup
 [![Build Status](https://travis-ci.org/joaosoft/go-setup.svg?branch=master)](https://travis-ci.org/joaosoft/go-setup) | [![codecov](https://codecov.io/gh/joaosoft/go-setup/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-setup)
 
-A framework that allows you to create mock services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
+A framework that allows you to setup services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
 This frameworks runs all real services allowing you to validade the integration between services and your own code.
 
 ###### If i miss something or you have something interesting, please be part of this project. Let me know! My contact is at the end.

@@ -77,7 +77,7 @@ func (runner *RedisRunner) Teardown() error {
 
 func (runner *RedisRunner) loadConfiguration(test RedisService) (*RedisConfig, error) {
 	if test.Configuration != nil {
-		return runner.configuration, nil
+		return test.Configuration, nil
 	} else if runner.configuration != nil {
 		return runner.configuration, nil
 	} else {

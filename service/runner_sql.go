@@ -78,7 +78,7 @@ func (runner *SqlRunner) Teardown() error {
 
 func (runner *SqlRunner) loadConfiguration(test SqlService) (*SqlConfig, error) {
 	if test.Configuration != nil {
-		return runner.configuration, nil
+		return test.Configuration, nil
 	} else if runner.configuration != nil {
 		return runner.configuration, nil
 	} else {

@@ -76,7 +76,7 @@ func (runner *NsqRunner) Teardown() error {
 
 func (runner *NsqRunner) loadConfiguration(test NsqService) (*NsqConfig, error) {
 	if test.Configuration != nil {
-		return runner.configuration, nil
+		return test.Configuration, nil
 	} else if runner.configuration != nil {
 		return runner.configuration, nil
 	} else {

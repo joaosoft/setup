@@ -2,9 +2,12 @@ package main
 
 import (
 	gosetup "go-setup/service"
+	"time"
+	"github.com/labstack/gommon/log"
 )
 
 func main() {
+	start := time.Now()
 	test := gosetup.NewGoSetup(
 		gosetup.WithPath("./examples"),
 		gosetup.WithRunInBackground(true))
@@ -49,4 +52,7 @@ func main() {
 	test.Run()
 	test.Wait()
 	test.Stop()
+
+	elapsed := time.Since(start)
+	log.Infof("ELAPSED TIME: %s", elapsed)
 }

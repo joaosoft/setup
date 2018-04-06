@@ -22,13 +22,37 @@
 
 
 [[constraint]]
-  name = "github.com/go-redis/redis"
-  version = "6.7.4"
+  branch = "master"
+  name = "github.com/Benjamintf1/Expanded-Unmarshalled-Matchers"
+
+[[constraint]]
+  name = "github.com/go-sql-driver/mysql"
+  version = "1.3.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/joaosoft/go-log"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/joaosoft/go-writer"
 
 [[constraint]]
   name = "github.com/labstack/echo"
-  version = "3.2.4"
+  version = "3.3.4"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/lib/pq"
 
 [[constraint]]
   branch = "master"
   name = "github.com/mediocregopher/radix.v3"
+
+[[constraint]]
+  name = "github.com/nsqio/go-nsq"
+  version = "1.0.7"
+
+[[constraint]]
+  name = "github.com/onsi/gomega"
+  version = "1.3.0"

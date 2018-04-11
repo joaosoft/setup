@@ -83,15 +83,11 @@ func (gosetup *GoSetup) execute(files []string) error {
 			return err
 		}
 
-		for _, fileName := range servicesOnFile.Files {
-			servicesByFile := &Services{}
-			if _, err := readFile(fileName, servicesByFile); err != nil {
-				return err
-			}
-			gosetup.services = append(gosetup.services, servicesByFile)
+		array, err := load(servicesOnFile)
+		if err != nil {
+			return err
 		}
-
-		gosetup.services = append(gosetup.services, servicesOnFile)
+		gosetup.services = append(gosetup.services, array...)
 	}
 
 	gosetup.runner = NewRunner(gosetup.services)
@@ -106,6 +102,29 @@ func (gosetup *GoSetup) execute(files []string) error {
 	}
 
 	return nil
+}
+
+// load recursive load services files inside every service
+func load(service *Services) ([]*Services, error) {
+	log.Info("loading service...")
+	array := make([]*Services, 0)
+
+	for _, file := range service.Files {
+		log.Infof("loading service file %s", file)
+		nextService := &Services{}
+		if _, err := readFile(file, nextService); err != nil {
+			return nil, err
+		}
+
+		log.Infof("getting next service...")
+		if nextArray, err := load(nextService); err != nil {
+			return nil, err
+		} else {
+			array = append(array, nextArray...)
+		}
+	}
+
+	return append(array, service), nil
 }
 
 // Wait ...

@@ -23,7 +23,7 @@
   branch = "master"
   name = "github.com/joaosoft/go-log"
   packages = ["service"]
-  revision = "14737dce72a7fb9bda9fefab53bf5fae602e22f4"
+  revision = "5440ef3c601d7ce1748fd5f9a5317d28d5adbad3"
 
 [[projects]]
   branch = "master"
@@ -65,7 +65,7 @@
   branch = "master"
   name = "github.com/mediocregopher/radix.v3"
   packages = [".","resp"]
-  revision = "9f9e105e072ae31c7d9fce1683a007dd72a95ebe"
+  revision = "ad2e28d1563c76d5ae7b62a66f12e72c208f461d"
 
 [[projects]]
   name = "github.com/nsqio/go-nsq"
@@ -101,13 +101,13 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["acme","acme/autocert"]
-  revision = "b2aa35443fbc700ab74c586ae79b81c171851023"
+  revision = "f70185d77e8278766928032ee1355e3da47e7181"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["html","html/atom","html/charset"]
-  revision = "b3c676e531a6dc479fa1b35ac961c13f5e2b4d2e"
+  revision = "61147c48b25b599e5b561d2e9c4f3e1ef489ca41"
 
 [[projects]]
   branch = "master"
@@ -130,6 +130,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "19b7691b1b6078ebb77bfe18675bf4712ebf684a511140c52a3172cf9f94566e"
+  inputs-digest = "c39c8121cfef1e82d1eb6fddfec62d8ffc29909c2f5f57fa18f23686418e83c4"
   solver-name = "gps-cdcl"
   solver-version = 1

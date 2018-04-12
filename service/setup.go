@@ -14,17 +14,12 @@ type GoSetup struct {
 	services        []*Services
 	runner          IRunner
 	runInBackground bool
+	config          *AppConfig
 }
 
 // NewGoSetup ...make
 func NewGoSetup(options ...GoSetupOption) *GoSetup {
 	log.Info("starting GoSetup Service")
-	mock := &GoSetup{
-		runInBackground: background,
-		services:        make([]*Services, 0),
-	}
-
-	global["path"] = defaultPath
 
 	// load configuration file
 	configApp := &AppConfig{}
@@ -35,6 +30,14 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 		log.Debugf("setting log level to %s", level)
 		WithLogLevel(level)
 	}
+
+	mock := &GoSetup{
+		runInBackground: background,
+		services:        make([]*Services, 0),
+		config:          configApp,
+	}
+
+	global["path"] = defaultPath
 
 	mock.Reconfigure(options...)
 

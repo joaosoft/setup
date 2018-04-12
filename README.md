@@ -32,7 +32,7 @@ make env
 ```
 
 ## Usage 
-This example is available in the project at [go-setup/bin/launcher](https://github.com/joaosoft/go-setup/tree/master/bin/launcher)
+This example is available in the project at [go-setup/example](https://github.com/joaosoft/go-setup/tree/master/example)
 
 ```go
 package main
@@ -91,7 +91,7 @@ func main() {
 
 >## Configurations
 
->### WebServices [ see 001_http.json ] [go-setup/examples/001_http.json](https://github.com/joaosoft/go-setup/tree/master/examples/001_http.json)
+>### WebServices [ see 001_http.json ] [go-setup/example/001_http.json](https://github.com/joaosoft/go-setup/tree/master/example/001_http.json)
 
 ```javascript
 {
@@ -212,7 +212,7 @@ func main() {
 }
 ```
 
->### SQL [ see 002_sql.json ] [go-setup/examples/002_sql.json](https://github.com/joaosoft/go-setup/tree/master/examples/002_sql.json)
+>### SQL [ see 002_sql.json ] [go-setup/example/002_sql.json](https://github.com/joaosoft/go-setup/tree/master/example/002_sql.json)
 ```javascript
 {
   "sql": [
@@ -289,7 +289,7 @@ func main() {
 }
 ```
 
->### NSQ [ see 003_nsq.json ] [go-setup/examples/003_nsq.json](https://github.com/joaosoft/go-setup/tree/master/examples/003_nsq.json)
+>### NSQ [ see 003_nsq.json ] [go-setup/example/003_nsq.json](https://github.com/joaosoft/go-setup/tree/master/example/003_nsq.json)
 ```javascript
 {
   "nsq": [
@@ -353,7 +353,7 @@ func main() {
 }
 ```
 
->### REDIS [ see 004_redis.json ] [go-setup/examples/004_redis.json](https://github.com/joaosoft/go-setup/tree/master/examples/004_redis.json)
+>### REDIS [ see 004_redis.json ] [go-setup/example/004_redis.json](https://github.com/joaosoft/go-setup/tree/master/example/004_redis.json)
 ```javascript
 {
   "redis": [
@@ -441,14 +441,14 @@ func main() {
 }
 ```
 
->### FILES [ see 005_files.json ] [go-setup/examples/005_files.json](https://github.com/joaosoft/go-setup/tree/master/examples/005_files.json)
+>### FILES [ see 005_files.json ] [go-setup/example/005_files.json](https://github.com/joaosoft/go-setup/tree/master/example/005_files.json)
 ```javascript
 {
   "files": ["001_http.json", "002_sql.json"]
 }
 ```
 
->### ALL [ see 005_all.json ] [go-setup/examples/005_all.json](https://github.com/joaosoft/go-setup/tree/master/examples/005_all.json)
+>### ALL [ see 005_all.json ] [go-setup/example/005_all.json](https://github.com/joaosoft/go-setup/tree/master/example/005_all.json)
 This example have all previous setup's, just to show you that you can config them all together.
 
 ## Follow me at

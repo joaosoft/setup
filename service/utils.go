@@ -7,32 +7,6 @@ import (
 	"os"
 )
 
-func (service *Services) fromFile(fileName string) error {
-	var err error
-
-	if !exists(fileName) {
-		fileName = global["path"].(string) + fileName
-	}
-
-	log.Infof("loading file [ %s ]", fileName)
-
-	file, err := os.Open(fileName)
-	if err != nil {
-		return err
-	}
-
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		return err
-	}
-
-	if err := json.Unmarshal(data, service); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func exists(file string) bool {
 	if _, err := os.Stat(file); err != nil {
 		if os.IsNotExist(err) {

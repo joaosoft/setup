@@ -1,11 +1,11 @@
 package gosetup
 
 import (
-	logger "github.com/joaosoft/go-log/service"
+	"github.com/joaosoft/go-log/service"
 )
 
 var global = make(map[string]interface{})
-var log = logger.NewLogDefault("go-setup", logger.InfoLevel)
+var log = golog.NewLogDefault("go-setup", golog.InfoLevel)
 
 func getDefaultNsqConfig() *NsqConfig {
 	if value, exists := global["nsq"]; exists {

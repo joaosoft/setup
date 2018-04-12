@@ -3,13 +3,14 @@ package main
 import (
 	gosetup "go-setup/service"
 	"time"
+
 	"github.com/labstack/gommon/log"
 )
 
 func main() {
 	start := time.Now()
 	test := gosetup.NewGoSetup(
-		gosetup.WithPath("./examples"),
+		gosetup.WithPath("./example"),
 		gosetup.WithRunInBackground(true))
 
 	//// web
@@ -47,7 +48,7 @@ func main() {
 
 	// all
 	test.Reconfigure(
-		gosetup.WithConfigurationFile("data/config.json"))
+		gosetup.WithConfigurationFile("example/data/config.json"))
 
 	test.Run()
 	test.Wait()

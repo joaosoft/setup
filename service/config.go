@@ -1,7 +1,7 @@
 package gosetup
 
-// App ...
-type App struct {
+// AppConfig ...
+type AppConfig struct {
 	Log struct {
 		Level string `json:"level"`
 	} `json:"log"`

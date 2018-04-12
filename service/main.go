@@ -27,11 +27,11 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 	global["path"] = defaultPath
 
 	// load configuration file
-	app := &App{}
-	if _, err := readFile("config/app.json", app); err != nil {
+	configApp := &AppConfig{}
+	if _, err := readFile("./config/app.json", configApp); err != nil {
 		log.Error(err)
 	} else {
-		level, _ := golog.ParseLevel(app.Log.Level)
+		level, _ := golog.ParseLevel(configApp.Log.Level)
 		log.Debugf("setting log level to %s", level)
 		WithLogLevel(level)
 	}

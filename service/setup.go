@@ -37,8 +37,6 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 		config:          configApp,
 	}
 
-	global["path"] = defaultPath
-
 	mock.Reconfigure(options...)
 
 	return mock

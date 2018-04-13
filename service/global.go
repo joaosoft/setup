@@ -8,6 +8,10 @@ import (
 var global = make(map[string]interface{})
 var log = golog.NewLogDefault("go-setup", golog.InfoLevel)
 
+func init() {
+	global["path"] = defaultPath
+}
+
 func getDefaultNsqConfig() *gomanager.NSQConfig {
 	if value, exists := global["nsq"]; exists {
 		return value.(*gomanager.NSQConfig)

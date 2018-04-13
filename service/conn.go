@@ -9,19 +9,19 @@ import (
 )
 
 // createConnection ...
-func (config *RedisConfig) connect() (*redis.Pool, error) {
+func (config *RedisConfig) Connect() (*redis.Pool, error) {
 	log.Infof("connecting with protocol [ %s ], address [ %s ] and size [ %d ]", config.Protocol, config.Address, config.Size)
 	return redis.NewPool(config.Protocol, config.Address, config.Size, nil)
 }
 
 // createConnection ...
-func (config *SqlConfig) connect() (*sql.DB, error) {
+func (config *SqlConfig) Connect() (*sql.DB, error) {
 	log.Infof("connecting with driver [ %s ] and data source [ %s ]", config.Driver, config.DataSource)
 	return sql.Open(config.Driver, config.DataSource)
 }
 
 // createConnection ...
-func (config *NsqConfig) connect() (*nsqlib.Producer, error) {
+func (config *NsqConfig) Connect() (*nsqlib.Producer, error) {
 	nsqConfig := nsqlib.NewConfig()
 	nsqConfig.MaxAttempts = config.MaxAttempts
 	nsqConfig.DefaultRequeueDelay = time.Duration(config.RequeueDelay) * time.Second

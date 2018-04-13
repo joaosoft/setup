@@ -3,7 +3,8 @@ package gosetup
 import (
 	"strings"
 
-	logger "github.com/joaosoft/go-log/service"
+	"github.com/joaosoft/go-log/service"
+	"github.com/joaosoft/go-manager/service"
 )
 
 // GoSetupOption ...
@@ -57,21 +58,21 @@ func WithConfigurationFile(file string) GoSetupOption {
 }
 
 // WithRedisConfiguration ...
-func WithRedisConfiguration(config *RedisConfig) GoSetupOption {
+func WithRedisConfiguration(config *gomanager.RedisConfig) GoSetupOption {
 	return func(gosetup *GoSetup) {
 		global["redis"] = config
 	}
 }
 
 // WithSqlConfiguration ...
-func WithSqlConfiguration(config *SqlConfig) GoSetupOption {
+func WithSqlConfiguration(config *gomanager.DBConfig) GoSetupOption {
 	return func(gosetup *GoSetup) {
 		global["sql"] = config
 	}
 }
 
 // WithNsqConfiguration ...
-func WithNsqConfiguration(config *NsqConfig) GoSetupOption {
+func WithNsqConfiguration(config *gomanager.NSQConfig) GoSetupOption {
 	return func(gosetup *GoSetup) {
 		global["nsq"] = config
 	}
@@ -88,14 +89,14 @@ func WithConfigurations(config *Configurations) GoSetupOption {
 }
 
 // WithLogger ...
-func WithLogger(logger logger.ILog) GoSetupOption {
+func WithLogger(logger golog.ILog) GoSetupOption {
 	return func(gosetup *GoSetup) {
 		log = logger
 	}
 }
 
 // WithLogLevel ...
-func WithLogLevel(level logger.Level) GoSetupOption {
+func WithLogLevel(level golog.Level) GoSetupOption {
 	return func(gosetup *GoSetup) {
 		log.SetLevel(level)
 	}

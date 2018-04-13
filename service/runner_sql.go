@@ -5,15 +5,16 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql" // mysql driver
-	_ "github.com/lib/pq"              // postgres driver
+	"github.com/joaosoft/go-manager/service"
+	_ "github.com/lib/pq" // postgres driver
 )
 
 type SqlRunner struct {
 	services      []SqlService
-	configuration *SqlConfig
+	configuration *gomanager.DBConfig
 }
 
-func NewSqlRunner(services []SqlService, config *SqlConfig) *SqlRunner {
+func NewSqlRunner(services []SqlService, config *gomanager.DBConfig) *SqlRunner {
 	return &SqlRunner{
 		services:      services,
 		configuration: config,
@@ -28,7 +29,7 @@ func (runner *SqlRunner) Setup() error {
 		if configuration, err := runner.loadConfiguration(service); err != nil {
 			return err
 		} else {
-			if conn, err = configuration.connect(); err != nil {
+			if conn, err = configuration.Connect(); err != nil {
 				return fmt.Errorf("failed to create sql connection")
 			}
 		}
@@ -56,7 +57,7 @@ func (runner *SqlRunner) Teardown() error {
 		if configuration, err := runner.loadConfiguration(service); err != nil {
 			return err
 		} else {
-			if conn, err = configuration.connect(); err != nil {
+			if conn, err = configuration.Connect(); err != nil {
 				return fmt.Errorf("failed to create sql connection")
 			}
 		}
@@ -76,7 +77,7 @@ func (runner *SqlRunner) Teardown() error {
 	return nil
 }
 
-func (runner *SqlRunner) loadConfiguration(test SqlService) (*SqlConfig, error) {
+func (runner *SqlRunner) loadConfiguration(test SqlService) (*gomanager.DBConfig, error) {
 	if test.Configuration != nil {
 		return test.Configuration, nil
 	} else if runner.configuration != nil {

@@ -2,6 +2,7 @@ package gosetup
 
 import (
 	"encoding/json"
+	"github.com/joaosoft/go-manager/service"
 	"time"
 )
 
@@ -55,10 +56,10 @@ type Response struct {
 
 // RedisService
 type RedisService struct {
-	Name          string       `json:"name"`
-	Description   string       `json:"description"`
-	Configuration *RedisConfig `json:"configuration"`
-	Connection    *string      `json:"connection"`
+	Name          string                 `json:"name"`
+	Description   string                 `json:"description"`
+	Configuration *gomanager.RedisConfig `json:"configuration"`
+	Connection    *string                `json:"connection"`
 	Run           struct {
 		Setup    []RedisRun `json:"setup"`
 		Teardown []RedisRun `json:"teardown"`
@@ -78,10 +79,10 @@ type RedisCommand struct {
 
 // NsqService
 type NsqService struct {
-	Name          string     `json:"name"`
-	Description   string     `json:"description"`
-	Configuration *NsqConfig `json:"configuration"`
-	Connection    *string    `json:"connection"`
+	Name          string               `json:"name"`
+	Description   string               `json:"description"`
+	Configuration *gomanager.NSQConfig `json:"configuration"`
+	Connection    *string              `json:"connection"`
 	Run           struct {
 		Setup    []NsqRun `json:"setup"`
 		Teardown []NsqRun `json:"teardown"`
@@ -98,10 +99,10 @@ type NsqRun struct {
 
 // SqlService
 type SqlService struct {
-	Name          string     `json:"name"`
-	Description   string     `json:"description"`
-	Configuration *SqlConfig `json:"configuration"`
-	Connection    *string    `json:"connection"`
+	Name          string              `json:"name"`
+	Description   string              `json:"description"`
+	Configuration *gomanager.DBConfig `json:"configuration"`
+	Connection    *string             `json:"connection"`
 	Run           struct {
 		Setup    []SqlRun `json:"setup"`
 		Teardown []SqlRun `json:"teardown"`

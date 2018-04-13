@@ -26,6 +26,10 @@
   name = "github.com/Benjamintf1/Expanded-Unmarshalled-Matchers"
 
 [[constraint]]
+  branch = "go1"
+  name = "github.com/alphazero/Go-Redis"
+
+[[constraint]]
   name = "github.com/go-sql-driver/mysql"
   version = "1.3.0"
 
@@ -34,8 +38,12 @@
   name = "github.com/joaosoft/go-log"
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/joaosoft/go-manager"
+
+[[constraint]]
   name = "github.com/labstack/echo"
-  version = "3.3.4"
+  version = "3.3.5"
 
 [[constraint]]
   name = "github.com/labstack/gommon"
@@ -44,10 +52,6 @@
 [[constraint]]
   branch = "master"
   name = "github.com/lib/pq"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/mediocregopher/radix.v3"
 
 [[constraint]]
   name = "github.com/nsqio/go-nsq"

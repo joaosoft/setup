@@ -2,17 +2,19 @@ package gosetup
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 
-	redis "github.com/mediocregopher/radix.v3"
+	"github.com/alphazero/Go-Redis"
+	"github.com/joaosoft/go-manager/service"
 )
 
 type RedisRunner struct {
 	services      []RedisService
-	configuration *RedisConfig
+	configuration *gomanager.RedisConfig
 }
 
-func NewRedisRunner(services []RedisService, config *RedisConfig) *RedisRunner {
+func NewRedisRunner(services []RedisService, config *gomanager.RedisConfig) *RedisRunner {
 	return &RedisRunner{
 		services:      services,
 		configuration: config,
@@ -23,11 +25,11 @@ func (runner *RedisRunner) Setup() error {
 	for _, service := range runner.services {
 		log.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
 
-		var conn *redis.Pool
+		var conn redis.Client
 		if configuration, err := runner.loadConfiguration(service); err != nil {
 			return err
 		} else {
-			if conn, err = configuration.connect(); err != nil {
+			if conn, err = configuration.Connect(); err != nil {
 				return fmt.Errorf("failed to create redis connection")
 			}
 		}
@@ -51,11 +53,11 @@ func (runner *RedisRunner) Teardown() error {
 	for _, service := range runner.services {
 		log.Infof("teardown service [ %s ]", service.Name)
 
-		var conn *redis.Pool
+		var conn redis.Client
 		if configuration, err := runner.loadConfiguration(service); err != nil {
 			return err
 		} else {
-			if conn, err = configuration.connect(); err != nil {
+			if conn, err = configuration.Connect(); err != nil {
 				return fmt.Errorf("failed to create redis connection")
 			}
 		}
@@ -75,7 +77,7 @@ func (runner *RedisRunner) Teardown() error {
 	return nil
 }
 
-func (runner *RedisRunner) loadConfiguration(test RedisService) (*RedisConfig, error) {
+func (runner *RedisRunner) loadConfiguration(test RedisService) (*gomanager.RedisConfig, error) {
 	if test.Configuration != nil {
 		return test.Configuration, nil
 	} else if runner.configuration != nil {
@@ -85,17 +87,24 @@ func (runner *RedisRunner) loadConfiguration(test RedisService) (*RedisConfig, e
 	}
 }
 
-func (runner *RedisRunner) runCommands(conn *redis.Pool, run *RedisRun) error {
+func (runner *RedisRunner) runCommands(conn redis.Client, run *RedisRun) error {
 	for _, command := range run.Commands {
 		log.Infof("executing redis command [ %s ] arguments [ %s ]", command.Command, command.Arguments)
-		if err := conn.Do(redis.Cmd(nil, command.Command, command.Arguments...)); err != nil {
-			return err
+
+		inputs := make([]reflect.Value, len(command.Arguments))
+		for i, arg := range command.Arguments {
+			inputs[i] = reflect.ValueOf(arg)
+		}
+
+		result := reflect.ValueOf(conn).MethodByName(command.Command).Call(inputs)
+		if result != nil && len(result) > 0 && !result[0].IsNil() {
+			return fmt.Errorf(result[0].String())
 		}
 	}
 	return nil
 }
 
-func (runner *RedisRunner) runCommandsFromFile(conn *redis.Pool, run *RedisRun) error {
+func (runner *RedisRunner) runCommandsFromFile(conn redis.Client, run *RedisRun) error {
 	for _, file := range run.Files {
 		log.Infof("executing redis commands by file [ %s ]", file)
 
@@ -104,8 +113,14 @@ func (runner *RedisRunner) runCommandsFromFile(conn *redis.Pool, run *RedisRun) 
 				command := strings.SplitN(line, " ", 1)
 				arguments := strings.Split(command[1], " ")
 				log.Infof("executing redis command [ %s ] arguments [ %s ]", command[0], command[1])
-				if err := conn.Do(redis.Cmd(nil, command[0], arguments...)); err != nil {
-					return err
+				inputs := make([]reflect.Value, len(arguments))
+				for i, arg := range arguments {
+					inputs[i] = reflect.ValueOf(arg)
+				}
+
+				result := reflect.ValueOf(conn).MethodByName(command[0]).Call(inputs)
+				if result != nil && len(result) > 0 && !result[0].IsNil() {
+					return fmt.Errorf(result[0].String())
 				}
 			}
 		}

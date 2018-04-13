@@ -4,7 +4,7 @@
       "name": "nsq",
       "description": "loading a script from file and from body",
       "configuration": {
-        "lookupd": "localhost:4150",
+        "lookupd": ["localhost:4150"],
         "requeue_delay": 30,
         "max_in_flight": 5,
         "max_attempts": 5
@@ -32,7 +32,7 @@
       "name": "nsq",
       "description": "",
       "configuration": {
-        "lookupd": "localhost:4150",
+        "lookupd": ["localhost:4150"],
         "requeue_delay": 30,
         "max_in_flight": 5,
         "max_attempts": 5

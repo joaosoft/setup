@@ -2,28 +2,29 @@ package gosetup
 
 import (
 	"github.com/joaosoft/go-log/service"
+	"github.com/joaosoft/go-manager/service"
 )
 
 var global = make(map[string]interface{})
 var log = golog.NewLogDefault("go-setup", golog.InfoLevel)
 
-func getDefaultNsqConfig() *NsqConfig {
+func getDefaultNsqConfig() *gomanager.NSQConfig {
 	if value, exists := global["nsq"]; exists {
-		return value.(*NsqConfig)
+		return value.(*gomanager.NSQConfig)
 	}
 	return nil
 }
 
-func getDefaultSqlConfig() *SqlConfig {
+func getDefaultSqlConfig() *gomanager.DBConfig {
 	if value, exists := global["sql"]; exists {
-		return value.(*SqlConfig)
+		return value.(*gomanager.DBConfig)
 	}
 	return nil
 }
 
-func getDefaultRedisConfig() *RedisConfig {
+func getDefaultRedisConfig() *gomanager.RedisConfig {
 	if value, exists := global["redis"]; exists {
-		return value.(*RedisConfig)
+		return value.(*gomanager.RedisConfig)
 	}
 	return nil
 }

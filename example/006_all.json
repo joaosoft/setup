@@ -190,7 +190,7 @@
       "name": "nsq",
       "description": "loading a script from file and from body",
       "configuration": {
-        "lookupd": "localhost:4150",
+        "lookupd": ["localhost:4150"],
         "requeue_delay": 30,
         "max_in_flight": 5,
         "max_attempts": 5
@@ -218,7 +218,7 @@
       "name": "nsq",
       "description": "",
       "configuration": {
-        "lookupd": "localhost:4150",
+        "lookupd": ["localhost:4150"],
         "requeue_delay": 30,
         "max_in_flight": 5,
         "max_attempts": 5
@@ -248,9 +248,9 @@
       "name": "redis",
       "description": "loading redis commands from file",
       "configuration": {
-        "protocol": "tcp",
-        "address": "localhost:6379",
-        "size": 10
+        "host": "127.0.0.1",
+        "port": 6379,
+        "database": 0
       },
       "run": {
         "setup": [

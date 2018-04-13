@@ -6,12 +6,12 @@
       "datasource": "postgres://user:password@localhost:7001?sslmode=disable"
     },
     "redis": {
-      "protocol": "tcp",
-      "address": "localhost:6379",
-      "size": 10
+      "host": "127.0.0.1",
+      "port": 6379,
+      "database": 0
     },
     "nsq": {
-      "lookupd": "localhost:4150",
+      "lookupd": ["localhost:4150"],
       "requeue_delay": 30,
       "max_in_flight": 5,
       "max_attempts": 5

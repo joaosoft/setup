@@ -3,15 +3,16 @@ package gosetup
 import (
 	"fmt"
 
-	nsqlib "github.com/nsqio/go-nsq"
+	"github.com/joaosoft/go-manager/service"
+	"github.com/nsqio/go-nsq"
 )
 
 type NsqRunner struct {
 	services      []NsqService
-	configuration *NsqConfig
+	configuration *gomanager.NSQConfig
 }
 
-func NewNsqRunner(services []NsqService, config *NsqConfig) *NsqRunner {
+func NewNsqRunner(services []NsqService, config *gomanager.NSQConfig) *NsqRunner {
 	return &NsqRunner{
 		services:      services,
 		configuration: config,
@@ -22,11 +23,11 @@ func (runner *NsqRunner) Setup() error {
 	for _, service := range runner.services {
 		log.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
 
-		var conn *nsqlib.Producer
+		var conn *nsq.Producer
 		if configuration, err := runner.loadConfiguration(service); err != nil {
 			return err
 		} else {
-			if conn, err = configuration.connect(); err != nil {
+			if conn, err = configuration.Connect(); err != nil {
 				return fmt.Errorf("failed to create nsq connection")
 			}
 		}
@@ -50,11 +51,11 @@ func (runner *NsqRunner) Teardown() error {
 	for _, service := range runner.services {
 		log.Infof("teardown service [ %s ]", service.Name)
 
-		var conn *nsqlib.Producer
+		var conn *nsq.Producer
 		if configuration, err := runner.loadConfiguration(service); err != nil {
 			return err
 		} else {
-			if conn, err = configuration.connect(); err != nil {
+			if conn, err = configuration.Connect(); err != nil {
 				return fmt.Errorf("failed to create nsq connection")
 			}
 		}
@@ -74,7 +75,7 @@ func (runner *NsqRunner) Teardown() error {
 	return nil
 }
 
-func (runner *NsqRunner) loadConfiguration(test NsqService) (*NsqConfig, error) {
+func (runner *NsqRunner) loadConfiguration(test NsqService) (*gomanager.NSQConfig, error) {
 	if test.Configuration != nil {
 		return test.Configuration, nil
 	} else if runner.configuration != nil {
@@ -84,7 +85,7 @@ func (runner *NsqRunner) loadConfiguration(test NsqService) (*NsqConfig, error) 
 	}
 }
 
-func (runner *NsqRunner) runCommands(conn *nsqlib.Producer, run *NsqRun) error {
+func (runner *NsqRunner) runCommands(conn *nsq.Producer, run *NsqRun) error {
 	if run.Message != nil && string(run.Message) != "" {
 		log.Infof("executing nsq [ %s ] message: %s", run.Description, string(run.Message))
 		if err := conn.Publish(run.Topic, run.Message); err != nil {
@@ -95,7 +96,7 @@ func (runner *NsqRunner) runCommands(conn *nsqlib.Producer, run *NsqRun) error {
 	return nil
 }
 
-func (runner *NsqRunner) runCommandsFromFile(conn *nsqlib.Producer, run *NsqRun) error {
+func (runner *NsqRunner) runCommandsFromFile(conn *nsq.Producer, run *NsqRun) error {
 
 	if run.File != "" {
 		log.Infof("executing nsq commands by file [ %s ]", run.File)

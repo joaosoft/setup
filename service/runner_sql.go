@@ -4,9 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/go-sql-driver/mysql" // mysql driver
 	"github.com/joaosoft/go-manager/service"
-	_ "github.com/lib/pq" // postgres driver
 )
 
 type SqlRunner struct {

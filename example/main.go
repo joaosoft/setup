@@ -5,6 +5,9 @@ import (
 	"time"
 
 	"github.com/labstack/gommon/log"
+
+	_ "github.com/go-sql-driver/mysql" // mysql driver
+	_ "github.com/lib/pq"              // postgres driver
 )
 
 func main() {

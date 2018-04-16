@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"syscall"
 
+	"fmt"
+
 	"github.com/joaosoft/go-log/service"
 )
 
@@ -23,7 +25,7 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 
 	// load configuration file
 	configApp := &AppConfig{}
-	if _, err := readFile("/config/app.json", configApp); err != nil {
+	if _, err := readFile(fmt.Sprintf("/config/app.%s.json", getEnv()), configApp); err != nil {
 		log.Error(err)
 	} else {
 		level, _ := golog.ParseLevel(configApp.Log.Level)

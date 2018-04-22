@@ -3,5 +3,10 @@
     "log": {
       "level": "info"
     }
+  },
+  "gomanager": {
+    "log": {
+      "level": "info"
+    }
   }
 }

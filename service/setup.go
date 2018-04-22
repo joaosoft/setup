@@ -39,15 +39,19 @@ func NewGoSetup(options ...SetupOption) *Setup {
 		WithLogLevel(level)
 	}
 
-	mock := &Setup{
+	setup := &Setup{
 		runInBackground: background,
 		services:        make([]*Services, 0),
 		config:          &appConfig.GoSetup,
 	}
 
-	mock.Reconfigure(options...)
+	setup.Reconfigure(options...)
 
-	return mock
+	if setup.logIsExternal {
+		pm.Reconfigure(gomanager.WithLogger(log))
+	}
+
+	return setup
 }
 
 // Run ...

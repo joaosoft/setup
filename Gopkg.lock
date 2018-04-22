@@ -53,7 +53,7 @@
   branch = "master"
   name = "github.com/joaosoft/go-manager"
   packages = ["service"]
-  revision = "98551472e88bdc4eaeb1ae8b784afb450e58852b"
+  revision = "88d31b850bf25132c41dd54313e0970880d9af12"
 
 [[projects]]
   branch = "master"

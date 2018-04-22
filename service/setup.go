@@ -1,7 +1,6 @@
 package gosetup
 
 import (
-	golog "go-log/service"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -9,9 +8,8 @@ import (
 
 	"fmt"
 
-	"go-manager/service"
-
 	"github.com/joaosoft/go-log/service"
+	"github.com/joaosoft/go-manager/service"
 )
 
 // Setup ...
@@ -37,6 +35,10 @@ func NewGoSetup(options ...setupOption) *Setup {
 
 	setup.Reconfigure(options...)
 
+	if setup.isLogExternal {
+		pm.Reconfigure(gomanager.WithLogger(log))
+	}
+
 	// load configuration file
 	appConfig := &appConfig{}
 	if simpleConfig, err := gomanager.NewSimpleConfig(fmt.Sprintf("/config/app.%s.json", getEnv()), appConfig); err != nil {
@@ -49,10 +51,6 @@ func NewGoSetup(options ...setupOption) *Setup {
 	}
 
 	setup.config = &appConfig.GoSetup
-
-	if setup.isLogExternal {
-		pm.Reconfigure(gomanager.WithLogger(log))
-	}
 
 	return setup
 }

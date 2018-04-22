@@ -14,16 +14,16 @@ import (
 
 // Setup ...
 type Setup struct {
-	services        []*Services
-	runner          IRunner
-	runInBackground bool
-	config          *SetupConfig
-	pm              *gomanager.Manager
-	logIsExternal   bool
+	services            []*Services
+	runner              IRunner
+	isToRunInBackground bool
+	config              *SetupConfig
+	pm                  *gomanager.Manager
+	isLogExternal       bool
 }
 
 // NewGoSetup ...make
-func NewGoSetup(options ...SetupOption) *Setup {
+func NewGoSetup(options ...setupOption) *Setup {
 	pm := gomanager.NewManager(gomanager.WithRunInBackground(false))
 
 	log.Info("starting Setup Service")
@@ -40,14 +40,18 @@ func NewGoSetup(options ...SetupOption) *Setup {
 	}
 
 	setup := &Setup{
-		runInBackground: background,
-		services:        make([]*Services, 0),
-		config:          &appConfig.GoSetup,
+		isToRunInBackground: background,
+		services:            make([]*Services, 0),
+		config:              &appConfig.GoSetup,
 	}
 
 	setup.Reconfigure(options...)
 
-	if setup.logIsExternal {
+	if setup.isLogExternal {
+		pm.Reconfigure(gomanager.WithLogger(log))
+	}
+
+	if setup.isLogExternal {
 		pm.Reconfigure(gomanager.WithLogger(log))
 	}
 
@@ -110,7 +114,7 @@ func (gosetup *Setup) execute(files []string) error {
 
 	log.Info("started all services")
 
-	if !gosetup.runInBackground {
+	if !gosetup.isToRunInBackground {
 		gosetup.Wait()
 	}
 

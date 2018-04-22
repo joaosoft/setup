@@ -6,11 +6,11 @@ import (
 
 // appConfig ...
 type appConfig struct {
-	GoSetup GoSetupConfig `json:"gosetup"`
+	GoSetup SetupConfig `json:"gosetup"`
 }
 
 // goSetupConfig ...
-type GoSetupConfig struct {
+type SetupConfig struct {
 	Log struct {
 		Level string `json:"level"`
 	} `json:"log"`

@@ -12,20 +12,20 @@ import (
 	"github.com/joaosoft/go-manager/service"
 )
 
-// GoSetup ...
-type GoSetup struct {
+// Setup ...
+type Setup struct {
 	services        []*Services
 	runner          IRunner
 	runInBackground bool
 	config          *goSetupConfig
-	pm              *gomanager.GoManager
+	pm              *gomanager.Manager
 }
 
 // NewGoSetup ...make
-func NewGoSetup(options ...GoSetupOption) *GoSetup {
+func NewGoSetup(options ...SetupOption) *Setup {
 	pm := gomanager.NewManager(gomanager.WithRunInBackground(false))
 
-	log.Info("starting GoSetup Service")
+	log.Info("starting Setup Service")
 
 	// load configuration file
 	appConfig := &appConfig{}
@@ -38,7 +38,7 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 		WithLogLevel(level)
 	}
 
-	mock := &GoSetup{
+	mock := &Setup{
 		runInBackground: background,
 		services:        make([]*Services, 0),
 		config:          &appConfig.GoSetup,
@@ -50,7 +50,7 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 }
 
 // Run ...
-func (gosetup *GoSetup) Run() error {
+func (gosetup *Setup) Run() error {
 	files, err := filepath.Glob(global[path_key].(string) + "*.json")
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (gosetup *GoSetup) Run() error {
 }
 
 // RunSingle ...
-func (gosetup *GoSetup) RunSingle(file string) error {
+func (gosetup *Setup) RunSingle(file string) error {
 	if err := gosetup.execute([]string{file}); err != nil {
 		log.Error(err)
 		return err
@@ -74,7 +74,7 @@ func (gosetup *GoSetup) RunSingle(file string) error {
 }
 
 // Stop ...
-func (gosetup *GoSetup) Stop() error {
+func (gosetup *Setup) Stop() error {
 	if err := gosetup.runner.Teardown(); err != nil {
 		log.Error(err)
 		return err
@@ -84,7 +84,7 @@ func (gosetup *GoSetup) Stop() error {
 	return nil
 }
 
-func (gosetup *GoSetup) execute(files []string) error {
+func (gosetup *Setup) execute(files []string) error {
 	for _, file := range files {
 		servicesOnFile := &Services{}
 		if _, err := readFile(file, servicesOnFile); err != nil {
@@ -136,7 +136,7 @@ func load(service *Services) ([]*Services, error) {
 }
 
 // Wait ...
-func (gosetup *GoSetup) Wait() {
+func (gosetup *Setup) Wait() {
 	log.Info("waiting to stop...")
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

@@ -46,10 +46,6 @@
   version = "3.3.5"
 
 [[constraint]]
-  name = "github.com/labstack/gommon"
-  version = "0.2.4"
-
-[[constraint]]
   branch = "master"
   name = "github.com/lib/pq"
 

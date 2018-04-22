@@ -7,19 +7,19 @@ import (
 	"github.com/joaosoft/go-manager/service"
 )
 
-// GoSetupOption ...
-type GoSetupOption func(gosetup *GoSetup)
+// SetupOption ...
+type SetupOption func(setup *Setup)
 
 // Reconfigure ...
-func (gosetup *GoSetup) Reconfigure(options ...GoSetupOption) {
+func (setup *Setup) Reconfigure(options ...SetupOption) {
 	for _, option := range options {
-		option(gosetup)
+		option(setup)
 	}
 }
 
 // WithPath ...
-func WithPath(path string) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithPath(path string) SetupOption {
+	return func(setup *Setup) {
 		if path != "" {
 			if !strings.HasSuffix(path, "/") {
 				path += "/"
@@ -30,27 +30,27 @@ func WithPath(path string) GoSetupOption {
 }
 
 // WithServices ...
-func WithServices(services []*Services) GoSetupOption {
-	return func(gosetup *GoSetup) {
-		gosetup.services = services
+func WithServices(services []*Services) SetupOption {
+	return func(setup *Setup) {
+		setup.services = services
 	}
 }
 
 // WithRunInBackground ...
-func WithRunInBackground(runInBackground bool) GoSetupOption {
-	return func(gosetup *GoSetup) {
-		gosetup.runInBackground = runInBackground
+func WithRunInBackground(runInBackground bool) SetupOption {
+	return func(setup *Setup) {
+		setup.runInBackground = runInBackground
 	}
 }
 
 // WithConfigurationFile ...
-func WithConfigurationFile(file string) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithConfigurationFile(file string) SetupOption {
+	return func(setup *Setup) {
 		config := &Configurations{}
 		if _, err := readFile(file, config); err != nil {
 			panic(err)
 		}
-		gosetup.Reconfigure(
+		setup.Reconfigure(
 			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
 			WithNsqConfiguration(&config.Connections.NsqConfig))
@@ -58,30 +58,30 @@ func WithConfigurationFile(file string) GoSetupOption {
 }
 
 // WithRedisConfiguration ...
-func WithRedisConfiguration(config *gomanager.RedisConfig) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithRedisConfiguration(config *gomanager.RedisConfig) SetupOption {
+	return func(setup *Setup) {
 		global["redis"] = config
 	}
 }
 
 // WithSqlConfiguration ...
-func WithSqlConfiguration(config *gomanager.DBConfig) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithSqlConfiguration(config *gomanager.DBConfig) SetupOption {
+	return func(setup *Setup) {
 		global["sql"] = config
 	}
 }
 
 // WithNsqConfiguration ...
-func WithNsqConfiguration(config *gomanager.NSQConfig) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithNsqConfiguration(config *gomanager.NSQConfig) SetupOption {
+	return func(setup *Setup) {
 		global["nsq"] = config
 	}
 }
 
 // WithConfigurations ...
-func WithConfigurations(config *Configurations) GoSetupOption {
-	return func(gosetup *GoSetup) {
-		gosetup.Reconfigure(
+func WithConfigurations(config *Configurations) SetupOption {
+	return func(setup *Setup) {
+		setup.Reconfigure(
 			WithSqlConfiguration(&config.Connections.SqlConfig),
 			WithRedisConfiguration(&config.Connections.RedisConfig),
 			WithNsqConfiguration(&config.Connections.NsqConfig))
@@ -89,15 +89,15 @@ func WithConfigurations(config *Configurations) GoSetupOption {
 }
 
 // WithLogger ...
-func WithLogger(logger golog.ILog) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithLogger(logger golog.ILog) SetupOption {
+	return func(setup *Setup) {
 		log = logger
 	}
 }
 
 // WithLogLevel ...
-func WithLogLevel(level golog.Level) GoSetupOption {
-	return func(gosetup *GoSetup) {
+func WithLogLevel(level golog.Level) SetupOption {
+	return func(setup *Setup) {
 		log.SetLevel(level)
 	}
 }

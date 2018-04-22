@@ -17,8 +17,9 @@ type Setup struct {
 	services        []*Services
 	runner          IRunner
 	runInBackground bool
-	config          *goSetupConfig
+	config          *SetupConfig
 	pm              *gomanager.Manager
+	logIsExternal   bool
 }
 
 // NewGoSetup ...make

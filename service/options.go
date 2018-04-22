@@ -92,6 +92,7 @@ func WithConfigurations(config *Configurations) SetupOption {
 func WithLogger(logger golog.ILog) SetupOption {
 	return func(setup *Setup) {
 		log = logger
+		setup.logIsExternal = true
 	}
 }
 

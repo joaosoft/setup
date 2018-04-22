@@ -9,7 +9,7 @@ var global = make(map[string]interface{})
 var log = golog.NewLogDefault("go-setup", golog.InfoLevel)
 
 func init() {
-	global["path"] = defaultPath
+	global[path_key] = defaultPath
 }
 
 func getDefaultNsqConfig() *gomanager.NSQConfig {

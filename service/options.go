@@ -24,7 +24,7 @@ func WithPath(path string) GoSetupOption {
 			if !strings.HasSuffix(path, "/") {
 				path += "/"
 			}
-			global["path"] = path
+			global[path_key] = path
 		}
 	}
 }

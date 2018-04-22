@@ -9,6 +9,7 @@ import (
 	"fmt"
 
 	"github.com/joaosoft/go-log/service"
+	"github.com/joaosoft/go-manager/service"
 )
 
 // GoSetup ...
@@ -16,19 +17,23 @@ type GoSetup struct {
 	services        []*Services
 	runner          IRunner
 	runInBackground bool
-	config          *AppConfig
+	config          *goSetupConfig
+	pm              *gomanager.GoManager
 }
 
 // NewGoSetup ...make
 func NewGoSetup(options ...GoSetupOption) *GoSetup {
+	pm := gomanager.NewManager(gomanager.WithRunInBackground(false))
+
 	log.Info("starting GoSetup Service")
 
 	// load configuration file
-	configApp := &AppConfig{}
-	if _, err := readFile(fmt.Sprintf("/config/app.%s.json", getEnv()), configApp); err != nil {
-		log.Error(err)
+	appConfig := &appConfig{}
+	if simpleConfig, err := gomanager.NewSimpleConfig(fmt.Sprintf("/config/app.%s.json", getEnv()), appConfig); err != nil {
+		log.Error(err.Error())
 	} else {
-		level, _ := golog.ParseLevel(configApp.Log.Level)
+		pm.AddConfig("config_app", simpleConfig)
+		level, _ := golog.ParseLevel(appConfig.GoSetup.Log.Level)
 		log.Debugf("setting log level to %s", level)
 		WithLogLevel(level)
 	}
@@ -36,7 +41,7 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 	mock := &GoSetup{
 		runInBackground: background,
 		services:        make([]*Services, 0),
-		config:          configApp,
+		config:          &appConfig.GoSetup,
 	}
 
 	mock.Reconfigure(options...)
@@ -46,7 +51,7 @@ func NewGoSetup(options ...GoSetupOption) *GoSetup {
 
 // Run ...
 func (gosetup *GoSetup) Run() error {
-	files, err := filepath.Glob(global["path"].(string) + "*.json")
+	files, err := filepath.Glob(global[path_key].(string) + "*.json")
 	if err != nil {
 		return err
 	}

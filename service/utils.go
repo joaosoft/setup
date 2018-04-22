@@ -30,7 +30,7 @@ func readFile(fileName string, obj interface{}) ([]byte, error) {
 	var err error
 
 	if !exists(fileName) {
-		fileName = global["path"].(string) + fileName
+		fileName = global[path_key].(string) + fileName
 	}
 
 	log.Infof("loading file [ %s ]", fileName)
@@ -58,7 +58,7 @@ func readFileLines(fileName string) ([]string, error) {
 	lines := make([]string, 0)
 
 	if !exists(fileName) {
-		fileName = global["path"].(string) + fileName
+		fileName = global[path_key].(string) + fileName
 	}
 
 	log.Infof("loading file [ %s ]", fileName)

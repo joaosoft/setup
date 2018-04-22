@@ -1,16 +1,16 @@
 package main
 
 import (
-	gosetup "go-setup/service"
+	"go-setup/service"
 	"time"
 
-	"github.com/labstack/gommon/log"
-
 	_ "github.com/go-sql-driver/mysql" // mysql driver
-	_ "github.com/lib/pq"              // postgres driver
+	"github.com/joaosoft/go-log/service"
+	_ "github.com/lib/pq" // postgres driver
 )
 
 func main() {
+	log := golog.NewLogDefault("go-setup", golog.InfoLevel)
 	start := time.Now()
 	test := gosetup.NewGoSetup(
 		gosetup.WithPath("./example"),

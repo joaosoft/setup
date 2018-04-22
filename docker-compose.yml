@@ -9,7 +9,7 @@ services:
     volumes:
       - esdata1:/go-setup
     environment:
-      - ENV=dev
+      - ENV=container
     ports:
       - 8001:8001
       - 8002:8002

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/joaosoft/go-manager/service"
+	gomanager "github.com/joaosoft/go-manager/app"
 )
 
 type SqlRunner struct {

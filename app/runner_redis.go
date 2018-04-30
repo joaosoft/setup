@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/alphazero/Go-Redis"
-	"github.com/joaosoft/go-manager/service"
+	gomanager "github.com/joaosoft/go-manager/app"
 )
 
 type RedisRunner struct {

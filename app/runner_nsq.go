@@ -3,7 +3,7 @@ package gosetup
 import (
 	"fmt"
 
-	"github.com/joaosoft/go-manager/service"
+	gomanager "github.com/joaosoft/go-manager/app"
 	"github.com/nsqio/go-nsq"
 )
 

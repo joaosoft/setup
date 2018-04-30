@@ -1,11 +1,11 @@
 package main
 
 import (
-	"go-setup/service"
+	"go-setup/app"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql" // mysql driver
-	"github.com/joaosoft/go-log/service"
+	golog "github.com/joaosoft/go-log/app"
 	_ "github.com/lib/pq" // postgres driver
 )
 

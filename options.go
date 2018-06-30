@@ -89,7 +89,7 @@ func WithConfigurations(config *Configurations) SetupOption {
 }
 
 // WithLogger ...
-func WithLogger(logger logger.ILog) SetupOption {
+func WithLogger(logger logger.ILogger) SetupOption {
 	return func(setup *Setup) {
 		log = logger
 		setup.isLogExternal = true

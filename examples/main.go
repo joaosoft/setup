@@ -1,49 +1,48 @@
 package main
 
 import (
-	"go-setup/app"
 	"time"
-
 	_ "github.com/go-sql-driver/mysql" // mysql driver
-	golog "github.com/joaosoft/go-log/app"
+	logger "github.com/joaosoft/logger"
 	_ "github.com/lib/pq" // postgres driver
+	"setup"
 )
 
 func main() {
-	log := golog.NewLogDefault("go-setup", golog.InfoLevel)
+	log := logger.NewLogDefault("setup", logger.InfoLevel)
 	start := time.Now()
-	test := gosetup.NewGoSetup(
-		gosetup.WithPath("./example"),
-		gosetup.WithRunInBackground(true))
+	test := setup.NewSetup(
+		setup.WithPath("./examples"),
+		setup.WithRunInBackground(true))
 
 	//// web
 	//test.RunSingle("001_webservices.json")
 	//
 	//// sql
-	//configSql := &gosetup.SqlConfig{
+	//configSql := &setup.SqlConfig{
 	//	Driver:     "postgres",
 	//	DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
 	//}
-	//test.Reconfigure(gosetup.WithSqlConfiguration(configSql))
+	//test.Reconfigure(setup.WithSqlConfiguration(configSql))
 	//test.RunSingle("002_sql.json")
 	//
 	//// nsq
-	//configNSQ := &gosetup.NsqConfig{
+	//configNSQ := &setup.NsqConfig{
 	//	Lookupd:      "localhost:4150",
 	//	RequeueDelay: 30,
 	//	MaxInFlight:  5,
 	//	MaxAttempts:  5,
 	//}
-	//test.Reconfigure(gosetup.WithNsqConfiguration(configNSQ))
+	//test.Reconfigure(setup.WithNsqConfiguration(configNSQ))
 	//test.RunSingle("003_nsq.json")
 	//
 	//// redis
-	//configRedis := &gosetup.RedisConfig{
+	//configRedis := &setup.RedisConfig{
 	//	Protocol: "tcp",
 	//	Address:  "localhost:6379",
 	//	Size:     10,
 	//}
-	//test.Reconfigure(gosetup.WithRedisConfiguration(configRedis))
+	//test.Reconfigure(setup.WithRedisConfiguration(configRedis))
 	//test.RunSingle("004_redis.json")
 
 	//// files
@@ -51,7 +50,7 @@ func main() {
 
 	// all
 	test.Reconfigure(
-		gosetup.WithConfigurationFile("example/data/config.json"))
+		setup.WithConfigurationFile("examples/data/config.json"))
 
 	test.Run()
 	test.Wait()

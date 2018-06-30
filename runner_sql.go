@@ -1,18 +1,18 @@
-package gosetup
+package setup
 
 import (
 	"database/sql"
 	"fmt"
 
-	gomanager "github.com/joaosoft/go-manager/app"
+	manager "github.com/joaosoft/manager"
 )
 
 type SqlRunner struct {
 	services      []SqlService
-	configuration *gomanager.DBConfig
+	configuration *manager.DBConfig
 }
 
-func NewSqlRunner(services []SqlService, config *gomanager.DBConfig) *SqlRunner {
+func NewSqlRunner(services []SqlService, config *manager.DBConfig) *SqlRunner {
 	return &SqlRunner{
 		services:      services,
 		configuration: config,
@@ -75,7 +75,7 @@ func (runner *SqlRunner) Teardown() error {
 	return nil
 }
 
-func (runner *SqlRunner) loadConfiguration(test SqlService) (*gomanager.DBConfig, error) {
+func (runner *SqlRunner) loadConfiguration(test SqlService) (*manager.DBConfig, error) {
 	if test.Configuration != nil {
 		return test.Configuration, nil
 	} else if runner.configuration != nil {

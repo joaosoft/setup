@@ -1,4 +1,4 @@
-package gosetup
+package setup
 
 const (
 	background  = true

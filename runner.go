@@ -1,4 +1,4 @@
-package gosetup
+package setup
 
 type IRunner interface {
 	Setup() error

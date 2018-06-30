@@ -1,4 +1,4 @@
-package gosetup
+package setup
 
 import (
 	"os"
@@ -8,8 +8,8 @@ import (
 
 	"fmt"
 
-	golog "github.com/joaosoft/go-log/app"
-	gomanager "github.com/joaosoft/go-manager/app"
+	logger "github.com/joaosoft/logger"
+	manager "github.com/joaosoft/manager"
 )
 
 // Setup ...
@@ -18,13 +18,13 @@ type Setup struct {
 	runner              IRunner
 	isToRunInBackground bool
 	config              *SetupConfig
-	pm                  *gomanager.Manager
+	pm                  *manager.Manager
 	isLogExternal       bool
 }
 
-// NewGoSetup ...make
-func NewGoSetup(options ...setupOption) *Setup {
-	pm := gomanager.NewManager(gomanager.WithRunInBackground(false))
+// NewSetup ...make
+func NewSetup(options ...SetupOption) *Setup {
+	pm := manager.NewManager(manager.WithRunInBackground(false))
 
 	log.Info("starting Setup Service")
 
@@ -36,32 +36,32 @@ func NewGoSetup(options ...setupOption) *Setup {
 	setup.Reconfigure(options...)
 
 	if setup.isLogExternal {
-		pm.Reconfigure(gomanager.WithLogger(log))
+		pm.Reconfigure(manager.WithLogger(log))
 	}
 
 	// load configuration file
-	appConfig := &appConfig{}
-	if simpleConfig, err := gomanager.NewSimpleConfig(fmt.Sprintf("/config/app.%s.json", getEnv()), appConfig); err != nil {
+	appConfig := &AppConfig{}
+	if simpleConfig, err := manager.NewSimpleConfig(fmt.Sprintf("/config.%s.json", getEnv()), appConfig); err != nil {
 		log.Error(err.Error())
 	} else {
 		pm.AddConfig("config_app", simpleConfig)
-		level, _ := golog.ParseLevel(appConfig.GoSetup.Log.Level)
+		level, _ := logger.ParseLevel(appConfig.Setup.Log.Level)
 		log.Debugf("setting log level to %s", level)
-		log.Reconfigure(golog.WithLevel(level))
+		log.Reconfigure(logger.WithLevel(level))
 	}
 
-	setup.config = &appConfig.GoSetup
+	setup.config = &appConfig.Setup
 
 	return setup
 }
 
 // Run ...
-func (gosetup *Setup) Run() error {
+func (setup *Setup) Run() error {
 	files, err := filepath.Glob(global[path_key].(string) + "*.json")
 	if err != nil {
 		return err
 	}
-	if err := gosetup.execute(files); err != nil {
+	if err := setup.execute(files); err != nil {
 		log.Error(err)
 		return err
 	}
@@ -70,8 +70,8 @@ func (gosetup *Setup) Run() error {
 }
 
 // RunSingle ...
-func (gosetup *Setup) RunSingle(file string) error {
-	if err := gosetup.execute([]string{file}); err != nil {
+func (setup *Setup) RunSingle(file string) error {
+	if err := setup.execute([]string{file}); err != nil {
 		log.Error(err)
 		return err
 	}
@@ -80,8 +80,8 @@ func (gosetup *Setup) RunSingle(file string) error {
 }
 
 // Stop ...
-func (gosetup *Setup) Stop() error {
-	if err := gosetup.runner.Teardown(); err != nil {
+func (setup *Setup) Stop() error {
+	if err := setup.runner.Teardown(); err != nil {
 		log.Error(err)
 		return err
 	}
@@ -90,7 +90,7 @@ func (gosetup *Setup) Stop() error {
 	return nil
 }
 
-func (gosetup *Setup) execute(files []string) error {
+func (setup *Setup) execute(files []string) error {
 	for _, file := range files {
 		servicesOnFile := &Services{}
 		if _, err := readFile(file, servicesOnFile); err != nil {
@@ -101,18 +101,18 @@ func (gosetup *Setup) execute(files []string) error {
 		if err != nil {
 			return err
 		}
-		gosetup.services = append(gosetup.services, array...)
+		setup.services = append(setup.services, array...)
 	}
 
-	gosetup.runner = NewRunner(gosetup.services)
-	if err := gosetup.runner.Setup(); err != nil {
+	setup.runner = NewRunner(setup.services)
+	if err := setup.runner.Setup(); err != nil {
 		return err
 	}
 
 	log.Info("started all services")
 
-	if !gosetup.isToRunInBackground {
-		gosetup.Wait()
+	if !setup.isToRunInBackground {
+		setup.Wait()
 	}
 
 	return nil
@@ -142,7 +142,7 @@ func load(service *Services) ([]*Services, error) {
 }
 
 // Wait ...
-func (gosetup *Setup) Wait() {
+func (setup *Setup) Wait() {
 	log.Info("waiting to stop...")
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

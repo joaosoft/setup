@@ -1,4 +1,4 @@
-package gosetup
+package setup
 
 import (
 	"fmt"
@@ -6,15 +6,15 @@ import (
 	"strings"
 
 	"github.com/alphazero/Go-Redis"
-	gomanager "github.com/joaosoft/go-manager/app"
+	manager "github.com/joaosoft/manager"
 )
 
 type RedisRunner struct {
 	services      []RedisService
-	configuration *gomanager.RedisConfig
+	configuration *manager.RedisConfig
 }
 
-func NewRedisRunner(services []RedisService, config *gomanager.RedisConfig) *RedisRunner {
+func NewRedisRunner(services []RedisService, config *manager.RedisConfig) *RedisRunner {
 	return &RedisRunner{
 		services:      services,
 		configuration: config,
@@ -77,7 +77,7 @@ func (runner *RedisRunner) Teardown() error {
 	return nil
 }
 
-func (runner *RedisRunner) loadConfiguration(test RedisService) (*gomanager.RedisConfig, error) {
+func (runner *RedisRunner) loadConfiguration(test RedisService) (*manager.RedisConfig, error) {
 	if test.Configuration != nil {
 		return test.Configuration, nil
 	} else if runner.configuration != nil {

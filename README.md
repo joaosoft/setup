@@ -1,5 +1,5 @@
 # go-setup
-[![Build Status](https://travis-ci.org/joaosoft/go-setup.svg?branch=master)](https://travis-ci.org/joaosoft/go-setup) | [![codecov](https://codecov.io/gh/joaosoft/go-setup/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-setup) | [![Go Report Card](https://goreportcard.com/badge/github.com/joaosoft/go-test)](https://goreportcard.com/report/github.com/joaosoft/go-test) | [![GoDoc](https://godoc.org/github.com/joaosoft/go-setup?status.svg)](https://godoc.org/github.com/joaosoft/go-setup/app)
+[![Build Status](https://travis-ci.org/joaosoft/go-setup.svg?branch=master)](https://travis-ci.org/joaosoft/go-setup) | [![codecov](https://codecov.io/gh/joaosoft/go-setup/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-setup) | [![Go Report Card](https://goreportcard.com/badge/github.com/joaosoft/go-test)](https://goreportcard.com/report/github.com/joaosoft/go-test) | [![GoDoc](https://godoc.org/github.com/joaosoft/go-setup?status.svg)](https://godoc.org/github.com/joaosoft/go-setup)
 
 A framework that allows you to setup services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
 This frameworks runs all real services allowing you to validade the integration between services and your own code.
@@ -21,7 +21,7 @@ Project dependencies are managed using Dep. Read more about [Dep](https://github
 
 >### Go
 ```
-go get github.com/joaosoft/go-setup/app
+go get github.com/joaosoft/go-setup
 ```
 
 ## Docker
@@ -38,42 +38,42 @@ This example is available in the project at [go-setup/example](https://github.co
 package main
 
 import (
-	gosetup "github.com/joaosoft/go-setup/services"
+	setup setup
 )
 
 func main() {
-	test := gosetup.NewGoSetup(
-    		gosetup.WithPath("./examples"),
-    		gosetup.WithRunInBackground(true))
+	test := setup.NewGoSetup(
+    		setup.WithPath("./examples"),
+    		setup.WithRunInBackground(true))
     
     //// web
     //test.RunSingle("001_webservices.json")
     //
     //// sql
-    //configSQL := &gosetup.SQLConfig{
+    //configSQL := &setup.SQLConfig{
     //	Driver:     "postgres",
     //	DataSource: "postgres://user:password@localhost:7001?sslmode=disable",
     //}
-    //test.Reconfigure(gosetup.WithSQLConfiguration(configSQL))
+    //test.Reconfigure(setup.WithSQLConfiguration(configSQL))
     //test.RunSingle("002_sql.json")
     //
     //// nsq
-    //configNSQ := &gosetup.NSQConfig{
+    //configNSQ := &setup.NSQConfig{
     //	Lookupd:      "localhost:4150",
     //	RequeueDelay: 30,
     //	MaxInFlight:  5,
     //	MaxAttempts:  5,
     //}
-    //test.Reconfigure(gosetup.WithNSQConfiguration(configNSQ))
+    //test.Reconfigure(setup.WithNSQConfiguration(configNSQ))
     //test.RunSingle("003_nsq.json")
     //
     //// redis
-    //configRedis := &gosetup.RedisConfig{
+    //configRedis := &setup.RedisConfig{
     //	Protocol: "tcp",
     //	Address:  "localhost:6379",
     //	Size:     10,
     //}
-    //test.Reconfigure(gosetup.WithRedisConfiguration(configRedis))
+    //test.Reconfigure(setup.WithRedisConfiguration(configRedis))
     //test.RunSingle("004_redis.json")
     
     //// files
@@ -81,7 +81,7 @@ func main() {
 
     // all
     test.Reconfigure(
-        gosetup.WithConfigurationFile("data/config.json"))
+        setup.WithConfigurationFile("data/config.json"))
 
     test.Run()
     test.Wait()
@@ -306,7 +306,7 @@ func main() {
         "setup": [
           {
             "description": "ADD PERSON ONE",
-            "topic": "topic.example.lo",
+            "topic": examples,
             "message": {
               "name": "joao",
               "age": 29
@@ -314,7 +314,7 @@ func main() {
           },
           {
             "description": "ADD PERSON ONE",
-            "topic": "topic.example.hi",
+            "topic": examples,
             "file": "data/xml_file.txt"
           }
         ],
@@ -334,7 +334,7 @@ func main() {
         "setup": [
           {
             "description": "ADD PERSON TWO",
-            "topic": "topic.example.lo",
+            "topic": examples,
             "message": {
               "name": "pedro",
               "age": 30
@@ -342,7 +342,7 @@ func main() {
           },
           {
             "description": "ADD PERSON TWO",
-            "topic": "topic.example.hi",
+            "topic": examples,
             "file": "data/xml_file.txt"
           }
         ],

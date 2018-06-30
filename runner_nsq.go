@@ -1,18 +1,18 @@
-package gosetup
+package setup
 
 import (
 	"fmt"
 
-	gomanager "github.com/joaosoft/go-manager/app"
+	manager "github.com/joaosoft/manager"
 	"github.com/nsqio/go-nsq"
 )
 
 type NsqRunner struct {
 	services      []NsqService
-	configuration *gomanager.NSQConfig
+	configuration *manager.NSQConfig
 }
 
-func NewNsqRunner(services []NsqService, config *gomanager.NSQConfig) *NsqRunner {
+func NewNsqRunner(services []NsqService, config *manager.NSQConfig) *NsqRunner {
 	return &NsqRunner{
 		services:      services,
 		configuration: config,
@@ -75,7 +75,7 @@ func (runner *NsqRunner) Teardown() error {
 	return nil
 }
 
-func (runner *NsqRunner) loadConfiguration(test NsqService) (*gomanager.NSQConfig, error) {
+func (runner *NsqRunner) loadConfiguration(test NsqService) (*manager.NSQConfig, error) {
 	if test.Configuration != nil {
 		return test.Configuration, nil
 	} else if runner.configuration != nil {

@@ -1,24 +1,24 @@
-package gosetup
+package setup
 
 import (
 	"strings"
 
-	golog "github.com/joaosoft/go-log/app"
-	gomanager "github.com/joaosoft/go-manager/app"
+	logger "github.com/joaosoft/logger"
+	manager "github.com/joaosoft/manager"
 )
 
-// setupOption ...
-type setupOption func(setup *Setup)
+// SetupOption ...
+type SetupOption func(setup *Setup)
 
 // Reconfigure ...
-func (setup *Setup) Reconfigure(options ...setupOption) {
+func (setup *Setup) Reconfigure(options ...SetupOption) {
 	for _, option := range options {
 		option(setup)
 	}
 }
 
 // WithPath ...
-func WithPath(path string) setupOption {
+func WithPath(path string) SetupOption {
 	return func(setup *Setup) {
 		if path != "" {
 			if !strings.HasSuffix(path, "/") {
@@ -30,21 +30,21 @@ func WithPath(path string) setupOption {
 }
 
 // WithServices ...
-func WithServices(services []*Services) setupOption {
+func WithServices(services []*Services) SetupOption {
 	return func(setup *Setup) {
 		setup.services = services
 	}
 }
 
 // WithRunInBackground ...
-func WithRunInBackground(runInBackground bool) setupOption {
+func WithRunInBackground(runInBackground bool) SetupOption {
 	return func(setup *Setup) {
 		setup.isToRunInBackground = runInBackground
 	}
 }
 
 // WithConfigurationFile ...
-func WithConfigurationFile(file string) setupOption {
+func WithConfigurationFile(file string) SetupOption {
 	return func(setup *Setup) {
 		config := &Configurations{}
 		if _, err := readFile(file, config); err != nil {
@@ -58,28 +58,28 @@ func WithConfigurationFile(file string) setupOption {
 }
 
 // WithRedisConfiguration ...
-func WithRedisConfiguration(config *gomanager.RedisConfig) setupOption {
+func WithRedisConfiguration(config *manager.RedisConfig) SetupOption {
 	return func(setup *Setup) {
 		global["redis"] = config
 	}
 }
 
 // WithSqlConfiguration ...
-func WithSqlConfiguration(config *gomanager.DBConfig) setupOption {
+func WithSqlConfiguration(config *manager.DBConfig) SetupOption {
 	return func(setup *Setup) {
 		global["sql"] = config
 	}
 }
 
 // WithNsqConfiguration ...
-func WithNsqConfiguration(config *gomanager.NSQConfig) setupOption {
+func WithNsqConfiguration(config *manager.NSQConfig) SetupOption {
 	return func(setup *Setup) {
 		global["nsq"] = config
 	}
 }
 
 // WithConfigurations ...
-func WithConfigurations(config *Configurations) setupOption {
+func WithConfigurations(config *Configurations) SetupOption {
 	return func(setup *Setup) {
 		setup.Reconfigure(
 			WithSqlConfiguration(&config.Connections.SqlConfig),
@@ -89,7 +89,7 @@ func WithConfigurations(config *Configurations) setupOption {
 }
 
 // WithLogger ...
-func WithLogger(logger golog.ILog) setupOption {
+func WithLogger(logger logger.ILog) SetupOption {
 	return func(setup *Setup) {
 		log = logger
 		setup.isLogExternal = true
@@ -97,7 +97,7 @@ func WithLogger(logger golog.ILog) setupOption {
 }
 
 // WithLogLevel ...
-func WithLogLevel(level golog.Level) setupOption {
+func WithLogLevel(level logger.Level) SetupOption {
 	return func(setup *Setup) {
 		log.SetLevel(level)
 	}

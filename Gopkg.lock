@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/Benjamintf1/Expanded-Unmarshalled-Matchers"
   packages = ["."]
-  revision = "b245e6d25b08517ce0853aa201c1f6fac9bcea43"
+  revision = "f49d1795d752929500b8ed2289f1e21f10414667"
 
 [[projects]]
   branch = "go1"
@@ -22,44 +22,55 @@
 [[projects]]
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
-  revision = "a0583e0143b1624142adab07e0e97fe106d99561"
-  version = "v1.3"
+  revision = "d523deb1b23d913de5bdada721a6071e71283618"
+  version = "v1.4.0"
 
 [[projects]]
   branch = "master"
   name = "github.com/golang/snappy"
   packages = ["."]
-  revision = "553a641470496b2327abcac10b36396bd98e45c9"
+  revision = "2e65f85255dbc3072edf28d6b5b8efc472979f5a"
 
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/hcl"
-  packages = [".","hcl/ast","hcl/parser","hcl/printer","hcl/scanner","hcl/strconv","hcl/token","json/parser","json/scanner","json/token"]
+  packages = [
+    ".",
+    "hcl/ast",
+    "hcl/parser",
+    "hcl/printer",
+    "hcl/scanner",
+    "hcl/strconv",
+    "hcl/token",
+    "json/parser",
+    "json/scanner",
+    "json/token"
+  ]
   revision = "ef8a98b0bbce4a65b5aa4c368430a80ddc533168"
 
 [[projects]]
   branch = "master"
-  name = "github.com/joaosoft/go-error"
-  packages = ["app"]
-  revision = "1d69617e638d542f7377639e580061a541d9073e"
+  name = "github.com/joaosoft/errors"
+  packages = ["."]
+  revision = "1d5bd3de67a4e2116faeab177d4a858d6eac3665"
 
 [[projects]]
   branch = "master"
-  name = "github.com/joaosoft/go-log"
-  packages = ["app"]
-  revision = "a6f5cd4aea4eee23d9717651365df15375fff27f"
+  name = "github.com/joaosoft/logger"
+  packages = ["."]
+  revision = "9da9376690ff3265e2e23e80ea76a945c1f284ed"
 
 [[projects]]
   branch = "master"
-  name = "github.com/joaosoft/go-manager"
-  packages = ["app"]
-  revision = "45db3ffbc1ea059c71930508d7238a023e36e02c"
+  name = "github.com/joaosoft/manager"
+  packages = ["."]
+  revision = "7c5b104bbc0eee997f8a0792a55f85f5eabfcbfe"
 
 [[projects]]
   branch = "master"
-  name = "github.com/joaosoft/go-writer"
-  packages = ["app"]
-  revision = "791f32ceaea26e070eb198a04669b056558a1c2c"
+  name = "github.com/joaosoft/writers"
+  packages = ["."]
+  revision = "f0c935fdc24aa0480363e70a9218aa5064e47d92"
 
 [[projects]]
   name = "github.com/labstack/echo"
@@ -69,21 +80,27 @@
 
 [[projects]]
   name = "github.com/labstack/gommon"
-  packages = ["color","log"]
-  revision = "588f4e8bddc6cb45c27b448e925c7fd6a5545434"
-  version = "0.2.5"
+  packages = [
+    "color",
+    "log"
+  ]
+  revision = "d6898124de917583f5ff5592ef931d1dfe0ddc05"
+  version = "0.2.6"
 
 [[projects]]
   branch = "master"
   name = "github.com/lib/pq"
-  packages = [".","oid"]
-  revision = "d34b9ff171c21ad295489235aec8b6626023cd04"
+  packages = [
+    ".",
+    "oid"
+  ]
+  revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
-  revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
-  version = "v1.7.6"
+  revision = "c2353362d570a7bfa228149c62842019201cfb71"
+  version = "v1.8.0"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -101,7 +118,7 @@
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
+  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
 
 [[projects]]
   name = "github.com/nsqio/go-nsq"
@@ -111,15 +128,28 @@
 
 [[projects]]
   name = "github.com/onsi/gomega"
-  packages = [".","format","internal/assertion","internal/asyncassertion","internal/oraclematcher","internal/testingtsupport","matchers","matchers/support/goraph/bipartitegraph","matchers/support/goraph/edge","matchers/support/goraph/node","matchers/support/goraph/util","types"]
-  revision = "003f63b7f4cff3fc95357005358af2de0f5fe152"
-  version = "v1.3.0"
+  packages = [
+    ".",
+    "format",
+    "internal/assertion",
+    "internal/asyncassertion",
+    "internal/oraclematcher",
+    "internal/testingtsupport",
+    "matchers",
+    "matchers/support/goraph/bipartitegraph",
+    "matchers/support/goraph/edge",
+    "matchers/support/goraph/node",
+    "matchers/support/goraph/util",
+    "types"
+  ]
+  revision = "62bff4df71bdbc266561a0caee19f0594b17c240"
+  version = "v1.4.0"
 
 [[projects]]
   name = "github.com/pelletier/go-toml"
   packages = ["."]
-  revision = "acdc4509485b587f5e675510c4f2c63e90ff68a8"
-  version = "v1.1.0"
+  revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -129,9 +159,12 @@
 
 [[projects]]
   name = "github.com/spf13/afero"
-  packages = [".","mem"]
-  revision = "63644898a8da0bc22138abf860edaf5277b6102e"
-  version = "v1.1.0"
+  packages = [
+    ".",
+    "mem"
+  ]
+  revision = "787d034dfe70e44075ccc060d346146ef53270ad"
+  version = "v1.1.1"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -172,26 +205,60 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["acme","acme/autocert"]
-  revision = "ae8bce0030810cf999bb2b9868ae5c7c58e6343b"
+  packages = [
+    "acme",
+    "acme/autocert"
+  ]
+  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["html","html/atom","html/charset"]
-  revision = "5f9ae10d9af5b1c89ae6904293b14b064d4ada23"
+  packages = [
+    "html",
+    "html/atom",
+    "html/charset"
+  ]
+  revision = "4cb1c02c05b0e749b0365f61ae859a8e0cfceed9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "4adea008a5e5f820b6028611ae0b6b3fbcec534b"
+  revision = "7138fd3d9dc8335c567ca206f4333fb75eb05d56"
 
 [[projects]]
   name = "golang.org/x/text"
-  packages = ["encoding","encoding/charmap","encoding/htmlindex","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/tag","internal/triegen","internal/ucd","internal/utf8internal","language","runes","transform","unicode/cldr","unicode/norm"]
+  packages = [
+    "encoding",
+    "encoding/charmap",
+    "encoding/htmlindex",
+    "encoding/internal",
+    "encoding/internal/identifier",
+    "encoding/japanese",
+    "encoding/korean",
+    "encoding/simplifiedchinese",
+    "encoding/traditionalchinese",
+    "encoding/unicode",
+    "internal/gen",
+    "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
+    "internal/utf8internal",
+    "language",
+    "runes",
+    "transform",
+    "unicode/cldr",
+    "unicode/norm"
+  ]
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
+
+[[projects]]
+  name = "google.golang.org/appengine"
+  packages = ["cloudsql"]
+  revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
+  version = "v1.1.0"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
@@ -202,6 +269,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "20d51ba0e004ca57d5d105ab5213d4ff6440d7127ad7f2c1006e8adfe10a6a3a"
+  inputs-digest = "59139fe325583644e46f4720e79d178a5906414720cc235a95e804b2c104a0de"
   solver-name = "gps-cdcl"
   solver-version = 1

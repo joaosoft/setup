@@ -1,6 +1,6 @@
 FROM golang:1.9-alpine
 
-ARG PROJECT_NAME=go-setup
+ARG PROJECT_NAME=setup
 
 # install git and mercurial
 RUN apk add --update git mercurial && rm -rf /var/cache/apk/*

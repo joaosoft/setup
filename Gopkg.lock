@@ -58,19 +58,19 @@
   branch = "master"
   name = "github.com/joaosoft/logger"
   packages = ["."]
-  revision = "9da9376690ff3265e2e23e80ea76a945c1f284ed"
+  revision = "0f04d8349e325a20bcf83ca8dd52207fe2576290"
 
 [[projects]]
   branch = "master"
   name = "github.com/joaosoft/manager"
   packages = ["."]
-  revision = "7c5b104bbc0eee997f8a0792a55f85f5eabfcbfe"
+  revision = "5ccd51d62f92b6fb19b36de292b084f803dc1bd5"
 
 [[projects]]
   branch = "master"
   name = "github.com/joaosoft/writers"
   packages = ["."]
-  revision = "f0c935fdc24aa0480363e70a9218aa5064e47d92"
+  revision = "c6e9863c9c957294bb3682ef598e5320b01cdc8b"
 
 [[projects]]
   name = "github.com/labstack/echo"
@@ -219,13 +219,13 @@
     "html/atom",
     "html/charset"
   ]
-  revision = "4cb1c02c05b0e749b0365f61ae859a8e0cfceed9"
+  revision = "a45b4abe13d2d168ea021b6ec8d8798fe33a7cc9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "7138fd3d9dc8335c567ca206f4333fb75eb05d56"
+  revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
 
 [[projects]]
   name = "golang.org/x/text"

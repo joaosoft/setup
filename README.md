@@ -1,5 +1,5 @@
-# go-setup
-[![Build Status](https://travis-ci.org/joaosoft/go-setup.svg?branch=master)](https://travis-ci.org/joaosoft/go-setup) | [![codecov](https://codecov.io/gh/joaosoft/go-setup/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/go-setup) | [![Go Report Card](https://goreportcard.com/badge/github.com/joaosoft/go-test)](https://goreportcard.com/report/github.com/joaosoft/go-test) | [![GoDoc](https://godoc.org/github.com/joaosoft/go-setup?status.svg)](https://godoc.org/github.com/joaosoft/go-setup)
+# setup
+[![Build Status](https://travis-ci.org/joaosoft/setup.svg?branch=master)](https://travis-ci.org/joaosoft/setup) | [![codecov](https://codecov.io/gh/joaosoft/setup/branch/master/graph/badge.svg)](https://codecov.io/gh/joaosoft/setup) | [![Go Report Card](https://goreportcard.com/badge/github.com/joaosoft/go-test)](https://goreportcard.com/report/github.com/joaosoft/go-test) | [![GoDoc](https://godoc.org/github.com/joaosoft/setup?status.svg)](https://godoc.org/github.com/joaosoft/setup)
 
 A framework that allows you to setup services. At the moment it has support for web services, redis, postgres, mysql and nsq services. 
 This frameworks runs all real services allowing you to validade the integration between services and your own code.
@@ -21,7 +21,7 @@ Project dependencies are managed using Dep. Read more about [Dep](https://github
 
 >### Go
 ```
-go get github.com/joaosoft/go-setup
+go get github.com/joaosoft/setup
 ```
 
 ## Docker
@@ -32,7 +32,7 @@ make env
 ```
 
 ## Usage 
-This example is available in the project at [go-setup/example](https://github.com/joaosoft/go-setup/tree/master/example)
+This example is available in the project at [setup/example](https://github.com/joaosoft/setup/tree/master/example)
 
 ```go
 package main
@@ -91,7 +91,7 @@ func main() {
 
 >## Configurations
 
->### WebServices [ see 001_http.json ] [go-setup/example/001_http.json](https://github.com/joaosoft/go-setup/tree/master/example/001_http.json)
+>### WebServices [ see 001_http.json ] [setup/example/001_http.json](https://github.com/joaosoft/setup/tree/master/example/001_http.json)
 
 ```javascript
 {
@@ -212,7 +212,7 @@ func main() {
 }
 ```
 
->### SQL [ see 002_sql.json ] [go-setup/example/002_sql.json](https://github.com/joaosoft/go-setup/tree/master/example/002_sql.json)
+>### SQL [ see 002_sql.json ] [setup/example/002_sql.json](https://github.com/joaosoft/setup/tree/master/example/002_sql.json)
 ```javascript
 {
   "sql": [
@@ -289,7 +289,7 @@ func main() {
 }
 ```
 
->### NSQ [ see 003_nsq.json ] [go-setup/example/003_nsq.json](https://github.com/joaosoft/go-setup/tree/master/example/003_nsq.json)
+>### NSQ [ see 003_nsq.json ] [setup/example/003_nsq.json](https://github.com/joaosoft/setup/tree/master/example/003_nsq.json)
 ```javascript
 {
   "nsq": [
@@ -353,7 +353,7 @@ func main() {
 }
 ```
 
->### REDIS [ see 004_redis.json ] [go-setup/example/004_redis.json](https://github.com/joaosoft/go-setup/tree/master/example/004_redis.json)
+>### REDIS [ see 004_redis.json ] [setup/example/004_redis.json](https://github.com/joaosoft/setup/tree/master/example/004_redis.json)
 ```javascript
 {
   "redis": [
@@ -441,14 +441,14 @@ func main() {
 }
 ```
 
->### FILES [ see 005_files.json ] [go-setup/example/005_files.json](https://github.com/joaosoft/go-setup/tree/master/example/005_files.json)
+>### FILES [ see 005_files.json ] [setup/example/005_files.json](https://github.com/joaosoft/setup/tree/master/example/005_files.json)
 ```javascript
 {
   "files": ["001_http.json", "002_sql.json"]
 }
 ```
 
->### ALL [ see 005_all.json ] [go-setup/example/005_all.json](https://github.com/joaosoft/go-setup/tree/master/example/005_all.json)
+>### ALL [ see 005_all.json ] [setup/example/005_all.json](https://github.com/joaosoft/setup/tree/master/example/005_all.json)
 This example have all previous setup's, just to show you that you can config them all together.
 
 ## Follow me at

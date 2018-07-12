@@ -1,11 +1,12 @@
 package main
 
 import (
+	"setup"
 	"time"
+
 	_ "github.com/go-sql-driver/mysql" // mysql driver
 	logger "github.com/joaosoft/logger"
 	_ "github.com/lib/pq" // postgres driver
-	"setup"
 )
 
 func main() {

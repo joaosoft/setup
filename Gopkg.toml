@@ -26,8 +26,8 @@
 
 
 [[constraint]]
-  branch = "master"
   name = "github.com/Benjamintf1/Expanded-Unmarshalled-Matchers"
+  version = "1.0.0"
 
 [[constraint]]
   branch = "go1"
@@ -59,7 +59,7 @@
 
 [[constraint]]
   name = "github.com/onsi/gomega"
-  version = "1.4.0"
+  version = "1.4.1"
 
 [prune]
   go-tests = true

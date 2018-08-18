@@ -102,3 +102,10 @@ func WithLogLevel(level logger.Level) SetupOption {
 		log.SetLevel(level)
 	}
 }
+
+// WithManager ...
+func WithManager(mgr *manager.Manager) SetupOption {
+	return func(setup *Setup) {
+		setup.pm = mgr
+	}
+}

@@ -37,7 +37,7 @@ func (runner *HttpRunner) Setup() error {
 
 		// shutdown service on allocated port
 		//if listener, err := net.Listen("tcp", service.Host); err != nil {
-		//	log.Info(err)
+		//	log.Details(err)
 		//	log.Infof("closing connection to %s", service.Host)
 		//	listener.Close()
 		//}

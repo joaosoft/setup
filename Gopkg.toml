@@ -35,7 +35,7 @@
 
 [[constraint]]
   name = "github.com/go-sql-driver/mysql"
-  version = "1.4.0"
+  version = "1.4.1"
 
 [[constraint]]
   branch = "master"
@@ -47,11 +47,11 @@
 
 [[constraint]]
   name = "github.com/labstack/echo"
-  version = "3.3.5"
+  version = "3.3.8"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/lib/pq"
+  version = "1.0.0"
 
 [[constraint]]
   name = "github.com/nsqio/go-nsq"
@@ -59,12 +59,12 @@
 
 [[constraint]]
   name = "github.com/onsi/gomega"
-  version = "1.4.1"
-
-[prune]
-  go-tests = true
-  unused-packages = true
+  version = "1.4.3"
 
 [[override]]
   name = "github.com/satori/go.uuid"
   branch = "master"
+
+[prune]
+  go-tests = true
+  unused-packages = true

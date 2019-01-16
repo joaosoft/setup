@@ -43,14 +43,14 @@ func NewSetup(options ...SetupOption) *Setup {
 	appConfig := &AppConfig{}
 	if simpleConfig, err := manager.NewSimpleConfig(fmt.Sprintf("/config.%s.json", getEnv()), appConfig); err != nil {
 		log.Error(err.Error())
-	} else {
+	} else if appConfig.Setup != nil {
 		pm.AddConfig("config_app", simpleConfig)
 		level, _ := logger.ParseLevel(appConfig.Setup.Log.Level)
 		log.Debugf("setting log level to %s", level)
 		log.Reconfigure(logger.WithLevel(level))
 	}
 
-	setup.config = &appConfig.Setup
+	setup.config = appConfig.Setup
 
 	return setup
 }

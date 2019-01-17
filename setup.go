@@ -31,9 +31,8 @@ func NewSetup(options ...SetupOption) *Setup {
 	setup := &Setup{
 		isToRunInBackground: background,
 		services:            make([]*Services, 0),
+		config:              &SetupConfig{},
 	}
-
-	setup.Reconfigure(options...)
 
 	if setup.isLogExternal {
 		pm.Reconfigure(manager.WithLogger(log))
@@ -48,9 +47,10 @@ func NewSetup(options ...SetupOption) *Setup {
 		level, _ := logger.ParseLevel(appConfig.Setup.Log.Level)
 		log.Debugf("setting log level to %s", level)
 		log.Reconfigure(logger.WithLevel(level))
+		setup.config = appConfig.Setup
 	}
 
-	setup.config = appConfig.Setup
+	setup.Reconfigure(options...)
 
 	return setup
 }

@@ -17,38 +17,40 @@ type Setup struct {
 	isToRunInBackground bool
 	config              *SetupConfig
 	pm                  *manager.Manager
+	logger              logger.ILogger
 	isLogExternal       bool
 }
 
 // NewSetup ...make
 func NewSetup(options ...SetupOption) *Setup {
 	config, simpleConfig, err := NewConfig()
-	pm := manager.NewManager(manager.WithRunInBackground(false))
 
-	log.Info("starting Setup Service")
-
-	setup := &Setup{
+	service := &Setup{
+		pm:                  manager.NewManager(manager.WithRunInBackground(false)),
+		logger:              logger.NewLogDefault("setup", logger.DebugLevel),
 		isToRunInBackground: background,
 		services:            make([]*Services, 0),
 		config:              &config.Setup,
 	}
 
-	if setup.isLogExternal {
-		pm.Reconfigure(manager.WithLogger(log))
+	service.logger.Info("starting Setup Service")
+
+	if service.isLogExternal {
+		service.pm.Reconfigure(manager.WithLogger(log))
 	}
 
 	if err != nil {
-		log.Error(err.Error())
+		service.logger.Error(err.Error())
 	} else {
-		setup.pm.AddConfig("config_app", simpleConfig)
+		service.pm.AddConfig("config_app", simpleConfig)
 		level, _ := logger.ParseLevel(config.Setup.Log.Level)
-		log.Debugf("setting log level to %s", level)
-		log.Reconfigure(logger.WithLevel(level))
+		service.logger.Debugf("setting log level to %s", level)
+		service.logger.Reconfigure(logger.WithLevel(level))
 	}
 
-	setup.Reconfigure(options...)
+	service.Reconfigure(options...)
 
-	return setup
+	return service
 }
 
 // Run ...

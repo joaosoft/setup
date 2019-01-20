@@ -8,7 +8,7 @@ import (
 
 // AppConfig ...
 type AppConfig struct {
-	Setup *SetupConfig `json:"setup"`
+	Setup SetupConfig `json:"setup"`
 }
 
 // goSetupConfig ...
@@ -31,13 +31,9 @@ type Connections struct {
 }
 
 // NewConfig ...
-func NewConfig() (*SetupConfig, error) {
+func NewConfig() (*AppConfig, manager.IConfig, error) {
 	appConfig := &AppConfig{}
-	if _, err := manager.NewSimpleConfig(fmt.Sprintf("/config/app.%s.json", GetEnv()), appConfig); err != nil {
-		log.Error(err.Error())
+	simpleConfig, err := manager.NewSimpleConfig(fmt.Sprintf("/config/app.%s.json", GetEnv()), appConfig)
 
-		return &SetupConfig{}, err
-	}
-
-	return appConfig.Setup, nil
+	return appConfig, simpleConfig, err
 }

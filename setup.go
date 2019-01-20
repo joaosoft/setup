@@ -6,10 +6,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"fmt"
-
-	logger "github.com/joaosoft/logger"
-	manager "github.com/joaosoft/manager"
+	"github.com/joaosoft/logger"
+	"github.com/joaosoft/manager"
 )
 
 // Setup ...
@@ -24,6 +22,7 @@ type Setup struct {
 
 // NewSetup ...make
 func NewSetup(options ...SetupOption) *Setup {
+	config, simpleConfig, err := NewConfig()
 	pm := manager.NewManager(manager.WithRunInBackground(false))
 
 	log.Info("starting Setup Service")
@@ -31,23 +30,20 @@ func NewSetup(options ...SetupOption) *Setup {
 	setup := &Setup{
 		isToRunInBackground: background,
 		services:            make([]*Services, 0),
-		config:              &SetupConfig{},
+		config:              &config.Setup,
 	}
 
 	if setup.isLogExternal {
 		pm.Reconfigure(manager.WithLogger(log))
 	}
 
-	// load configuration file
-	appConfig := &AppConfig{}
-	if simpleConfig, err := manager.NewSimpleConfig(fmt.Sprintf("/config.%s.json", GetEnv()), appConfig); err != nil {
+	if err != nil {
 		log.Error(err.Error())
-	} else if appConfig.Setup != nil {
-		pm.AddConfig("config_app", simpleConfig)
-		level, _ := logger.ParseLevel(appConfig.Setup.Log.Level)
+	} else {
+		setup.pm.AddConfig("config_app", simpleConfig)
+		level, _ := logger.ParseLevel(config.Setup.Log.Level)
 		log.Debugf("setting log level to %s", level)
 		log.Reconfigure(logger.WithLevel(level))
-		setup.config = appConfig.Setup
 	}
 
 	setup.Reconfigure(options...)

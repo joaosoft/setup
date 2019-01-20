@@ -47,7 +47,7 @@ func WithRunInBackground(runInBackground bool) SetupOption {
 func WithConfigurationFile(file string) SetupOption {
 	return func(setup *Setup) {
 		config := &Configurations{}
-		if _, err := readFile(file, config); err != nil {
+		if _, err := ReadFile(file, config); err != nil {
 			panic(err)
 		}
 		setup.Reconfigure(

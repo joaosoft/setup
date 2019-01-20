@@ -101,7 +101,7 @@ func (runner *SqlRunner) runCommandsFromFile(conn *sql.DB, run *SqlRun) error {
 		log.Infof("executing nsq commands by file [ %s ]", file)
 
 		var query string
-		if bytes, err := readFile(file, nil); err != nil {
+		if bytes, err := ReadFile(file, nil); err != nil {
 			return fmt.Errorf("failed to read sql file [ %s ] with error [ %s ]", file, err)
 		} else {
 			query = string(bytes)

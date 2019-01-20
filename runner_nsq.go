@@ -100,7 +100,7 @@ func (runner *NsqRunner) runCommandsFromFile(conn *nsq.Producer, run *NsqRun) er
 
 	if run.File != "" {
 		log.Infof("executing nsq commands by file [ %s ]", run.File)
-		command, err := readFile(run.File, nil)
+		command, err := ReadFile(run.File, nil)
 		if err != nil {
 			return err
 		}

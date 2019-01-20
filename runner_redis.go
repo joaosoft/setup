@@ -108,7 +108,7 @@ func (runner *RedisRunner) runCommandsFromFile(conn redis.Client, run *RedisRun)
 	for _, file := range run.Files {
 		log.Infof("executing redis commands by file [ %s ]", file)
 
-		if lines, err := readFileLines(file); err != nil {
+		if lines, err := ReadFileLines(file); err != nil {
 			for _, line := range lines {
 				command := strings.SplitN(line, " ", 1)
 				arguments := strings.Split(command[1], " ")

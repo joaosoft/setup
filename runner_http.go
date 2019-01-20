@@ -120,7 +120,7 @@ func (instance Route) handle(ctx echo.Context) error {
 	if instance.Body != nil {
 		expectedBody = string(instance.Body)
 	} else if instance.File != nil {
-		if bytes, err := readFile(*instance.File, nil); err != nil {
+		if bytes, err := ReadFile(*instance.File, nil); err != nil {
 			return err
 		} else {
 			expectedBody = string(bytes)
@@ -139,7 +139,7 @@ func (instance Route) handle(ctx echo.Context) error {
 	if instance.Response.Body != nil {
 		response = instance.Response.Body
 	} else if instance.Response.File != nil {
-		if bytes, err := readFile(*instance.Response.File, nil); err != nil {
+		if bytes, err := ReadFile(*instance.Response.File, nil); err != nil {
 			return err
 		} else {
 			response = bytes

@@ -40,7 +40,7 @@ func NewSetup(options ...SetupOption) *Setup {
 
 	// load configuration file
 	appConfig := &AppConfig{}
-	if simpleConfig, err := manager.NewSimpleConfig(fmt.Sprintf("/config.%s.json", getEnv()), appConfig); err != nil {
+	if simpleConfig, err := manager.NewSimpleConfig(fmt.Sprintf("/config.%s.json", GetEnv()), appConfig); err != nil {
 		log.Error(err.Error())
 	} else if appConfig.Setup != nil {
 		pm.AddConfig("config_app", simpleConfig)
@@ -93,7 +93,7 @@ func (setup *Setup) Stop() error {
 func (setup *Setup) execute(files []string) error {
 	for _, file := range files {
 		servicesOnFile := &Services{}
-		if _, err := readFile(file, servicesOnFile); err != nil {
+		if _, err := ReadFile(file, servicesOnFile); err != nil {
 			return err
 		}
 
@@ -126,7 +126,7 @@ func load(service *Services) ([]*Services, error) {
 	for _, file := range service.Files {
 		log.Infof("loading service file %s", file)
 		nextService := &Services{}
-		if _, err := readFile(file, nextService); err != nil {
+		if _, err := ReadFile(file, nextService); err != nil {
 			return nil, err
 		}
 

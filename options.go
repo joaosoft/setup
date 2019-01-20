@@ -3,8 +3,8 @@ package setup
 import (
 	"strings"
 
-	logger "github.com/joaosoft/logger"
-	manager "github.com/joaosoft/manager"
+	"github.com/joaosoft/logger"
+	"github.com/joaosoft/manager"
 )
 
 // SetupOption ...
@@ -91,7 +91,7 @@ func WithConfigurations(config *Configurations) SetupOption {
 // WithLogger ...
 func WithLogger(logger logger.ILogger) SetupOption {
 	return func(setup *Setup) {
-		log = logger
+		setup.logger = logger
 		setup.isLogExternal = true
 	}
 }
@@ -99,7 +99,7 @@ func WithLogger(logger logger.ILogger) SetupOption {
 // WithLogLevel ...
 func WithLogLevel(level logger.Level) SetupOption {
 	return func(setup *Setup) {
-		log.SetLevel(level)
+		setup.logger.SetLevel(level)
 	}
 }
 

@@ -36,7 +36,7 @@ func NewSetup(options ...SetupOption) *Setup {
 	service.logger.Info("starting Setup Service")
 
 	if service.isLogExternal {
-		service.pm.Reconfigure(manager.WithLogger(log))
+		service.pm.Reconfigure(manager.WithLogger(service.logger))
 	}
 
 	if err != nil {
@@ -60,7 +60,7 @@ func (setup *Setup) Run() error {
 		return err
 	}
 	if err := setup.execute(files); err != nil {
-		log.Error(err)
+		setup.logger.Error(err)
 		return err
 	}
 
@@ -70,7 +70,7 @@ func (setup *Setup) Run() error {
 // RunSingle ...
 func (setup *Setup) RunSingle(file string) error {
 	if err := setup.execute([]string{file}); err != nil {
-		log.Error(err)
+		setup.logger.Error(err)
 		return err
 	}
 
@@ -80,10 +80,10 @@ func (setup *Setup) RunSingle(file string) error {
 // Stop ...
 func (setup *Setup) Stop() error {
 	if err := setup.runner.Teardown(); err != nil {
-		log.Error(err)
+		setup.logger.Error(err)
 		return err
 	}
-	log.Info("stopped all services")
+	setup.logger.Info("stopped all services")
 
 	return nil
 }
@@ -95,19 +95,19 @@ func (setup *Setup) execute(files []string) error {
 			return err
 		}
 
-		array, err := load(servicesOnFile)
+		array, err := setup.load(servicesOnFile)
 		if err != nil {
 			return err
 		}
 		setup.services = append(setup.services, array...)
 	}
 
-	setup.runner = NewRunner(setup.services)
+	setup.runner = setup.NewRunner(setup.services)
 	if err := setup.runner.Setup(); err != nil {
 		return err
 	}
 
-	log.Info("started all services")
+	setup.logger.Info("started all services")
 
 	if !setup.isToRunInBackground {
 		setup.Wait()
@@ -117,19 +117,19 @@ func (setup *Setup) execute(files []string) error {
 }
 
 // load recursive load services files inside every service
-func load(service *Services) ([]*Services, error) {
-	log.Info("loading service...")
+func (setup *Setup) load(service *Services) ([]*Services, error) {
+	setup.logger.Info("loading service...")
 	array := make([]*Services, 0)
 
 	for _, file := range service.Files {
-		log.Infof("loading service file %s", file)
+		setup.logger.Infof("loading service file %s", file)
 		nextService := &Services{}
 		if _, err := ReadFile(file, nextService); err != nil {
 			return nil, err
 		}
 
-		log.Infof("getting next service...")
-		if nextArray, err := load(nextService); err != nil {
+		setup.logger.Infof("getting next service...")
+		if nextArray, err := setup.load(nextService); err != nil {
 			return nil, err
 		} else {
 			array = append(array, nextArray...)
@@ -141,7 +141,7 @@ func load(service *Services) ([]*Services, error) {
 
 // Wait ...
 func (setup *Setup) Wait() {
-	log.Info("waiting to stop...")
+	setup.logger.Info("waiting to stop...")
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit

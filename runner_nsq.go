@@ -2,6 +2,7 @@ package setup
 
 import (
 	"fmt"
+	"github.com/joaosoft/logger"
 
 	manager "github.com/joaosoft/manager"
 	"github.com/nsqio/go-nsq"
@@ -10,18 +11,20 @@ import (
 type NsqRunner struct {
 	services      []NsqService
 	configuration *manager.NSQConfig
+	logger logger.ILogger
 }
 
-func NewNsqRunner(services []NsqService, config *manager.NSQConfig) *NsqRunner {
+func (setup *Runner) NewNsqRunner(services []NsqService, config *manager.NSQConfig) *NsqRunner {
 	return &NsqRunner{
 		services:      services,
 		configuration: config,
+		logger:setup.logger,
 	}
 }
 
 func (runner *NsqRunner) Setup() error {
 	for _, service := range runner.services {
-		log.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
+		runner.logger.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
 
 		var conn *nsq.Producer
 		if configuration, err := runner.loadConfiguration(service); err != nil {
@@ -49,7 +52,7 @@ func (runner *NsqRunner) Setup() error {
 
 func (runner *NsqRunner) Teardown() error {
 	for _, service := range runner.services {
-		log.Infof("teardown service [ %s ]", service.Name)
+		runner.logger.Infof("teardown service [ %s ]", service.Name)
 
 		var conn *nsq.Producer
 		if configuration, err := runner.loadConfiguration(service); err != nil {
@@ -87,7 +90,7 @@ func (runner *NsqRunner) loadConfiguration(test NsqService) (*manager.NSQConfig,
 
 func (runner *NsqRunner) runCommands(conn *nsq.Producer, run *NsqRun) error {
 	if run.Message != nil && string(run.Message) != "" {
-		log.Infof("executing nsq [ %s ] message: %s", run.Description, string(run.Message))
+		runner.logger.Infof("executing nsq [ %s ] message: %s", run.Description, string(run.Message))
 		if err := conn.Publish(run.Topic, run.Message); err != nil {
 			return err
 		}
@@ -99,7 +102,7 @@ func (runner *NsqRunner) runCommands(conn *nsq.Producer, run *NsqRun) error {
 func (runner *NsqRunner) runCommandsFromFile(conn *nsq.Producer, run *NsqRun) error {
 
 	if run.File != "" {
-		log.Infof("executing nsq commands by file [ %s ]", run.File)
+		runner.logger.Infof("executing nsq commands by file [ %s ]", run.File)
 		command, err := ReadFile(run.File, nil)
 		if err != nil {
 			return err

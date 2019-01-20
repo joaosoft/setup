@@ -2,6 +2,7 @@ package setup
 
 import (
 	"fmt"
+	"github.com/joaosoft/logger"
 	"reflect"
 	"strings"
 
@@ -12,18 +13,20 @@ import (
 type RedisRunner struct {
 	services      []RedisService
 	configuration *manager.RedisConfig
+	logger logger.ILogger
 }
 
-func NewRedisRunner(services []RedisService, config *manager.RedisConfig) *RedisRunner {
+func (setup *Runner) NewRedisRunner(services []RedisService, config *manager.RedisConfig) *RedisRunner {
 	return &RedisRunner{
 		services:      services,
 		configuration: config,
+		logger: setup.logger,
 	}
 }
 
 func (runner *RedisRunner) Setup() error {
 	for _, service := range runner.services {
-		log.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
+		runner.logger.Infof("creating service [ %s ] with description [ %s] ", service.Name, service.Description)
 
 		var conn redis.Client
 		if configuration, err := runner.loadConfiguration(service); err != nil {
@@ -51,7 +54,7 @@ func (runner *RedisRunner) Setup() error {
 
 func (runner *RedisRunner) Teardown() error {
 	for _, service := range runner.services {
-		log.Infof("teardown service [ %s ]", service.Name)
+		runner.logger.Infof("teardown service [ %s ]", service.Name)
 
 		var conn redis.Client
 		if configuration, err := runner.loadConfiguration(service); err != nil {
@@ -89,7 +92,7 @@ func (runner *RedisRunner) loadConfiguration(test RedisService) (*manager.RedisC
 
 func (runner *RedisRunner) runCommands(conn redis.Client, run *RedisRun) error {
 	for _, command := range run.Commands {
-		log.Infof("executing redis command [ %s ] arguments [ %s ]", command.Command, command.Arguments)
+		runner.logger.Infof("executing redis command [ %s ] arguments [ %s ]", command.Command, command.Arguments)
 
 		inputs := make([]reflect.Value, len(command.Arguments))
 		for i, arg := range command.Arguments {
@@ -106,13 +109,13 @@ func (runner *RedisRunner) runCommands(conn redis.Client, run *RedisRun) error {
 
 func (runner *RedisRunner) runCommandsFromFile(conn redis.Client, run *RedisRun) error {
 	for _, file := range run.Files {
-		log.Infof("executing redis commands by file [ %s ]", file)
+		runner.logger.Infof("executing redis commands by file [ %s ]", file)
 
 		if lines, err := ReadFileLines(file); err != nil {
 			for _, line := range lines {
 				command := strings.SplitN(line, " ", 1)
 				arguments := strings.Split(command[1], " ")
-				log.Infof("executing redis command [ %s ] arguments [ %s ]", command[0], command[1])
+				runner.logger.Infof("executing redis command [ %s ] arguments [ %s ]", command[0], command[1])
 				inputs := make([]reflect.Value, len(arguments))
 				for i, arg := range arguments {
 					inputs[i] = reflect.ValueOf(arg)

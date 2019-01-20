@@ -2,8 +2,10 @@ package setup
 
 import (
 	"encoding/json"
-	manager "github.com/joaosoft/manager"
+	"logger"
 	"time"
+
+	manager "github.com/joaosoft/manager"
 )
 
 // Services
@@ -33,6 +35,7 @@ type Route struct {
 	Body        json.RawMessage `json:"body"`
 	File        *string         `json:"file"`
 	Response    Response        `json:"response"`
+	logger      logger.ILogger
 }
 
 // Headers
@@ -56,10 +59,10 @@ type Response struct {
 
 // RedisService
 type RedisService struct {
-	Name          string                 `json:"name"`
-	Description   string                 `json:"description"`
+	Name          string               `json:"name"`
+	Description   string               `json:"description"`
 	Configuration *manager.RedisConfig `json:"configuration"`
-	Connection    *string                `json:"connection"`
+	Connection    *string              `json:"connection"`
 	Run           struct {
 		Setup    []RedisRun `json:"setup"`
 		Teardown []RedisRun `json:"teardown"`
@@ -79,10 +82,10 @@ type RedisCommand struct {
 
 // NsqService
 type NsqService struct {
-	Name          string               `json:"name"`
-	Description   string               `json:"description"`
+	Name          string             `json:"name"`
+	Description   string             `json:"description"`
 	Configuration *manager.NSQConfig `json:"configuration"`
-	Connection    *string              `json:"connection"`
+	Connection    *string            `json:"connection"`
 	Run           struct {
 		Setup    []NsqRun `json:"setup"`
 		Teardown []NsqRun `json:"teardown"`
@@ -99,10 +102,10 @@ type NsqRun struct {
 
 // SqlService
 type SqlService struct {
-	Name          string              `json:"name"`
-	Description   string              `json:"description"`
+	Name          string            `json:"name"`
+	Description   string            `json:"description"`
 	Configuration *manager.DBConfig `json:"configuration"`
-	Connection    *string             `json:"connection"`
+	Connection    *string           `json:"connection"`
 	Run           struct {
 		Setup    []SqlRun `json:"setup"`
 		Teardown []SqlRun `json:"teardown"`

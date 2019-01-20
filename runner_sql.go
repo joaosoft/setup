@@ -3,25 +3,27 @@ package setup
 import (
 	"database/sql"
 	"fmt"
-
-	manager "github.com/joaosoft/manager"
+	"github.com/joaosoft/logger"
+	"github.com/joaosoft/manager"
 )
 
 type SqlRunner struct {
 	services      []SqlService
 	configuration *manager.DBConfig
+	logger logger.ILogger
 }
 
-func NewSqlRunner(services []SqlService, config *manager.DBConfig) *SqlRunner {
+func (setup *Runner) NewSqlRunner(services []SqlService, config *manager.DBConfig) *SqlRunner {
 	return &SqlRunner{
 		services:      services,
 		configuration: config,
+		logger: setup.logger,
 	}
 }
 
 func (runner *SqlRunner) Setup() error {
 	for _, service := range runner.services {
-		log.Infof("creating service [ %s ] with description [ %s ]", service.Name, service.Description)
+		runner.logger.Infof("creating service [ %s ] with description [ %s ]", service.Name, service.Description)
 
 		var conn *sql.DB
 		if configuration, err := runner.loadConfiguration(service); err != nil {
@@ -49,7 +51,7 @@ func (runner *SqlRunner) Setup() error {
 
 func (runner *SqlRunner) Teardown() error {
 	for _, service := range runner.services {
-		log.Infof("teardown service [ %s ] with description [ %s ]", service.Name, service.Description)
+		runner.logger.Infof("teardown service [ %s ] with description [ %s ]", service.Name, service.Description)
 
 		var conn *sql.DB
 		if configuration, err := runner.loadConfiguration(service); err != nil {
@@ -87,7 +89,7 @@ func (runner *SqlRunner) loadConfiguration(test SqlService) (*manager.DBConfig, 
 
 func (runner *SqlRunner) runCommands(conn *sql.DB, run *SqlRun) error {
 	for _, command := range run.Queries {
-		log.Infof("executing sql command [ %s ]", command)
+		runner.logger.Infof("executing sql command [ %s ]", command)
 
 		if _, err := conn.Exec(command); err != nil {
 			return fmt.Errorf("failed to execute sql command [ %s ]", err)
@@ -98,7 +100,7 @@ func (runner *SqlRunner) runCommands(conn *sql.DB, run *SqlRun) error {
 
 func (runner *SqlRunner) runCommandsFromFile(conn *sql.DB, run *SqlRun) error {
 	for _, file := range run.Files {
-		log.Infof("executing nsq commands by file [ %s ]", file)
+		runner.logger.Infof("executing nsq commands by file [ %s ]", file)
 
 		var query string
 		if bytes, err := ReadFile(file, nil); err != nil {

@@ -1,12 +1,10 @@
 package setup
 
 import (
-	logger "github.com/joaosoft/logger"
-	manager "github.com/joaosoft/manager"
+	"github.com/joaosoft/manager"
 )
 
 var global = make(map[string]interface{})
-var log = logger.NewLogDefault("setup", logger.InfoLevel)
 
 func init() {
 	global[path_key] = defaultPath

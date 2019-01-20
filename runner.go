@@ -1,5 +1,7 @@
 package setup
 
+import "github.com/joaosoft/logger"
+
 type IRunner interface {
 	Setup() error
 	Teardown() error
@@ -8,12 +10,14 @@ type IRunner interface {
 type Runner struct {
 	services []*Services
 	runners  []IRunner
+	logger logger.ILogger
 }
 
-func NewRunner(services []*Services) *Runner {
+func (setup *Setup) NewRunner(services []*Services) *Runner {
 	return &Runner{
 		services: services,
 		runners:  make([]IRunner, 0),
+		logger: setup.logger,
 	}
 }
 
@@ -54,10 +58,10 @@ func (runner *Runner) createRunners(services []*Services) ([]IRunner, error) {
 	}
 
 	// create runners to do the job
-	httpRunner := NewHttpRunner(httpServices)
-	sqlRunner := NewSqlRunner(sqlServices, getDefaultSqlConfig())
-	redisRunner := NewRedisRunner(redisServices, getDefaultRedisConfig())
-	nsqRunner := NewNsqRunner(nsqServices, getDefaultNsqConfig())
+	httpRunner := runner.NewHttpRunner(httpServices)
+	sqlRunner := runner.NewSqlRunner(sqlServices, getDefaultSqlConfig())
+	redisRunner := runner.NewRedisRunner(redisServices, getDefaultRedisConfig())
+	nsqRunner := runner.NewNsqRunner(nsqServices, getDefaultNsqConfig())
 
 	runners = append(runners, []IRunner{httpRunner, sqlRunner, redisRunner, nsqRunner}...)
 

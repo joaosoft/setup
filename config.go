@@ -8,7 +8,7 @@ import (
 
 // AppConfig ...
 type AppConfig struct {
-	Setup SetupConfig `json:"setup"`
+	Setup *SetupConfig `json:"setup"`
 }
 
 // goSetupConfig ...

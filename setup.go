@@ -30,7 +30,7 @@ func NewSetup(options ...SetupOption) *Setup {
 		logger:              logger.NewLogDefault("setup", logger.WarnLevel),
 		isToRunInBackground: background,
 		services:            make([]*Services, 0),
-		config:              &config.Setup,
+		config:              config.Setup,
 	}
 
 	service.logger.Info("starting Setup Service")
@@ -41,11 +41,12 @@ func NewSetup(options ...SetupOption) *Setup {
 
 	if err != nil {
 		service.logger.Error(err.Error())
-	} else {
+	} else if config.Setup != nil {
 		service.pm.AddConfig("config_app", simpleConfig)
 		level, _ := logger.ParseLevel(config.Setup.Log.Level)
 		service.logger.Debugf("setting log level to %s", level)
 		service.logger.Reconfigure(logger.WithLevel(level))
+
 	}
 
 	service.Reconfigure(options...)

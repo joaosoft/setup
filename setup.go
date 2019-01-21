@@ -27,7 +27,7 @@ func NewSetup(options ...SetupOption) *Setup {
 
 	service := &Setup{
 		pm:                  manager.NewManager(manager.WithRunInBackground(false)),
-		logger:              logger.NewLogDefault("setup", logger.DebugLevel),
+		logger:              logger.NewLogDefault("setup", logger.WarnLevel),
 		isToRunInBackground: background,
 		services:            make([]*Services, 0),
 		config:              &config.Setup,

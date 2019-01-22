@@ -2,10 +2,10 @@ package setup
 
 import (
 	"encoding/json"
-	"logger"
 	"time"
 
-	manager "github.com/joaosoft/manager"
+	"github.com/joaosoft/logger"
+	"github.com/joaosoft/manager"
 )
 
 // Services

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"setup"
+	"github.com/joaosoft/setup"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql" // mysql driver

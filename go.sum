@@ -69,8 +69,6 @@ github.com/fsnotify/fsnotify v1.6.0/go.mod h1:sl3t1tCWJFWoRz9R8WJCbQihKKwmorjAbS
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
-github.com/go-redis/redis v6.15.9+incompatible h1:K0pv1D7EQUjfyoMql+r/jZqCLizCGKFlFgcHWWmHQjg=
-github.com/go-redis/redis v6.15.9+incompatible/go.mod h1:NAIEuMOZ/fxfXJIrKDQDz8wamY7mA7PouImQ2Jvg6kA=
 github.com/go-sql-driver/mysql v1.8.0 h1:UtktXaU2Nb64z/pLiGIxY4431SJ4/dR5cjMmlVHgnT4=
 github.com/go-sql-driver/mysql v1.8.0/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=
@@ -146,16 +144,10 @@ github.com/joaosoft/color v0.0.0-20230531140514-b61c18d53e39/go.mod h1:AgsP+zahQ
 github.com/joaosoft/errors v0.0.0-20210812101433-f58fbcc4c1c8/go.mod h1:88WoG5oDStLTaG0n5e8NR0rKcugZttofMwD5cajQnTA=
 github.com/joaosoft/errors v0.0.0-20230531141818-ebb38600b462 h1:FH9gGVdSVA9ERuIlyYI4+U36FZtSMulMzID37MdLfGc=
 github.com/joaosoft/errors v0.0.0-20230531141818-ebb38600b462/go.mod h1:/dazfOGZSVYLVcrKzAJATbOhYm+/9BNoS5ZDzKz+ltI=
-github.com/joaosoft/go-manager v0.0.0-20230531145319-70475d3afc54 h1:/E46nwe41Vyla2ShrlDYsuhTmELZ4rFibCRmKIkp0fY=
-github.com/joaosoft/go-manager v0.0.0-20230531145319-70475d3afc54/go.mod h1:z1by8NE0ZP1HzecEyE+G5cJ25jOBCMAf6NxaTnKcKH0=
 github.com/joaosoft/logger v0.0.0-20230531142923-753c0a3e836a h1:O53XPtsnwnmBsGptCKSlupo0aNT5wG02AMqttSCE0vk=
 github.com/joaosoft/logger v0.0.0-20230531142923-753c0a3e836a/go.mod h1:xhFyqfT2p8E7qK6UXhv2U0tFuMOTeOR7Un1v5hoX7Gs=
 github.com/joaosoft/manager v0.0.0-20240319134643-df707ca6b9b1 h1:W0SxVtl19FOLYFb17ETjn5mVOebsQs/fRnglZDiGJyg=
 github.com/joaosoft/manager v0.0.0-20240319134643-df707ca6b9b1/go.mod h1:GYebm9SVc7PdFY11laaRNT6rdTpHXHip0J4VfW9QCHo=
-github.com/joaosoft/mapper v0.0.0-20240319152032-fb54b78b6438 h1:jGiaLCDRmub46jx6VZqvLAncYoo5dHrd8lmnLuLD674=
-github.com/joaosoft/mapper v0.0.0-20240319152032-fb54b78b6438/go.mod h1:yAW8w2GIG09+xOC5U8+NjNKKZ2Vir6bDHBLM5HtK+Zs=
-github.com/joaosoft/tester v0.0.0-20230602090922-a763e798fe38 h1:AudOqDk+0VNp4CE8TRpNbcQ+JVWsgBjdkaLr3Ep+H+I=
-github.com/joaosoft/tester v0.0.0-20230602090922-a763e798fe38/go.mod h1:Ne3XKNYFr06LJABhHfr/B0dMCN3680/cg/AvmNP2wHI=
 github.com/joaosoft/web v0.0.0-20230531143830-cd31d8a8c35e h1:6iZ5BpR2d45gA/0mFiVD/TdE2MrMzuep90ts8lHg6QU=
 github.com/joaosoft/web v0.0.0-20230531143830-cd31d8a8c35e/go.mod h1:o/AtSUa5ODbcVrYZr04rbedGYGsmOxta7OJD46YdbD0=
 github.com/joaosoft/writers v0.0.0-20230531142123-83465954fcda h1:2qopUF9Y7UHkjFcZnmSD1nqlgQvZ0m15zdQL5UjemFE=

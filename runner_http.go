@@ -10,7 +10,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	expandedMatchers "github.com/Benjamintf1/Expanded-Unmarshalled-Matchers"
+	expandedMatchers "github.com/benjamintf1/unmarshalledmatchers"
 	gomega "github.com/onsi/gomega"
 )
 
@@ -24,7 +24,7 @@ type HttpRunner struct {
 func (setup *Runner) NewHttpRunner(services []HttpService) *HttpRunner {
 	return &HttpRunner{
 		services: services,
-		logger: setup.logger,
+		logger:   setup.logger,
 	}
 }
 

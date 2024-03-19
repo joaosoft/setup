@@ -17,12 +17,16 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/go-redis/redis v6.15.9+incompatible // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/joaosoft/auth-types/basic v0.0.0-20230531143726-6905d84fa794 // indirect
 	github.com/joaosoft/auth-types/jwt v0.0.0-20230531143726-6905d84fa794 // indirect
 	github.com/joaosoft/color v0.0.0-20230531140514-b61c18d53e39 // indirect
 	github.com/joaosoft/errors v0.0.0-20230531141818-ebb38600b462 // indirect
+	github.com/joaosoft/go-manager v0.0.0-20230531145319-70475d3afc54 // indirect
+	github.com/joaosoft/mapper v0.0.0-20240319152032-fb54b78b6438 // indirect
+	github.com/joaosoft/tester v0.0.0-20230602090922-a763e798fe38 // indirect
 	github.com/joaosoft/web v0.0.0-20230531143830-cd31d8a8c35e // indirect
 	github.com/joaosoft/writers v0.0.0-20230531142123-83465954fcda // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
